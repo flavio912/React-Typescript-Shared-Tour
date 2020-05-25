@@ -1,0 +1,19 @@
+#bugress-nav {
+  height: 97px;
+}
+
+#navbar-bugress {
+  width: 100%;
+  justify-content: space-between;
+  .nav-item {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .bugres-brand {
+    color: #37BBC8;
+    font-size: 37px;  
+    font-weight: 700;
+  }
+}
