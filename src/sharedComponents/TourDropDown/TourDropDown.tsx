@@ -13,7 +13,7 @@ const TourDropDown = () => {
       </DropdownToggle>
 
       <DropdownMenu>
-        <h4>Select tour</h4>
+        <h4 className="mb-3">Select tour</h4>
         <Dropdown.Item href="#/action-2">ADASTRA</Dropdown.Item>
         <Dropdown.Item href="#/action-3">AQUAMARINA</Dropdown.Item>
         <Dropdown.Item href="#/action-3">ANNA I</Dropdown.Item>
@@ -60,7 +60,8 @@ const DropdownMenu = styled(Dropdown.Menu)`
   padding: 27px 38px 10px;
   position: relative;
   border-top-right-radius: 0;
-  
+  padding-bottom: 1em;
+
   &:before {
     content: " ";
     position: absolute;
