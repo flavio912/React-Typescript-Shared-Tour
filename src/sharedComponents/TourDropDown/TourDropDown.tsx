@@ -8,7 +8,7 @@ const TourDropDown = () => {
     <Dropdown
       drop={"left"}
     >
-      <DropdownToggle variant="success" id="dropdown-basic">
+      <DropdownToggle variant="success" id="dropdown-basic" className="p-0">
         <Bar /><Bar /><Bar />
       </DropdownToggle>
 
@@ -50,7 +50,7 @@ const Bar = styled.div`
   width: 26px;
   height: 2px;
   background: #37BBC8;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   &:last-child {
     margin-bottom: 0
   }  

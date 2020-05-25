@@ -25,12 +25,24 @@ body {
   color: #37BBC8;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
+  box-shadow: none !important;
+
+  &:hover, &:focus, &:active {
+    background-color: #37BBC8 !important;
+    color: white !important;
+    border-color: #37BBC8 !important;
+  }
 }
 
 .btn-bugress-outline.btn-secondary {
   color: #A3A1A1;
   border-color: #A3A1A1;
   background-color: transparent;
+
+  &:hover {
+    border-color: #37BBC8;
+    color: #37BBC8;
+  }
 }
 
 .btn-bugress-outline.btn-red {
@@ -39,9 +51,9 @@ body {
 }
 
 .btn-disable {
-  cursor: none;
-  pointer-events: none;
-  opacity: 0.5;
+  cursor: none !important;
+  pointer-events: none !important;
+  opacity: 0.5 !important;
 }
 
 .bug-radio {
