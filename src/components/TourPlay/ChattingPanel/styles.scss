@@ -12,7 +12,16 @@
   }
   
   .control-div {
+    display: flex;    
+    justify-content: space-between;
     padding: 21px 31px 24px 31px;
+
+    h5 {
+      font-size: 28px;
+    }
+    p {
+      font-size: 20px;
+    }
   }
 
   .name {
@@ -71,4 +80,35 @@
       font-size: 13px;
     }
   }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {  
+  background: linear-gradient(to left, transparent, transparent 5px, #A3A1A1 6px, transparent, 7px, transparent 100%);  
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #37BBC8; 
+  
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #37BBC8; 
+}
+
+::-webkit-scrollbar-button:start:decrement {
+  display: none;  
+}
+
+::-webkit-scrollbar-button:end:increment {
+  display: none;
 }

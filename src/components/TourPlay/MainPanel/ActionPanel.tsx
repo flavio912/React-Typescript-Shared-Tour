@@ -29,9 +29,9 @@ const ActionPanel = ({curPage}: Props) => {
       {
         curPage === CONSTANTS.CONNECTING_PAGE && (
           <>
-            <Connecting style={{visibility: 'hidden'}}>Conneting...</Connecting>            
+            <Connecting style={{visibility: 'hidden'}}>Connecting...</Connecting>            
             <h2><span style={{fontWeight: 700}}>SECRET</span> has 87miles<br /> of electric cables...</h2>
-            <Connecting>Conneting...</Connecting>            
+            <Connecting>Connecting...</Connecting>            
           </>
         )
       }
