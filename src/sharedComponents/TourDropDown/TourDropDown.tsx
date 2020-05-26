@@ -61,6 +61,7 @@ const DropdownMenu = styled(Dropdown.Menu)`
   position: relative;
   border-top-right-radius: 0;
   padding-bottom: 1em;
+  right: 15px !important;
 
   &:before {
     content: " ";
