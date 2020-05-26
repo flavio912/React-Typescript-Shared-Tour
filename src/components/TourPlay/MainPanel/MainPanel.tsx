@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as CONSTANTS from "../../../constants";
 import ActionPanel from "./ActionPanel";
 import BtnPanel from "./BtnPanel";
-import DownArrowImg from "./../../../assets/images/two-arrow.png";
+import ArrowDropDown from "../../../sharedComponents/ArrowDropDown";
 
 const MainPanel = () => {
   const [curPage, setCurPage] = useState(CONSTANTS.START_PAGE);
@@ -19,9 +19,7 @@ const MainPanel = () => {
         <h1 className="title">SECRET</h1>
         <div className="d-flex flex-column">
           <TourDropDown />
-          {curPage === CONSTANTS.CONNECTING_PAGE && (
-            <DownArroBtn className="mt-3" style={{backgroundImage:`url(${DownArrowImg})`}} />
-          )}
+          <ArrowDropDown margin={'23px 0 0 0'}/>
         </div>
       </div>
       <h3 className="description">82.5m (270.6ft)</h3>
@@ -33,14 +31,5 @@ const MainPanel = () => {
     </div>
   );
 };
-
-const DownArroBtn = styled.div`
-  display: flex;
-  width: 33px;
-  height: 26px;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-`
 
 export default MainPanel;

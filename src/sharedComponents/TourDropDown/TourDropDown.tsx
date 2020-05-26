@@ -14,19 +14,19 @@ const TourDropDown = () => {
 
       <DropdownMenu>
         <h4 className="mb-3">Select tour</h4>
-        <Dropdown.Item href="#/action-2">ADASTRA</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">AQUAMARINA</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">ANNA I</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">AVANT GARDE 2</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">BARBARA</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">BASH</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">ELYSIAN</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">EMINENCE</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">FORTUNATE SUN</Dropdown.Item>   
-        <Dropdown.Item href="#/action-3">INCEPTION</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">MUCHOS MAS</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">SECRET</Dropdown.Item>        
-        <Dropdown.Item href="#/action-3">TATII</Dropdown.Item>                
+        <Dropdown.Item>ADASTRA</Dropdown.Item>
+        <Dropdown.Item>AQUAMARINA</Dropdown.Item>
+        <Dropdown.Item>ANNA I</Dropdown.Item>
+        <Dropdown.Item>AVANT GARDE 2</Dropdown.Item>
+        <Dropdown.Item>BARBARA</Dropdown.Item>
+        <Dropdown.Item>BASH</Dropdown.Item>
+        <Dropdown.Item>ELYSIAN</Dropdown.Item>
+        <Dropdown.Item>EMINENCE</Dropdown.Item>
+        <Dropdown.Item>FORTUNATE SUN</Dropdown.Item>   
+        <Dropdown.Item>INCEPTION</Dropdown.Item>
+        <Dropdown.Item>MUCHOS MAS</Dropdown.Item>
+        <Dropdown.Item>SECRET</Dropdown.Item>        
+        <Dropdown.Item>TATII</Dropdown.Item>                
       </DropdownMenu>
 
     </Dropdown>
