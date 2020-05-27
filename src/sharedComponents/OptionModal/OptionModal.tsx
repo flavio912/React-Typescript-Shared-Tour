@@ -1,15 +1,15 @@
 import React, {useState} from 'react'
-import { Dropdown, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import ArrowSVG from '../../assets/images/two-arrow.png';
 import CustomRadio from '../CustomRadio';
 
 type Props = {
-  margin: string,
-  drop?: string,
+  isShow: boolean,
+  hideModal: Function,
 }
 
-const ArrowDropDown = ({margin, drop="down"}: Props) => {
+const OptionModal = ({isShow, hideModal}: Props) => {
 
   const [selectedValue, setValue] = useState('chat on')
   const changeRadios = (valueOne:string) => {
@@ -17,12 +17,12 @@ const ArrowDropDown = ({margin, drop="down"}: Props) => {
   }
   
   return (
-  <Dropdown style={{margin: margin}}>
-    <DropdownToggle variant="success" id="two-arrow-dropdown">
-      <img src={ArrowSVG} style={{width: '34px', height: '26px',}}/>
-    </DropdownToggle>
-
-    <DropDownMenu>
+    <CustomModal
+      show={isShow}
+      onHide={hideModal}
+      centered
+    >
+      <Modal.Body>
       <Title>Options</Title>
       <TourP><img src={ArrowSVG} style={{marginRight:'10px'}} />Tour control: <span style={{fontWeight: 700}}>them</span></TourP>
       <CustomUl>
@@ -56,27 +56,20 @@ const ArrowDropDown = ({margin, drop="down"}: Props) => {
       </CustomUl>      
 
       <SubmitButton variant="outline-primary">Submit</SubmitButton>
-    </DropDownMenu>
-  </Dropdown>
+      </Modal.Body>
+  </CustomModal>
   )
 }
 
-const DropdownToggle = styled(Dropdown.Toggle)`
-  background: transparent !important;
-  border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-  padding: 0;
-  &:after {
-    display: none;
+const CustomModal = styled(Modal)`
+  display: block !important;
+  max-width: 276px;
+  border: none;  
+  left: calc(50% - 138px) !important;
+  
+  .modal-body {
+    padding: 25px;
   }
-`
-
-const DropDownMenu = styled(Dropdown.Menu)`
-  top: 10px !important;
-  width: 276px;
-  border: none;
-  padding: 25px;
 `
 
 const Title = styled.h4`
@@ -110,4 +103,4 @@ const SubmitButton = styled(Button)`
   }
 `
 
-export default ArrowDropDown;
+export default OptionModal;

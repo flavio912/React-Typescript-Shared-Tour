@@ -50,7 +50,7 @@ const ChattingPanel = () => {
             </p>
           </div>
         </div>
-        <textarea className="last-chat mt-1"></textarea>
+        <textarea className="last-chat mt-1" placeholder="Type a message"></textarea>
       </div>
       <div className="btn-container">
         <Button className="btn-send btn-bugress-primary">Send</Button>

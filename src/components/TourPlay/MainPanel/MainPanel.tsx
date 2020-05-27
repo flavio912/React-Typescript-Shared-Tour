@@ -4,10 +4,13 @@ import styled from 'styled-components';
 import * as CONSTANTS from "../../../constants";
 import ActionPanel from "./ActionPanel";
 import BtnPanel from "./BtnPanel";
-import ArrowDropDown from "../../../sharedComponents/ArrowDropDown";
+import OptionModal from "../../../sharedComponents/OptionModal";
+import { Button } from 'react-bootstrap';
+import ArrowSVG from '../../../assets/images/two-arrow.png';
 
 const MainPanel = () => {
   const [curPage, setCurPage] = useState(CONSTANTS.WELCOME_PAGE);
+  const [showOptionModal, setShowOptionModal] = useState(false);
 
   const onClickStart = (selectedOne:string) => {
     setCurPage(CONSTANTS.CONNECTING_PAGE);
@@ -19,7 +22,9 @@ const MainPanel = () => {
         <h1 className="title">SECRET</h1>
         <div className="d-flex flex-column">
           <TourDropDown />
-          <ArrowDropDown margin={'23px 0 0 0'}/>
+          <ArrowBtn onClick={() => {setShowOptionModal(true)}}>
+            <img src={ArrowSVG} style={{width: '34px', height: '26px',}}/>
+          </ArrowBtn>
         </div>
       </div>
       <h3 className="description">82.5m (270.6ft)</h3>
@@ -28,8 +33,23 @@ const MainPanel = () => {
       </h3>
       <ActionPanel curPage={curPage} />
       <BtnPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}}/>
+
+      <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
     </div>
   );
 };
+
+const ArrowBtn = styled(Button)`
+  margin: 23px 0 0 0;
+  background: transparent !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  cursor: pointer;
+  &:after {
+    display: none;
+  }
+`
 
 export default MainPanel;

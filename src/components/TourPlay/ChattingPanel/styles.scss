@@ -73,6 +73,13 @@
       padding: 9px 8px;  
       resize: none;
       left: 31px;      
+      font-weight: 600;
+
+      &::placeholder {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2E2D2C;
+      }
     }
   }
   .btn-container {

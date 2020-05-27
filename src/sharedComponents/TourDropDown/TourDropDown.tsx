@@ -13,26 +13,31 @@ const TourDropDown = () => {
       </DropdownToggle>
 
       <DropdownMenu>
-        <h4 className="mb-3">Select tour</h4>
-        <Dropdown.Item>ADASTRA</Dropdown.Item>
-        <Dropdown.Item>AQUAMARINA</Dropdown.Item>
-        <Dropdown.Item>ANNA I</Dropdown.Item>
-        <Dropdown.Item>AVANT GARDE 2</Dropdown.Item>
-        <Dropdown.Item>BARBARA</Dropdown.Item>
-        <Dropdown.Item>BASH</Dropdown.Item>
-        <Dropdown.Item>ELYSIAN</Dropdown.Item>
-        <Dropdown.Item>EMINENCE</Dropdown.Item>
-        <Dropdown.Item>FORTUNATE SUN</Dropdown.Item>   
-        <Dropdown.Item>INCEPTION</Dropdown.Item>
-        <Dropdown.Item>MUCHOS MAS</Dropdown.Item>
-        <Dropdown.Item>SECRET</Dropdown.Item>        
-        <Dropdown.Item>TATII</Dropdown.Item>                
+        <Title className="mb-3">Select tour</Title>
+        <DropdownItem>ADASTRA</DropdownItem>
+        <DropdownItem>AQUAMARINA</DropdownItem>
+        <DropdownItem>ANNA I</DropdownItem>
+        <DropdownItem>AVANT GARDE 2</DropdownItem>
+        <DropdownItem>BARBARA</DropdownItem>
+        <DropdownItem>BASH</DropdownItem>
+        <DropdownItem>ELYSIAN</DropdownItem>
+        <DropdownItem>EMINENCE</DropdownItem>
+        <DropdownItem>FORTUNATE SUN</DropdownItem>   
+        <DropdownItem>INCEPTION</DropdownItem>
+        <DropdownItem>MUCHOS MAS</DropdownItem>
+        <DropdownItem>SECRET</DropdownItem>        
+        <DropdownItem>TATII</DropdownItem>                
       </DropdownMenu>
 
     </Dropdown>
   )
 }
-
+const Title = styled.h4`  
+  line-height: 42px;
+  font-size: 29px;
+  font-weight: 400;  
+  margin-bottom: 26px;
+`
 const DropdownToggle = styled(Dropdown.Toggle)`
   background: transparent !important;
   border: none;
@@ -57,11 +62,12 @@ const Bar = styled.div`
 `
 const DropdownMenu = styled(Dropdown.Menu)`
   border: none;
-  padding: 27px 38px 10px;
+  padding: 27px 0 10px 38px;
   position: relative;
   border-top-right-radius: 0;
   padding-bottom: 1em;
   right: 15px !important;
+  width: 295px;
 
   &:before {
     content: " ";
@@ -78,11 +84,22 @@ const DropdownMenu = styled(Dropdown.Menu)`
   .dropdown-item {
     padding-left: 0;
     padding-right: 0;
+    background-color: transaprent !important;
     &: hover {
-      color: #37BBC8;
+      color: #37BBC8;      
     }
   }
 `
 
+const DropdownItem = styled(Dropdown.Item)`
+  font-size: 20px;
+  padding: 0;
+  line-height: 26px;
+  margin-bottom: 12px;
+
+  &:active {
+    background: none;
+  }
+`;
 
 export default TourDropDown;
