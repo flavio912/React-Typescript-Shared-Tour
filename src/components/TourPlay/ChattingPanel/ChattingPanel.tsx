@@ -3,6 +3,10 @@ import { Button } from "react-bootstrap";
 import PhotoSvg from '../../../assets/images/photo.svg';
 import MicSvg from '../../../assets/images/mic.svg';
 import VolumnOn from '../../../assets/images/volumn-on.svg';
+import ChatSvg from '../../../assets/images/chat.svg';
+import ChatSvgDisableSvg from '../../../assets/images/chat-disable.svg';
+import styled from 'styled-components';
+
 const ChattingPanel = () => {
   return (
     <div className="left-panel">
@@ -22,27 +26,27 @@ const ChattingPanel = () => {
       </div>
       <div className="chatting-info">
         <div className="chatting-history">
-          <div className="chating-text-box mb-2">
-            <h5>Tim Vickers</h5>
-            <p className="mb-2">
+          <div className="chating-text-box">
+            <h5><ChatImg src={ChatSvg} />Tim Vickers</h5>
+            <p className="m-0">
               Ad aut consequatur blanditiis iure molestiae consequuntur
               consequatur cum. Velit non sed voluptas in ut incidunt impedit.
               Incidunt reiciendis fugiat iste occaecati hic dicta quia.
               Consequuntur dicta autem molestiae quis id illum.
             </p>
           </div>
-          <div className="chating-text-box mb-2">
-            <h5>You</h5>
-            <p className="mb-2">
+          <div className="chating-text-box">
+            <h5><ChatImg src={ChatSvgDisableSvg} />You</h5>
+            <p className="m-0">
               Ad aut consequatur blanditiis iure molestiae consequuntur
               consequatur cum. Velit non sed voluptas in ut incidunt impedit.
               Incidunt reiciendis fugiat iste occaecati hic dicta quia.
               Consequuntur dicta autem molestiae quis id illum.
             </p>
           </div>
-          <div className="chating-text-box mb-2">
-            <h5>You</h5>
-            <p className="mb-2">
+          <div className="chating-text-box">
+            <h5><ChatImg src={ChatSvg} />You</h5>
+            <p className="m-0">
               Ad aut consequatur blanditiis iure molestiae consequuntur
               consequatur cum. Velit non sed voluptas in ut incidunt impedit.
               Incidunt reiciendis fugiat iste occaecati hic dicta quia.
@@ -58,5 +62,12 @@ const ChattingPanel = () => {
     </div>
   );
 };
+
+const ChatImg = styled.img`
+  width: 31.85px;
+  height: 30.5px;
+  margin-right: 10px;
+`
+
 
 export default ChattingPanel;

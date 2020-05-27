@@ -49,12 +49,18 @@
       .chating-text-box {
         font-size: 12px;
         border-bottom: 2px solid lightgray;
+        margin-bottom: 15px;
+        
         &:last-child {
           border-bottom: 0;
         }
 
         h5 {
           font-weight: 700;
+        }
+
+        p {
+          padding-bottom: 15px;
         }
       }
     }
