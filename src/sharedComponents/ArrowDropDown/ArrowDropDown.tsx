@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import ArrowSVG from '../../assets/images/two-arrow.png';
 import CustomRadio from '../CustomRadio';
@@ -54,6 +54,8 @@ const ArrowDropDown = ({margin, drop="down"}: Props) => {
           />
         </li>
       </CustomUl>      
+
+      <SubmitButton variant="outline-primary">Submit</SubmitButton>
     </DropDownMenu>
   </Dropdown>
   )
@@ -92,6 +94,20 @@ const CustomUl = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+`
+
+const SubmitButton = styled(Button)`
+  border: 2px solid #37BBC8;
+  border-radius: 11px;
+  color: #37BBC8;
+  width: 100%;
+  margin-top: 40px;
+  font-weight: 700;
+  &:hover, &:focus, &:active {
+    color: white !important;
+    background: #37BBC8 !important;
+    border-color: #37BBC8 !important;
+  }
 `
 
 export default ArrowDropDown;
