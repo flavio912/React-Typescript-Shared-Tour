@@ -13,7 +13,7 @@ const ActionPanel = ({curPage}: Props) => {
   return (    
     <Container style={{
       backgroundImage: `url('${ImgBack}')`,
-      justifyContent: 'space-between'
+      justifyContent: `${curPage === CONSTANTS.WELCOME_PAGE ? 'center' : 'space-between'}`,
     }}>
       {curPage === CONSTANTS.START_PAGE && (
         <>
@@ -32,6 +32,17 @@ const ActionPanel = ({curPage}: Props) => {
             <Connecting style={{visibility: 'hidden'}}>Connecting...</Connecting>            
             <h2><span style={{fontWeight: 700}}>SECRET</span> has 87miles<br /> of electric cables...</h2>
             <Connecting>Connecting...</Connecting>            
+          </>
+        )
+      }
+      {
+        curPage === CONSTANTS.WELCOME_PAGE && (
+          <>
+            <h2 style={{fontWeight: 700}}>Welcome.</h2>
+            <br />
+            <h2 style={{fontWeight: 700}}>You are connected to <br />TIM VICKERS</h2>
+            <br />
+            <h2>AUDIO ON</h2>
           </>
         )
       }

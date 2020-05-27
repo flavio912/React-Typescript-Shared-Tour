@@ -7,7 +7,7 @@ import BtnPanel from "./BtnPanel";
 import ArrowDropDown from "../../../sharedComponents/ArrowDropDown";
 
 const MainPanel = () => {
-  const [curPage, setCurPage] = useState(CONSTANTS.START_PAGE);
+  const [curPage, setCurPage] = useState(CONSTANTS.WELCOME_PAGE);
 
   const onClickStart = (selectedOne:string) => {
     setCurPage(CONSTANTS.CONNECTING_PAGE);

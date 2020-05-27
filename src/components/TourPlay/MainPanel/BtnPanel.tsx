@@ -38,7 +38,30 @@ const BtnPanel = ({ curPage, setPage }: Props) => {
           </Button>
           <Button
             variant="outline-primary"
-            className="btn-bugress-outline btn-secondary btn-disable"
+            className='btn-bugress-outline btn-secondary btn-disable'
+          >
+            Start
+          </Button>
+        </>
+      )}
+
+      {curPage === CONSTANTS.WELCOME_PAGE && (
+        <>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2"
+          >
+            Go to tour
+          </Button>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2"
+          >
+            Stop session
+          </Button>
+          <Button
+            variant="outline-primary"
+            className='btn-bugress-outline btn-secondary'
           >
             Start
           </Button>
