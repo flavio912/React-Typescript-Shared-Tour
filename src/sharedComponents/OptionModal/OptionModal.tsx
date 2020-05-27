@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Modal, Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import ArrowSVG from '../../assets/images/two-arrow.png';
+import ArrowSVG from '../../assets/images/arrow.svg';
 import CustomRadio from '../CustomRadio';
 
 type Props = {

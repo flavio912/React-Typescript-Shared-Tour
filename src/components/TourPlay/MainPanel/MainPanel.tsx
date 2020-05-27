@@ -7,32 +7,38 @@ import BtnPanel from "./BtnPanel";
 import OptionModal from "../../../sharedComponents/OptionModal";
 import TransferModal from "../../../sharedComponents/TransferModal";
 import { Button } from 'react-bootstrap';
-import ArrowSVG from '../../../assets/images/two-arrow.png';
+import ArrowSVG from '../../../assets/images/arrow.svg';
 
 const MainPanel = () => {
-  const [curPage, setCurPage] = useState(CONSTANTS.WELCOME_PAGE);
+  const [curPage, setCurPage] = useState(CONSTANTS.TOUR_HOME_PAGE);
   const [showOptionModal, setShowOptionModal] = useState(false);
 
   const onClickStart = (selectedOne:string) => {
-    setCurPage(CONSTANTS.CONNECTING_PAGE);
+    setCurPage(selectedOne);
   };
 
   return (
-    <div className="right-panel">
-      <div className="d-flex justify-content-between">
-        <h1 className="title">SECRET</h1>
+    <div className="right-panel d-flex flex-column">
+      <div className="main-header d-flex flex-column">
+        <div className="d-flex justify-content-between">
+          <h1 className="title">SECRET</h1>
+          <div className="d-flex flex-column">
+            <TourDropDown />
+            {curPage !== CONSTANTS.TOUR_HOME_PAGE && (
+              <ArrowBtn onClick={() => {setShowOptionModal(true)}}>
+                <img src={ArrowSVG} style={{width: '39px', height: '35px',}}/>
+              </ArrowBtn>
+            )}
+          </div>
+        </div>
         <div className="d-flex flex-column">
-          <TourDropDown />
-          <ArrowBtn onClick={() => {setShowOptionModal(true)}}>
-            <img src={ArrowSVG} style={{width: '34px', height: '26px',}}/>
-          </ArrowBtn>
+          <h3 className="description">82.5m (270.6ft)</h3>
+          <h3 className="description">
+            2013 (refitted 2018), Abeking & Rasmussen, Germany
+          </h3>
         </div>
       </div>
-      <h3 className="description">82.5m (270.6ft)</h3>
-      <h3 className="description">
-        2013 (refitted 2018), Abeking & Rasmussen, Germany
-      </h3>
-      <ActionPanel curPage={curPage} />
+      <ActionPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} />
       <BtnPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}}/>
 
       {/* <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
@@ -42,7 +48,7 @@ const MainPanel = () => {
 };
 
 const ArrowBtn = styled(Button)`
-  margin: 23px 0 0 0;
+  margin-top: 1rem;
   background: transparent !important;
   border: 0 !important;
   outline: none !important;

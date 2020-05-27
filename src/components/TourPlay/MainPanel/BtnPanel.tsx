@@ -11,12 +11,12 @@ type Props = {
 const BtnPanel = ({ curPage, setPage }: Props) => {
 
   return (
-    <div className="btn-container">
-      {curPage === CONSTANTS.START_PAGE && (
+    <div className="btn-container d-flex justify-content-end mt-2">
+      {curPage === CONSTANTS.TOUR_HOME_PAGE && (
         <Button
           variant="outline-primary"
           className="btn-start btn-bugress-outline"
-          onClick={() => setPage(CONSTANTS.START_PAGE)}
+          onClick={() => setPage(CONSTANTS.CONNECTING_PAGE)}
         >
           Start
         </Button>
@@ -45,7 +45,12 @@ const BtnPanel = ({ curPage, setPage }: Props) => {
         </>
       )}
 
-      {curPage === CONSTANTS.WELCOME_PAGE && (
+      {(
+        (curPage === CONSTANTS.CONNECTED_PAGE) || 
+        (curPage === CONSTANTS.TOUR_START_PAGE) || 
+        (curPage === CONSTANTS.TOUR_PLAY_PAGE) || 
+        (curPage === CONSTANTS.TOUR_PAUSE_PAGE) || 
+        (curPage === CONSTANTS.TOUR_STOP_PAGE)) && (
         <>
           <Button
             variant="outline-primary"
@@ -62,6 +67,7 @@ const BtnPanel = ({ curPage, setPage }: Props) => {
           <Button
             variant="outline-primary"
             className='btn-bugress-outline btn-secondary'
+            onClick={() => setPage(CONSTANTS.TOUR_START_PAGE)}
           >
             Start
           </Button>

@@ -2,20 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 
 import * as CONSTANTS from "../../../constants";
-import ImgBack from './../../../assets/images/left-back1.png';
+import ImgBack from './../../../assets/images/SECRET.svg';
 
 type Props = {
-  curPage: string
+  curPage: string,
+  setPage: Function
 }
 
-const ActionPanel = ({curPage}: Props) => {
+const ActionPanel = ({curPage, setPage}: Props) => {
+  if(curPage === CONSTANTS.CONNECTING_PAGE) {
+    setTimeout(() => {
+      setPage(CONSTANTS.CONNECTED_PAGE)
+      //   curPage = CONSTANTS.CONNECTED_PAGE
+    }, 2000);  
+  }
 
   return (    
-    <Container style={{
-      backgroundImage: `url('${ImgBack}')`,
-      justifyContent: `${curPage === CONSTANTS.WELCOME_PAGE ? 'center' : 'space-between'}`,
-    }}>
-      {curPage === CONSTANTS.START_PAGE && (
+    <Container>
+      {curPage === CONSTANTS.TOUR_HOME_PAGE && (
         <>
           <div style={{visibility: "hidden"}}></div>              
           <h2>
@@ -29,14 +33,14 @@ const ActionPanel = ({curPage}: Props) => {
       {
         curPage === CONSTANTS.CONNECTING_PAGE && (
           <>
-            <Connecting style={{visibility: 'hidden'}}>Connecting...</Connecting>            
+            <Connecting style={{visibility: 'hidden'}}>Connecting...</Connecting>
             <h2><span style={{fontWeight: 700}}>SECRET</span> has 87miles<br /> of electric cables...</h2>
             <Connecting>Connecting...</Connecting>            
           </>
         )
       }
       {
-        curPage === CONSTANTS.WELCOME_PAGE && (
+        curPage === CONSTANTS.CONNECTED_PAGE && (
           <>
             <h2 style={{fontWeight: 700}}>Welcome.</h2>
             <br />
@@ -46,14 +50,21 @@ const ActionPanel = ({curPage}: Props) => {
           </>
         )
       }
+      {
+        curPage === CONSTANTS.TOUR_START_PAGE && (
+          <>
+            <h3>SECRET</h3>
+            <br />
+            <p>VIRTUAL TOUR</p>
+            <p>Powered By THEATRO 360</p>
+          </>
+        )
+      }
     </Container>
   )
 }
 
 const Container = styled.div`
-  background-size: 100% 100%;
-  background-repeat: no;
-  background-position: center center;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -61,11 +72,25 @@ const Container = styled.div`
   justify-content: center;
   color: white;
   position: relative;
+  background-color: #2E2D2C;
+
+  ::before {
+    content: "";
+    background-image: url('${ImgBack}');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.6;
+  }
 
   h2 {  
     text-align: center;
-    font-size: 40px;
     font-weight: 200;
+    z-index: 1;
   }
 `
 

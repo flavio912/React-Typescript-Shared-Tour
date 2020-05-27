@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal, Button} from 'react-bootstrap';
 import styled from 'styled-components';
-import ArrowSvg from '../../assets/images/two-arrow.png';
+import ArrowSvg from '../../assets/images/arrow.svg';
 
 type Props = {
   isShow: boolean,

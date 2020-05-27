@@ -13,7 +13,7 @@ const TourDropDown = () => {
       </DropdownToggle>
 
       <DropdownMenu>
-        <Title className="mb-3">Select tour</Title>
+        <Title className="mb-4">Select tour</Title>
         <DropdownItem>ADASTRA</DropdownItem>
         <DropdownItem>AQUAMARINA</DropdownItem>
         <DropdownItem>ANNA I</DropdownItem>
@@ -33,10 +33,9 @@ const TourDropDown = () => {
   )
 }
 const Title = styled.h4`  
-  line-height: 42px;
-  font-size: 29px;
-  font-weight: 400;  
-  margin-bottom: 26px;
+  line-height: 1;
+  font-size: 1.8rem;
+  font-weight: 400;
 `
 const DropdownToggle = styled(Dropdown.Toggle)`
   background: transparent !important;
@@ -62,10 +61,9 @@ const Bar = styled.div`
 `
 const DropdownMenu = styled(Dropdown.Menu)`
   border: none;
-  padding: 27px 0 10px 38px;
+  padding: 2rem;
   position: relative;
   border-top-right-radius: 0;
-  padding-bottom: 1em;
   right: 15px !important;
   width: 295px;
 
@@ -92,12 +90,11 @@ const DropdownMenu = styled(Dropdown.Menu)`
 `
 
 const DropdownItem = styled(Dropdown.Item)`
-  font-size: 20px;
+  font-size: 1.2rem;
   padding: 0;
-  line-height: 26px;
-  margin-bottom: 12px;
+  line-height: 2.2rem;
 
-  &:active {
+  &:active, &:hover {
     background: none;
   }
 `;

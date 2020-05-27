@@ -1,55 +1,42 @@
 .left-panel {
   flex: 1 0 320px;  
   background-color: white;
-  margin-right: 18px;
-  display: flex;
-  flex-direction: column;
 
-  .img-div {
-    background: url('../../../assets/images/left-back1.png') no-repeat center center;
-    background-size: 100% 100%;
-    flex: 0 0 177px;
+  .user-img {
+    height: 180px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
   
   .control-div {
-    display: flex;    
-    justify-content: space-between;
-    padding: 21px 24px 24px 24px;
-
     h5 {
-      font-size: 28px;
+      font-size: 1.6em;
+      font-weight: 700;
     }
     p {
-      font-size: 20px;
+      font-size: 1em;
     }
-  }
-
-  .name {
-    font-size: 24px;
-    font-weight: 700;
   }
 
   .chatting-info {
-    display: flex;
-    flex-direction: column;
-    padding: 0 6px 0 24px;
     flex: 1 1 auto;
     overflow: hidden;
-    border-top: 2px solid lightgray;
+    border-top: 2px solid #F5F5F5;
     position: relative;
 
     .chatting-history {
-      font-size: 14px;
       flex: 1 1 auto;
       overflow-y: auto;
-      padding: 9px 8px 110px 8px;  
+      padding: 0 0 150px 0;  
       position: relative;
 
-
       .chating-text-box {
-        font-size: 12px;
-        border-bottom: 2px solid lightgray;
-        margin-bottom: 15px;
+        font-size: 0.7em;
+        border-bottom: 2px solid #F5F5F5;
         
         &:last-child {
           border-bottom: 0;
@@ -58,48 +45,36 @@
         h5 {
           font-weight: 700;
         }
-
-        p {
-          padding-bottom: 15px;
-        }
       }
     }
     
     .last-chat {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: calc(100% - 55px);
-      height: 100px;
-      background: #F5F5F5;
-      border: 1px solid #F5F5F5;
-      flex: 0 0 100px;
-      overflow-y: auto;
-      font-size: 14px;
-      padding: 9px 8px;  
-      resize: none;
-      left: 31px;      
-      font-weight: 600;
+      bottom: 0.5rem;
+      left: 1.5rem;
+      width: calc(100% - 3.5rem);
+      background: white;
 
-      &::placeholder {
-        font-size: 14px;
-        font-weight: 600;
+      textarea{
+        width: 100%;
+        height: 100px;
+        background: #F5F5F5;
+        border: 1px solid #F5F5F5;
+        outline-style: none;
         color: #2E2D2C;
+        flex: 0 0 100px;
+        overflow-y: auto;
+        font-size: 14px;
+        padding: 9px 8px;  
+        resize: none;
+        font-weight: 600;
+
+        &::placeholder {
+          font-size: 14px;
+          font-weight: 600;
+          color: #2E2D2C;
+        }  
       }
-    }
-  }
-  .btn-container {
-    display: flex;
-    justify-content: flex-end;
-    padding: 5px 31px 10px 31px;
-    .btn-send {
-      display: flex;
-      align-items: center;
-      padding: 0;
-      justify-content: center;
-      width: 57px;
-      height: 27px;
-      font-size: 13px;
     }
   }
 }

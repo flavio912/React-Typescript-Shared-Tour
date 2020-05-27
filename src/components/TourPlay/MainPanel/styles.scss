@@ -1,19 +1,24 @@
 .right-panel {
-  display: flex;
-  flex-direction: column;
   flex: 1 1 100%;
   overflow: hidden;
 
-  .title {
-    font-size: 90px;    
-    line-height: 75px;
-    margin-bottom: 30px;
-    font-weight: 700;
-  }
+  .main-header {
+    height: 180px;
 
-  .description {
-    height: 33px;
-    font-size: 23px;
+    .title {
+      font-size: 4rem;    
+      font-weight: 700;
+      line-height: 1;
+    }
+    
+    .description {
+      font-size: 1.3rem;
+      font-weight: normal;
+    }
+
+    .dropleft {
+      text-align: center;
+    }
   }
 
   .tap-start-div {
@@ -34,15 +39,10 @@
   }
 
   .btn-container {
-    margin-top: 15px;
-    display: flex;
-    justify-content: flex-end;
-    overflow: hidden;  
-
     .btn-bugress-outline {
       flex: 0 1 33.33%;
       height: 55px;
-      font-size: 23px;
+      font-size: 1.2rem;
     }
   }
 }

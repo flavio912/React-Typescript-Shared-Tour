@@ -1,3 +1,9 @@
-export const START_PAGE = "Start Page";
+export const TOUR_HOME_PAGE = "Tour Home Page";
 export const CONNECTING_PAGE = "Connecting page";
+export const CONNECTED_PAGE = "Connected page";
+export const TOUR_START_PAGE = "Tour Start Page";
+export const GO_TO_TOUR_PAGE = "Go To Tour Page";
+export const TOUR_PLAY_PAGE = "Tour Play Page";
+export const TOUR_PAUSE_PAGE = "Tour Pause Page";
+export const TOUR_STOP_PAGE = "Tour Stop Page";
 export const WELCOME_PAGE = "Welcome page";
