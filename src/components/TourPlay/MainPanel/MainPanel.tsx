@@ -5,6 +5,7 @@ import * as CONSTANTS from "../../../constants";
 import ActionPanel from "./ActionPanel";
 import BtnPanel from "./BtnPanel";
 import OptionModal from "../../../sharedComponents/OptionModal";
+import TransferModal from "../../../sharedComponents/TransferModal";
 import { Button } from 'react-bootstrap';
 import ArrowSVG from '../../../assets/images/two-arrow.png';
 
@@ -34,7 +35,8 @@ const MainPanel = () => {
       <ActionPanel curPage={curPage} />
       <BtnPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}}/>
 
-      <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
+      {/* <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
+      <TransferModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
     </div>
   );
 };
