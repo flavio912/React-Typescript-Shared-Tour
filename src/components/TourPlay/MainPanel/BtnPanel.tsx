@@ -9,6 +9,7 @@ type Props = {
 };
 
 const BtnPanel = ({ curPage, setPage }: Props) => {
+  let stopSessionBtnClickableClass = (curPage === CONSTANTS.TOUR_PLAY_PAGE) ? 'clickable': '';
 
   return (
     <div className="btn-container d-flex justify-content-end mt-2">
@@ -45,12 +46,7 @@ const BtnPanel = ({ curPage, setPage }: Props) => {
         </>
       )}
 
-      {(
-        (curPage === CONSTANTS.CONNECTED_PAGE) || 
-        (curPage === CONSTANTS.TOUR_START_PAGE) || 
-        (curPage === CONSTANTS.TOUR_PLAY_PAGE) || 
-        (curPage === CONSTANTS.TOUR_PAUSE_PAGE) || 
-        (curPage === CONSTANTS.TOUR_STOP_PAGE)) && (
+      {curPage === CONSTANTS.CONNECTED_PAGE && (
         <>
           <Button
             variant="outline-primary"
@@ -70,6 +66,105 @@ const BtnPanel = ({ curPage, setPage }: Props) => {
             onClick={() => setPage(CONSTANTS.TOUR_START_PAGE)}
           >
             Start
+          </Button>
+        </>
+      )}
+
+      {curPage === CONSTANTS.TOUR_START_PAGE && (
+        <>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2 clickable"
+          >
+            Go to tour
+          </Button>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2"
+          >
+            Stop session
+          </Button>
+          <Button
+            variant="outline-primary"
+            className='btn-bugress-outline btn-secondary'
+            onClick={() => setPage(CONSTANTS.TOUR_PLAY_PAGE)}
+          >
+            Start
+          </Button>
+        </>
+      )}
+
+      {curPage === CONSTANTS.TOUR_PLAY_PAGE && (
+        <>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2"
+          >
+            Go to tour
+          </Button>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2 clickable"
+            onClick={() => setPage(CONSTANTS.TOUR_PAUSE_PAGE)}
+          >
+            Stop session
+          </Button>
+          <Button
+            variant="outline-primary"
+            className='btn-bugress-outline btn-secondary'
+            onClick={() => setPage(CONSTANTS.TOUR_START_PAGE)}
+          >
+            Start
+          </Button>
+        </>
+      )}
+
+      {curPage === CONSTANTS.TOUR_PAUSE_PAGE && (
+        <>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2"
+          >
+            Go to tour
+          </Button>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2"
+            onClick={() => setPage(CONSTANTS.TOUR_STOP_PAGE)}
+          >
+            Stop session
+          </Button>
+          <Button
+            variant="outline-primary"
+            className='btn-bugress-outline btn-secondary active'
+            onClick={() => setPage(CONSTANTS.TOUR_PLAY_PAGE)}
+          >
+            Resume
+          </Button>
+        </>
+      )}
+
+      {curPage === CONSTANTS.TOUR_STOP_PAGE && (
+        <>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2"
+          >
+            Go to tour
+          </Button>
+          <Button
+            variant="outline-primary"
+            className="btn-bugress-outline btn-secondary mr-2 stop"
+            onClick={() => setPage(CONSTANTS.TOUR_PLAY_PAGE)}
+          >
+            Stop session
+          </Button>
+          <Button
+            variant="outline-primary"
+            className='btn-bugress-outline btn-secondary active'
+            onClick={() => setPage(CONSTANTS.TOUR_PLAY_PAGE)}
+          >
+            Resume
           </Button>
         </>
       )}

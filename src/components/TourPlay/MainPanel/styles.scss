@@ -44,6 +44,25 @@
       height: 55px;
       font-size: 1.2rem;
     }
+
+    .btn-bugress-outline.clickable {
+      background: transparent;
+      color: #A3A1A1;
+      border-color: #37BBC8;
+    }
+
+    
+    .btn-bugress-outline.active {
+      background-color: #37BBC8 !important;
+      color: white !important;
+      border-color: #37BBC8 !important;
+    }
+
+    .btn-bugress-outline.stop {
+      background-color: transparent !important;
+      color: #FF0050 !important;
+      border-color: #FF0050 !important;
+    }
   }
 }
 

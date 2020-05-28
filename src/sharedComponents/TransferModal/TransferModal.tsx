@@ -62,7 +62,7 @@ const ButtonRed = styled(Button)`
   font-size: 20px;
   background-color: transparent;  
   display: flex;
-  align-itmes: center;
+  align-items: center;
   justify-content: center;
   padding: 0;
   &:hover, &:active, &:focus {
@@ -82,7 +82,7 @@ const ButtonBlue = styled(Button)`
   font-size: 20px;
   background-color: transparent;    
   display: flex;
-  align-itmes: center;
+  align-items: center;
   justify-content: center;
   padding: 0;
   &:hover, &:active, &:focus {

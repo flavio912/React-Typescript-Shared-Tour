@@ -1,88 +1,146 @@
 import React from "react";
-import { Accordion, Button } from "react-bootstrap";
+import { Accordion, Card } from "react-bootstrap";
 import styled from 'styled-components';
 
 const SecretDropDown = () => {
 
   return (
     <Container>
-      <div className="d-flex justify-content-between title">
-        SECRET
-        <svg version="1.1" x="0px" y="0px" viewBox="0 0 407.437 407.437">
-          <polygon points="386.258,91.567 203.718,273.512 21.179,91.567 0,112.815 203.718,315.87 407.437,112.815 " fill="#37BBC8"/>
-        </svg>
-      </div>      
+      <h3>SECRET</h3>
       <Accordion defaultActiveKey="0">
-        <Accordion.Toggle as={Button} variant="link" eventKey="0">
-          SUN DECK
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="0">
-          <ul>
-            <li>SDK - Aft Deck Seating</li>
-            <li>SDK - Aft Deck Stern</li>
-            <li>SDK - Deck Stairs [stbd]</li>
-            <li>SDK - Fore Deck Jacuzzi</li>
-            <li>SDK - Mid Deck</li>
-          </ul>
-        </Accordion.Collapse>
-        <Accordion.Toggle as={Button} variant="link" eventKey="1">
-          BRIDGE DECK
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="1">
-          <ul>
-            <li>SDK - Aft Deck Seating</li>
-            <li>SDK - Aft Deck Stern</li>
-            <li>SDK - Deck Stairs [stbd]</li>
-            <li>SDK - Fore Deck Jacuzzi</li>
-            <li>SDK - Mid Deck</li>
-          </ul>
-        </Accordion.Collapse>
-        <Accordion.Toggle as={Button} variant="link" eventKey="2">
-          UPPER DECK
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="2">
-          <ul>
-            <li>SDK - Aft Deck Seating</li>
-            <li>SDK - Aft Deck Stern</li>
-            <li>SDK - Deck Stairs [stbd]</li>
-            <li>SDK - Fore Deck Jacuzzi</li>
-            <li>SDK - Mid Deck</li>
-          </ul>
-        </Accordion.Collapse>
-        <Accordion.Toggle as={Button} variant="link" eventKey="3">
-          MAIN DECK
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="3">
-          <ul>
-            <li>SDK - Aft Deck Seating</li>
-            <li>SDK - Aft Deck Stern</li>
-            <li>SDK - Deck Stairs [stbd]</li>
-            <li>SDK - Fore Deck Jacuzzi</li>
-            <li>SDK - Mid Deck</li>
-          </ul>
-        </Accordion.Collapse>
-        <Accordion.Toggle as={Button} variant="link" eventKey="4">
-          LOWER DECK
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="4">
-          <ul>
-            <li>SDK - Aft Deck Seating</li>
-            <li>SDK - Aft Deck Stern</li>
-            <li>SDK - Deck Stairs [stbd]</li>
-            <li>SDK - Fore Deck Jacuzzi</li>
-            <li>SDK - Mid Deck</li>
-          </ul>
-        </Accordion.Collapse>
+        <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="0">
+            SUN DECK
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="0">
+            <Card.Body>
+              <ul>
+                <li>SDK - Aft Deck Seating</li>
+                <li>SDK - Aft Deck Stern</li>
+                <li>SDK - Deck Stairs [stbd]</li>
+                <li>SDK - Fore Deck Jacuzzi</li>
+                <li>SDK - Mid Deck</li>
+              </ul>
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
+        <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="1">
+            BRIDGE DECK
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="1">
+            <Card.Body>
+              <ul>
+                <li>SDK - Aft Deck Seating</li>
+                <li>SDK - Aft Deck Stern</li>
+              </ul>
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
+        <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="2">
+            UPPER DECK
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="2">
+            <Card.Body>
+              <ul>
+                <li>SDK - Deck Stairs [stbd]</li>
+                <li>SDK - Fore Deck Jacuzzi</li>
+                <li>SDK - Mid Deck</li>
+              </ul>
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
+        <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="3">
+            MAIN DECK
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="3">
+            <Card.Body>
+              <ul>
+                <li>SDK - Aft Deck Seating</li>
+              </ul>
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
+        <Card>
+          <Accordion.Toggle as={Card.Header} eventKey="4">
+            LOWER DECK
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="4">
+            <Card.Body>
+              <ul>
+                <li>SDK - Mid Deck</li>
+              </ul>
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
       </Accordion>
     </Container>
   );
 };
 
 const Container = styled.div`
-  display: flex;
-  .title {
-    width: 18px;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+
+  ::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: #000;
+    opacity: 0.3;
+  }
+
+  h3 {
+    font-size: 1.3rem !important;
+    z-index: 1;
+    padding: 0.5rem 1rem;
+    margin: 0;
+
+    ::after {
+      content: '';
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      border: solid #37BBC8;
+      border-width: 0 2px 2px 0;
+      display: inline-block;
+      padding: 6px;
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+    }
+  }
+
+  .card {
+    background: transparent !important;
+
+    .card-header {
+      padding: 0.3rem 1rem;
+      font-size: 0.8rem;
+      border-top: 1px solid #707070;
+    }
+
+    .card-body {
+      background-color: rgba(255,255,255,0.5);
+      padding: 0 1rem;
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.8rem;
+
+        li {
+          padding: 0.3rem 0;
+        }
+      }
+    }
   }
 `
 export default SecretDropDown;

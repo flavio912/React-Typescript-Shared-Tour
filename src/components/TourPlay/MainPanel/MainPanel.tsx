@@ -26,7 +26,7 @@ const MainPanel = () => {
             <TourDropDown />
             {curPage !== CONSTANTS.TOUR_HOME_PAGE && (
               <ArrowBtn onClick={() => {setShowOptionModal(true)}}>
-                <img src={ArrowSVG} style={{width: '39px', height: '35px',}}/>
+                <img src={ArrowSVG} style={{width: '39px', height: '35px'}}/>
               </ArrowBtn>
             )}
           </div>

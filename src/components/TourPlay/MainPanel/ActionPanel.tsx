@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Button, Accordion, Card } from 'react-bootstrap';
 
 import * as CONSTANTS from "../../../constants";
 import ImgBack from './../../../assets/images/SECRET.svg';
+import playSvg from './../../../assets/images/play.svg';
+import SecretDropDown from '../../../sharedComponents/SecretDropDown';
 
 type Props = {
   curPage: string,
@@ -13,7 +16,6 @@ const ActionPanel = ({curPage, setPage}: Props) => {
   if(curPage === CONSTANTS.CONNECTING_PAGE) {
     setTimeout(() => {
       setPage(CONSTANTS.CONNECTED_PAGE)
-      //   curPage = CONSTANTS.CONNECTED_PAGE
     }, 2000);  
   }
 
@@ -54,15 +56,43 @@ const ActionPanel = ({curPage, setPage}: Props) => {
         curPage === CONSTANTS.TOUR_START_PAGE && (
           <>
             <h3>SECRET</h3>
-            <br />
             <p>VIRTUAL TOUR</p>
+            <PlayBtn onClick={() => setPage(CONSTANTS.TOUR_PLAY_PAGE)}>
+              <img src={playSvg} style={{width: '40px', height: '40px'}}/>
+            </PlayBtn>
             <p>Powered By THEATRO 360</p>
           </>
         )
       }
+      {
+        (curPage === CONSTANTS.TOUR_PLAY_PAGE || 
+          curPage === CONSTANTS.TOUR_PAUSE_PAGE || 
+          curPage === CONSTANTS.TOUR_STOP_PAGE ) && (
+          <SecretDropDown></SecretDropDown>
+        )
+      }
+
+      {
+        curPage === CONSTANTS.TOUR_PAUSE_PAGE && (          
+          <PauseScreen>
+            <div className="pause-btn"></div>
+          </PauseScreen>
+        )
+      }
+
+      {
+        curPage === CONSTANTS.TOUR_STOP_PAGE && (          
+          <PauseScreen>
+            <h2>Are you sure you want to stop?</h2>
+            <div className="pause-btn"></div>
+            <p>This will disconnect your guided tour session with your <br /> BURGESS sales broker.</p>
+            <p>You will be sent a link to the virtual tour and your <br />recorded session.</p>
+          </PauseScreen>
+        )
+      }
     </Container>
   )
-}
+} 
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -92,9 +122,67 @@ const Container = styled.div`
     font-weight: 200;
     z-index: 1;
   }
+
+  h3 {
+    z-index: 1;
+    font-size: 3rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    z-index: 1;
+  }
 `
 
 const Connecting = styled.h2`
   padding-bottom: 90px;
+`
+
+const PlayBtn = styled(Button)`
+  background: transparent !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  cursor: pointer;
+  z-index: 10;
+
+  &:after {
+    display: none;
+  }
+  margin-bottom: 1rem;
+`
+
+const PauseScreen = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  flex-direction: column;
+  background-color: rgba(0,0,0, 0.4);
+  z-index: 10;
+
+  .pause-btn {
+    box-sizing: border-box;
+    height: 34px;
+    border-color: transparent transparent transparent #FFF;
+    transition: 100ms all ease;
+    cursor: pointer;
+    border-style: double;
+    border-width: 0px 0 0px 30px;
+  }
+
+  h2 {
+    font-weight: 700;
+    margin-bottom: 3rem;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0;
+    margin-top: 1.5rem;
+  }
 `
 export default ActionPanel;
