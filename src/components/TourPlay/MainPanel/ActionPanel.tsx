@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Accordion, Card } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 import * as CONSTANTS from "../../../constants";
 import ImgBack from './../../../assets/images/SECRET.svg';
 import playSvg from './../../../assets/images/play.svg';
 import SecretDropDown from '../../../sharedComponents/SecretDropDown';
+import PlayButton from '../../../sharedComponents/PlayButton';
 
 type Props = {
   curPage: string,
@@ -57,9 +58,11 @@ const ActionPanel = ({curPage, setPage}: Props) => {
           <>
             <h3>SECRET</h3>
             <p>VIRTUAL TOUR</p>
-            <PlayBtn onClick={() => setPage(CONSTANTS.TOUR_PLAY_PAGE)}>
-              <img src={playSvg} style={{width: '40px', height: '40px'}}/>
-            </PlayBtn>
+            <PlayButton>
+              <Link to="/full-view" target={"_blank"}>
+                <img src={playSvg} style={{width: '40px', height: '40px'}}/>
+              </Link>
+            </PlayButton>
             <p>Powered By THEATRO 360</p>
           </>
         )
@@ -136,21 +139,6 @@ const Container = styled.div`
 
 const Connecting = styled.h2`
   padding-bottom: 90px;
-`
-
-const PlayBtn = styled(Button)`
-  background: transparent !important;
-  border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-  padding: 0;
-  cursor: pointer;
-  z-index: 10;
-
-  &:after {
-    display: none;
-  }
-  margin-bottom: 1rem;
 `
 
 const PauseScreen = styled.div`
