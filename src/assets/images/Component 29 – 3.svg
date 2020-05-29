@@ -3,5 +3,5 @@
     <circle cx="13.5" cy="13.5" r="13.5" stroke="none"/>
     <circle cx="13.5" cy="13.5" r="13" fill="none"/>
   </g>
-  <circle id="Ellipse_7" data-name="Ellipse 7" cx="6.5" cy="6.5" r="6.5" transform="translate(7 7)" fill="#37bbc8"/>
+  <circle id="Ellipse_7" data-name="Ellipse 7" cx="6.5" cy="6.5" r="6.5" transform="translate(7 7)" fill="#00AFD3"/>
 </svg>

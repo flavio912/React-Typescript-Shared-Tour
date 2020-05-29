@@ -53,7 +53,7 @@ const DropdownToggle = styled(Dropdown.Toggle)`
 const Bar = styled.div`
   width: 26px;
   height: 2px;
-  background: #37BBC8;
+  background: #00AFD3;
   margin-bottom: 6px;
   &:last-child {
     margin-bottom: 0
@@ -84,7 +84,7 @@ const DropdownMenu = styled(Dropdown.Menu)`
     padding-right: 0;
     background-color: transaprent !important;
     &: hover {
-      color: #37BBC8;      
+      color: #00AFD3;      
     }
   }
 `

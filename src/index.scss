@@ -1,14 +1,17 @@
+@import './variables.scss';
+
 * {
   font-family: 'Montserrat', sans-serif;  
 }
 body {    
   color: #2E2D2C;
   background-color: #F5F5F5;
+  overflow-x: hidden;
 }
 
 .btn-bugress-primary {
   border-radius: 0;
-  background-color: #37BBC8;
+  background-color: $primary-color;
   color: white;
   outline: none;
   font-weight: 700;
@@ -18,19 +21,19 @@ body {
 
 .btn-bugress-outline {
   border-radius: 0;
-  border: 2px solid #37BBC8;
+  border: 2px solid $primary-color;
   outline: none;
   background-color: white;
   cursor: pointer;
-  color: #37BBC8;
+  color: $primary-color;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   box-shadow: none !important;
 
   &:hover, &:focus, &:active {
-    background-color: #37BBC8 !important;
+    background-color: $primary-color !important;
     color: white !important;
-    border-color: #37BBC8 !important;
+    border-color: $primary-color !important;
   }
 }
 
@@ -40,8 +43,8 @@ body {
   background-color: transparent;
 
   &:hover {
-    border-color: #37BBC8;
-    color: #37BBC8;
+    border-color: $primary-color;
+    color: $primary-color;
   }
 }
 
@@ -90,12 +93,50 @@ body {
   left: 7px;
   width: 13px;
   height: 13px;
-  background-color: #37BBC8;  
+  background-color: $primary-color;  
   background-image: none;
   border-radius: 6.5px;
+}
+
+@media (min-width: 768px){
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1  {
+    width: 100%;
+    *width: 100%;
+    max-width: inherit;
+    flex: inherit;
+  }
+}
+
+@media (min-width: 992px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+    *width: 14.285714285714285714285714285714%;
+    max-width: inherit;
+    flex: inherit;
+  }
+}
+
+/**
+ *  The following is not really needed in this case
+ *  Only to demonstrate the usage of @media for large screens
+ */    
+@media (min-width: 1200px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+    *width: 14.285714285714285714285714285714%;
+    max-width: inherit;
+    flex: inherit;
+  }
 }
 
 @import "./sharedComponents/NavMenu/styles.scss";
 @import "./components/TourPlay/styles.scss";
 @import "./components/TourPlay/ChattingPanel/styles.scss";
 @import "./components/TourPlay/MainPanel/styles.scss";
+@import "./components/Homepage/styles.scss";

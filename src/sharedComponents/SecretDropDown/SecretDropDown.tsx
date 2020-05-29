@@ -108,7 +108,7 @@ const Container = styled.div`
       position: absolute;
       right: 15px;
       top: 10px;
-      border: solid #37BBC8;
+      border: solid #00AFD3;
       border-width: 0 2px 2px 0;
       display: inline-block;
       padding: 6px;

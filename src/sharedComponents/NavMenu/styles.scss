@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 #bugress-nav {
   height: 97px;
 }
@@ -12,7 +14,7 @@
     font-weight: 700;
   }
   .bugres-brand {
-    color: #37BBC8;
+    color: $primary-color;
     font-size: 37px;  
     font-weight: 700;
   }

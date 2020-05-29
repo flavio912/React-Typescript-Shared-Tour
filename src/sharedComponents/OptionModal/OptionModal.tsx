@@ -90,16 +90,16 @@ const CustomUl = styled.ul`
 `
 
 const SubmitButton = styled(Button)`
-  border: 2px solid #37BBC8;
+  border: 2px solid #00AFD3;
   border-radius: 11px;
-  color: #37BBC8;
+  color: #00AFD3;
   width: 100%;
   margin-top: 40px;
   font-weight: 700;
   &:hover, &:focus, &:active {
     color: white !important;
-    background: #37BBC8 !important;
-    border-color: #37BBC8 !important;
+    background: #00AFD3 !important;
+    border-color: #00AFD3 !important;
   }
 `
 

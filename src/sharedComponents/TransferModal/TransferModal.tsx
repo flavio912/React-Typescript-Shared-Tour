@@ -76,8 +76,8 @@ const ButtonBlue = styled(Button)`
   width: 82px;
   height: 44px;
   border-radius: 11px;
-  color: #37BBC8;
-  border: 2px solid #37BBC8;
+  color: #00AFD3;
+  border: 2px solid #00AFD3;
   font-weight: 700;
   font-size: 20px;
   background-color: transparent;    
@@ -86,8 +86,8 @@ const ButtonBlue = styled(Button)`
   justify-content: center;
   padding: 0;
   &:hover, &:active, &:focus {
-    background-color: #37BBC8 !important;
-    border-color: #37BBC8 !important;
+    background-color: #00AFD3 !important;
+    border-color: #00AFD3 !important;
     color: white !important;
   }
 `

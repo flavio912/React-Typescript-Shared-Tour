@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 .right-panel {
   flex: 1 1 100%;
   overflow: hidden;
@@ -48,14 +50,14 @@
     .btn-bugress-outline.clickable {
       background: transparent;
       color: #A3A1A1;
-      border-color: #37BBC8;
+      border-color: $primary-color;
     }
 
     
     .btn-bugress-outline.active {
-      background-color: #37BBC8 !important;
+      background-color: $primary-color !important;
       color: white !important;
-      border-color: #37BBC8 !important;
+      border-color: $primary-color !important;
     }
 
     .btn-bugress-outline.stop {

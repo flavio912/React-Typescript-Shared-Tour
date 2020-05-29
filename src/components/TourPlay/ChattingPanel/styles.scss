@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 .left-panel {
   flex: 1 0 320px;  
   background-color: white;
@@ -93,12 +95,12 @@
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #37BBC8;   
+  background: $primary-color;   
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #37BBC8; 
+  background: $primary-color; 
 }
 
 ::-webkit-scrollbar-button:start:decrement {

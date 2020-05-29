@@ -1,0 +1,41 @@
+.header-content {
+  height: 100%;
+  border: 2px solid white;
+  padding: 3rem;
+
+  h1 {
+    color: white;
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .view-tours, .virtual-guide {
+    color: white;
+  }
+}
+
+.footer {
+  .footer-links {
+    font-size: 0.7rem;
+
+    a {
+      padding-right: 1rem;
+      font-weight: 500;
+    }
+
+    span {
+      color: #c0c0c0;
+    }
+  }
+
+  .social-links {
+    a {
+      margin-left: 1.2rem;
+    }
+  }
+}
+
+@import "./TourList/styles.scss";
+@import "./TourCard/styles.scss";
+@import "./Editorial/styles.scss";
