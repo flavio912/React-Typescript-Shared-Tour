@@ -98,6 +98,10 @@ body {
   border-radius: 6.5px;
 }
 
+.modal-backdrop {
+  background-color: white;
+}
+
 @media (min-width: 768px){
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
@@ -136,7 +140,13 @@ body {
 }
 
 @import "./sharedComponents/NavMenu/styles.scss";
+@import "./sharedComponents/RegisterModal/styles.scss";
+@import "./sharedComponents/SigninModal/styles.scss";
+@import "./sharedComponents/EnterCodeModal/styles.scss";
+@import "./sharedComponents/ThankyouModal/styles.scss";
+@import "./sharedComponents/ChooseTourModal/styles.scss";
 @import "./components/TourPlay/styles.scss";
 @import "./components/TourPlay/ChattingPanel/styles.scss";
 @import "./components/TourPlay/MainPanel/styles.scss";
 @import "./components/Homepage/styles.scss";
+@import "./components/Dashboard/styles.scss";

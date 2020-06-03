@@ -1,5 +1,6 @@
 import React from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const NavMenu = () => {
   return (
@@ -13,7 +14,9 @@ const NavMenu = () => {
           <Nav.Link href="#home">Build</Nav.Link>
           <Nav.Link href="#home">Manage</Nav.Link>
         </Nav>
-        <Navbar.Brand className="bugres-brand" href="#home">BURGESS</Navbar.Brand>
+        <Navbar.Brand className="bugres-brand" >
+          <Link to="/">BURGESS</Link>
+        </Navbar.Brand>
         <Nav>
           <Nav.Link href="#home">Charter</Nav.Link>
           <Nav.Link href="#home">Buy</Nav.Link>

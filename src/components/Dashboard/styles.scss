@@ -1,0 +1,27 @@
+.dashboard {
+  
+  .main-page-section {
+    position: relative;
+  }
+
+  .header {
+    background-color: white;
+    z-index: 20;
+    position: sticky;
+    top: 0;
+
+    h1 {
+      font-weight: 700;
+    }      
+  }
+
+  .content {
+    display: inline-block;
+    background: white;
+    float: left;
+    width: 100%;
+  }
+}
+
+@import "./SidePanel/styles.scss";
+@import "./TourItem/styles.scss";

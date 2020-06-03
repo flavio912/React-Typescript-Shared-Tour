@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { useHistory } from "react-router-dom";
 import CardImg from './../../../assets/images/SECRET.svg';
 
 type Props = {
@@ -16,10 +16,11 @@ type Props = {
 }
 
 const TourCard = ({data}: Props) => {
+  const history = useHistory();
 
   return (
     <div className="tour-card">
-      <img src={CardImg} style={{width: '100%'}} />
+      <img src={CardImg} style={{width: '100%'}} onClick={() => {history.push('/tour/start')}} />
       <h1>{data.name}</h1>
       <p>{data.type}</p>
       <p>{data.info.length}, {data.info.year}, {data.info.content}</p>

@@ -22,11 +22,11 @@ const TourDropDown = () => {
         <DropdownItem>BASH</DropdownItem>
         <DropdownItem>ELYSIAN</DropdownItem>
         <DropdownItem>EMINENCE</DropdownItem>
-        <DropdownItem>FORTUNATE SUN</DropdownItem>   
+        <DropdownItem>FORTUNATE SUN</DropdownItem>
         <DropdownItem>INCEPTION</DropdownItem>
         <DropdownItem>MUCHOS MAS</DropdownItem>
-        <DropdownItem>SECRET</DropdownItem>        
-        <DropdownItem>TATII</DropdownItem>                
+        <DropdownItem>SECRET</DropdownItem>
+        <DropdownItem>TATII</DropdownItem>
       </DropdownMenu>
 
     </Dropdown>

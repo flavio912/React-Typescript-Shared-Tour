@@ -14,9 +14,15 @@
     font-weight: 700;
   }
   .bugres-brand {
-    color: $primary-color;
-    font-size: 37px;  
-    font-weight: 700;
+    a {
+      color: $primary-color;
+      font-size: 37px;  
+      font-weight: 700;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
   .navbar-nav {
     .nav-link {

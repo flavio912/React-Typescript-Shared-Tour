@@ -1,0 +1,31 @@
+@import '../../variables.scss';
+
+.thankyou-modal {
+  .modal-dialog {
+    max-width: 600px;
+  
+    .modal-content {
+      background-color: $primary-color;
+      border: none;
+      border-radius: 0.8rem;
+  
+      .modal-body {
+        padding: 50px 50px;
+  
+        h1 {
+          color: $secondary-color;
+          text-align: center;
+          font-size: 1.8rem;
+          font-weight: 700;
+        }
+  
+        p {
+          color: white;
+          font-weight: 600;
+          text-align: center;
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

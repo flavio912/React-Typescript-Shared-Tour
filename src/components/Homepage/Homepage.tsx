@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
 import NavMenu from './../../sharedComponents/NavMenu';
 import TourList from './TourList';
 import Editorial from './Editorial';
+import RegisterModal from '../../sharedComponents/RegisterModal';
+import SigninModal from '../../sharedComponents/SigninModal';
+import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
+import ThankyouModal from '../../sharedComponents/ThankyouModal';
 
 import HeaderBg from '../../assets/images/home-header.jpg';
 import DegreeSvg from '../../assets/images/360-icon.svg';
@@ -18,6 +23,20 @@ import LinkedinSvg from '../../assets/images/linkedin.svg';
 import YoutubeSvg from '../../assets/images/youtube.svg';
 
 const Homepage = () => {
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showSigninModal, setShowSigninModal] = useState(false);
+  const [showEnterCodeModal, setShowEnterCodeModal] = useState(false);
+  const [showThankyouModal, setShowThankyouModal] = useState(false);
+
+  const history = useHistory();
+  const handleLogin = (param: string) => {
+    setShowSigninModal(false);
+    if(param === 'register')
+      setShowRegisterModal(true);
+    else
+      history.push('/dashboard');
+  }
+
   return (
     <>
       <NavMenu />
@@ -35,9 +54,9 @@ const Homepage = () => {
               </div>
               <div className="virtual-guide d-flex align-items-center">
                 <h4 className="mb-0 mr-2">Virtual guide</h4>                
-                <div className="register-button">
+                <RegisterButton className="register-button" onClick={() => {setShowRegisterModal(true)}}>
                   <img src={SharedDegreeSvg} />
-                </div>
+                </RegisterButton>
               </div>
             </div>
           </div>
@@ -142,6 +161,11 @@ const Homepage = () => {
           </div>
         </div>
       </Container>
+
+      <RegisterModal isShow={showRegisterModal} hideModal={() => {setShowRegisterModal(false); setShowSigninModal(true)}} userType="client" />
+      <SigninModal isShow={showSigninModal} hideModal={(val: string) => handleLogin(val)} />
+      <EnterCodeModal isShow={showEnterCodeModal} hideModal={() => setShowEnterCodeModal(false)} />
+      <ThankyouModal isShow={showThankyouModal} hideModal={() => setShowThankyouModal(false)} />
     </>
   )
 }
@@ -157,6 +181,12 @@ const Container = styled.div`
     height: 600px;
     padding: 4rem;
   }
+`
+
+const RegisterButton = styled.button`
+  border: none;
+  background: transparent;
+  outline: none !important;
 `
 
 const SignupSection = styled.div`
@@ -185,7 +215,7 @@ const SignupSection = styled.div`
 const SubmitButton = styled.button`
   background: transparent;
   border: none;
-  outline: none;
+  outline: none !important;
   box-shadow: none;
 `
 

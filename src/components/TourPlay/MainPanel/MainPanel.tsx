@@ -41,8 +41,8 @@ const MainPanel = () => {
       <ActionPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} />
       <BtnPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}}/>
 
-      {/* <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
-      <TransferModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
+      <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
+      {/* <TransferModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
     </div>
   );
 };
