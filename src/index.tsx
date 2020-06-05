@@ -1,7 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import CONFIG from './config';
+
+// axios.defaults.baseURL = CONFIG['API_URL'];
+// axios.defaults.headers = {
+//   'Content-Type': 'application/json',
+//   'Access-Control-Allow-Origin': '*',
+//   'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+// };
 
 ReactDOM.render(
   <React.StrictMode>
