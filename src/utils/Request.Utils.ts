@@ -11,11 +11,17 @@ class RequestHelper {
   }
 
   setToken = (token: string) => {
+    localStorage.setItem('token', token);
     this._token = token;
   }
 
   getToken = () => {
     return this._token;
+  }
+
+  remoteToken = () => {
+    localStorage.removeItem('token')
+    this._token = "";
   }
 
   makeHeader = (method: string) => {

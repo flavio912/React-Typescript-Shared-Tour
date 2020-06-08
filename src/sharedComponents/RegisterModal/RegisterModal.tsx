@@ -5,14 +5,16 @@ import bsCustomFileInput from 'bs-custom-file-input';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
 import { IRootState } from '../../store';
+import { registerUserAction } from '../../store/user/actions';
 
 type Props = {
   isShow: boolean,
   hideModal: Function,
   userType: string,
+  registerUserAction: Function, 
 }
 
-const RegisterModal = ({isShow, hideModal, userType}: Props) => {
+const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props) => {
   const [formData, setFormData] = useState({
     userName: {value: '', validate: true, errorMsg: ''},
     country: {value: '', validate: true, errorMsg: ''},
@@ -132,7 +134,9 @@ const RegisterModal = ({isShow, hideModal, userType}: Props) => {
           country: formData.country.value,
           role: userType
         })
-        .then((res) => {
+        .then((res) => {          
+          // call registerUserAction
+          // registerUserAction({test: "Test"})
           hideModal();
         })
         .catch((error) => {
@@ -283,4 +287,4 @@ const RegisterModal = ({isShow, hideModal, userType}: Props) => {
   )
 }
 
-export default RegisterModal;
+export default connect(null, {registerUserAction})(RegisterModal);
