@@ -10,7 +10,6 @@ class RequestHelper {
     this._token = '';
   }
 
-
   setToken = (token: string) => {
     this._token = token;
   }

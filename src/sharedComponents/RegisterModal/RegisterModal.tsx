@@ -1,8 +1,10 @@
 import React, { useState, useEffect, FormEvent } from 'react';
+import { connect } from 'react-redux';
 import {Modal, Button, Form} from 'react-bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
+import { IRootState } from '../../store';
 
 type Props = {
   isShow: boolean,
