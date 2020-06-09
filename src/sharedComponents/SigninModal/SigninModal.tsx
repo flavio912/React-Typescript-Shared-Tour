@@ -1,15 +1,18 @@
 import React, { useState, FormEvent } from 'react';
-import {Modal, Button, Form, Alert} from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import UserAvatarSvg from '../../assets/images/man-1.svg';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
+import { loginUserAction } from '../../store/user/actions';
 
 type Props = {
   isShow: boolean,
   hideModal: Function,
+  loginUserAction: Function,
 }
 
-const SigninModal = ({isShow, hideModal}: Props) => {
+const SigninModal = ({isShow, hideModal, loginUserAction}: Props) => {
   const [formData, setFormData] = useState({
     email: {value: '', validate: true, errorMsg: ''},
     password: {value: '', validate: true, errorMsg: ''},
@@ -18,6 +21,7 @@ const SigninModal = ({isShow, hideModal}: Props) => {
     isShow: false,
     msg: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const checkEmailValidate = () => {
     if (formData.email.value.length === 0) {
@@ -74,6 +78,7 @@ const SigninModal = ({isShow, hideModal}: Props) => {
       checkEmailValidate() && 
       checkPasswordValidate()
     ) {
+      setLoading(true);
       RequestHelper
         .post('/users/login', {
           email: formData.email.value,
@@ -85,12 +90,18 @@ const SigninModal = ({isShow, hideModal}: Props) => {
               isShow: true,
               msg: res.data.error
             });
-          }else {          
+          }else {
+            loginUserAction(res.data.data);
             hideModal();
           }
+          setLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          setReturnError({
+            isShow: true,
+            msg: error
+          });
+          setLoading(false);
         })
     }
   }
@@ -152,9 +163,22 @@ const SigninModal = ({isShow, hideModal}: Props) => {
               {formData.password.errorMsg}
             </Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit">
-            Sign In
-          </Button>
+          { loading?
+            <Button variant="primary" disabled>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              Loading...
+            </Button> 
+            : 
+            <Button type="submit">
+              Sign In
+            </Button>
+          }
           <a>Forgot password?</a>
           <div className="signin-btn d-flex justify-content-center align-items-center mt-3">
             <a onClick={() => hideModal('register')}>Register</a>
@@ -163,9 +187,9 @@ const SigninModal = ({isShow, hideModal}: Props) => {
       </Modal.Body>
 
       { returnError.isShow ?
-        <Alert variant="danger" dismissible><p>{returnError.msg}</p></Alert> : null}
+        <Alert variant="danger" dismissible>{returnError.msg}</Alert> : null}
     </Modal>
   )
 }
 
-export default SigninModal;
+export default connect(null, {loginUserAction})(SigninModal);

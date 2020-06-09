@@ -80,7 +80,7 @@ class RequestHelper {
         'content-type': 'multipart/form-data',
       },
     };
-    const res = await axios.post(`/api/upload`, formData, config)
+    const res = await axios.post(CONFIG['API_URL'] + `/upload`, formData, config)
     return {
       headers: res.headers,
       json: async () => res.data,

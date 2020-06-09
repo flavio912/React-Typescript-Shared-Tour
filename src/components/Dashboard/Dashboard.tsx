@@ -32,9 +32,9 @@ const Dashboard = () => {
                 </DropdownToggle>
               </div>
               <div className="content p-4">
-                {tourList.map((item) => {
+                {tourList.map((item, nIndex) => {
                   return(
-                    <div className="col-md-6 mb-3 p-0 float-left">
+                    <div className="col-md-6 mb-3 p-0 float-left" key={nIndex}>
                       <TourItem data={item} />
                     </div>
                   );

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { connect } from 'react-redux';
-import {Modal, Button, Form} from 'react-bootstrap';
+import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
-import { IRootState } from '../../store';
 import { registerUserAction } from '../../store/user/actions';
 
 type Props = {
@@ -23,6 +22,12 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
     password: {value: '', validate: true, errorMsg: ''},
     imgUrl: {value: '', validate: true, errorMsg: ''}
   });
+  const [returnError, setReturnError] = useState({
+    isShow: false,
+    msg: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [avatar, setAvatar] = useState(new File([""], ""));
 
   useEffect(() => {
     bsCustomFileInput.init();
@@ -113,11 +118,11 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
     });
     return formData.password.value.length !== 0;
   }
-
-  const onSubmit = (e: FormEvent) => {
+  
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (
       checkUserNameValidate() && 
       checkCountryValidate() && 
@@ -125,6 +130,21 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
       checkPhoneValidate() &&
       checkPasswordValidate()
     ) {
+      setLoading(true);
+      
+      let avatar_url = '';
+      if(avatar.name !== ''){
+        const upload_res = await RequestHelper.upload(avatar);
+        if(!upload_res.data.success){
+          setReturnError({
+            isShow: true,
+            msg: upload_res.data.error
+          });
+        }else {
+          avatar_url = upload_res.data.url;
+        }
+      }
+
       RequestHelper
         .post('/users/register', {
           name: formData.userName.value,
@@ -132,15 +152,28 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
           password: formData.password.value,
           phone: formData.phone.value,
           country: formData.country.value,
-          role: userType
+          role: userType,
+          avatar: avatar_url
         })
-        .then((res) => {          
-          // call registerUserAction
-          // registerUserAction({test: "Test"})
-          hideModal();
+        .then((res) => {
+          if(!res.data.success) {
+            setReturnError({
+              isShow: true,
+              msg: res.data.error
+            });
+          }else {
+            // call registerUserAction
+            registerUserAction(res.data.data);
+            hideModal();
+          }
+          setLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          setReturnError({
+            isShow: true,
+            msg: error
+          });
+          setLoading(false);
         })
     }
   }
@@ -271,18 +304,39 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
           </Form.Group>
           <Form.Group>
             <div className="custom-file">
-              <input type="file" className="custom-file-input" />
+              <input 
+                id="user_avatar"
+                type="file" 
+                className="custom-file-input" 
+                accept=".jpg, .jpeg, .png, .gif" 
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {setAvatar(e.target.files? e.target.files[0]: new File([""], ""))}} 
+              />
               <label className="custom-file-label">Upload image</label>
             </div>
           </Form.Group>
-          <Button type="submit">
-            Register
-          </Button>
+          { loading?
+            <Button variant="primary" disabled>
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              Loading...
+            </Button> 
+            : 
+            <Button type="submit">
+              Register
+            </Button>
+          }
           <div className="signin-btn d-flex justify-content-center align-items-center">
-            <a onClick={() => hideModal()}>Sign In</a>
+            <a onClick={() => hideModal('signin')}>Sign In</a>
           </div>
         </Form>
       </Modal.Body>
+      { returnError.isShow ?
+        <Alert variant="danger" dismissible>{returnError.msg}</Alert> : null}
     </Modal>
   )
 }

@@ -1,19 +1,25 @@
-import { Constants, UserActions, IUserState } from './types';
-// import RequestHelper from '../../utils/Request.Utils';
+import { Reducer } from 'redux';
+import { Constants, IUserState, IDispatchUserAction } from './types';
+import RequestHelper from '../../utils/Request.Utils';
 
-const init: IUserState = {
-  user: {},
-  loading: false
+const initUser: IUserState = {
+  email: '',
+  password: '',
+  name: '',
+  phone: '',
+  role: '',
+  country: ''
 };
 
-export function userReducer(state: IUserState = init, action: UserActions): IUserState {
+export const userReducer: Reducer<IUserState, IDispatchUserAction> = (state = initUser, action) => {
   switch (action.type) {
-    case Constants.REGISTER_USER:{      
-      // RequestHelper.setToken(action.payload.data.token)
-      return {...state, ...action.payload};
+    case Constants.REGISTER_USER:{
+      RequestHelper.setToken(action.payload.data.token)
+      return {...state, ...action.payload.data.user};
     }
-    case Constants.LOGIN_USER:{      
-      // RequestHelper.setToken(action.payload.data.token)
+    case Constants.LOGIN_USER:{
+      console.log(action.payload.data.user);
+      RequestHelper.setToken(action.payload.data.token)
       return {...state, ...action.payload};
     }
     case Constants.UPDATTE_USER:

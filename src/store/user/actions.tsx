@@ -18,9 +18,3 @@ export function updateUserAction(data: object) {
     data
   });
 }
-
-export function setLoading(loading: boolean) {
-  return action(Constants.SET_LOADING, {
-    loading
-  });
-}

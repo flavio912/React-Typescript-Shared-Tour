@@ -29,10 +29,19 @@ const Homepage = () => {
   const [showThankyouModal, setShowThankyouModal] = useState(false);
 
   const history = useHistory();
-  const handleLogin = (param: string) => {
+  const handleLogin = (value: string) => {
     setShowSigninModal(false);
-    if(param === 'register')
+    if(value === 'register')
       setShowRegisterModal(true);
+    else
+      history.push('/dashboard');
+  }
+
+  const handleRegister = (value: string) => {
+    setShowRegisterModal(false);
+
+    if(value === 'signin')
+      setShowSigninModal(true);
     else
       history.push('/dashboard');
   }
@@ -162,7 +171,7 @@ const Homepage = () => {
         </div>
       </Container>
 
-      <RegisterModal isShow={showRegisterModal} hideModal={() => {setShowRegisterModal(false); setShowSigninModal(true)}} userType="client" />
+      <RegisterModal isShow={showRegisterModal} hideModal={(val: string) => handleRegister(val)} userType="client" />
       <SigninModal isShow={showSigninModal} hideModal={(val: string) => handleLogin(val)} />
       <EnterCodeModal isShow={showEnterCodeModal} hideModal={() => setShowEnterCodeModal(false)} />
       <ThankyouModal isShow={showThankyouModal} hideModal={() => setShowThankyouModal(false)} />

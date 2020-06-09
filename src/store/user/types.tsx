@@ -1,11 +1,16 @@
-import { ActionType } from 'typesafe-actions';
-import * as actions from './actions';
-
-export type UserActions = ActionType<typeof actions>;
+import { Action } from 'redux';
 
 export interface IUserState {
-  user: object
-  loading: boolean
+  email: string,
+	password: string,
+	name: string,
+	phone: string,
+	role: string,
+	country: string
+}
+
+export interface IDispatchUserAction extends Action {
+  payload?: any;
 }
 
 export enum Constants {
