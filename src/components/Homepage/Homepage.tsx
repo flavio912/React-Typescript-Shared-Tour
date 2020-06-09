@@ -23,7 +23,7 @@ import LinkedinSvg from '../../assets/images/linkedin.svg';
 import YoutubeSvg from '../../assets/images/youtube.svg';
 
 const Homepage = () => {
-  const [showRegisterModal, setShowRegisterModal] = useState(true);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showSigninModal, setShowSigninModal] = useState(false);
   const [showEnterCodeModal, setShowEnterCodeModal] = useState(false);
   const [showThankyouModal, setShowThankyouModal] = useState(false);
