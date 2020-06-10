@@ -36,6 +36,16 @@
   }
 }
 
+@media (max-width: 991px) {
+  .header-content {
+    padding: 2rem;
+
+    h1 {
+      font-size: 3rem;
+    }
+  }
+}
+
 @import "./TourList/styles.scss";
 @import "./TourCard/styles.scss";
 @import "./Editorial/styles.scss";

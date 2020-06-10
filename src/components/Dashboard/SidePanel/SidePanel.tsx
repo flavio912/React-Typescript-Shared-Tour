@@ -102,5 +102,11 @@ const TabItem = styled.div`
       color: rgb(29, 53, 94);
     }  
   }
+
+  @media (max-width: 991px) {
+    height: 70px;
+    font-size: 0.5rem;
+    background-position: center calc(50% - 5px);
+  }
 `
 export default SidePanel;

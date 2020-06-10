@@ -1,134 +1,114 @@
 @import '../../variables.scss';
 
 .register-modal {
-  .modal-dialog {
-    max-width: 768px;
-  
-    .modal-content {
-      background-color: $primary-color;
+  .form-group {
+    margin-bottom: 0.8rem;
+
+    label {
+      margin: 0;
+      color: white;
+      opacity: 0.8;
+      font-size: 0.8rem;
+    }
+
+    label.custom-file-label {
+      opacity: 1;
+      color: white;
+      padding: 0;
+      background: transparent;
       border: none;
-      border-radius: 0.8rem;
-  
-      .modal-header {
-        border-bottom: none;
-        padding-top: 2rem;
-        text-align: center;
-  
-        h1 {
-          width: 100%;
-          font-size: 2rem;
-          font-weight: 700;
-        }
-  
-        h2 {
-          width: 100%;
-          color: white;
-          font-weight: 700;
-        }
-      }
-      .modal-body {
-        padding: 20px 200px;
-  
-        h1 {
-          color: white;
-          text-align: center;
-          font-size: 2rem;
+      border-bottom: 1px solid white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      outline: none;
+      box-shadow: none;
+      border-radius: 0;
+      height: calc(1.5em + .75rem + 10px);
+    }
 
-          span.user-type {
-            text-transform: capitalize;
-          }
-        }
-  
-        .form-group {
-          label {
-            margin: 0;
-            color: white;
-            opacity: 0.8;
-            font-size: 0.8rem;
-          }
+    label.custom-file-label::after {
+      content: "Upload";
+      height: 1.5rem;
+      background: white;
+      color: orange;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0 2rem;
+      border-radius: 0.3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: 0.6rem;
+    }
 
-          label.custom-file-label {
-            opacity: 1;
-            color: white;
-            padding: 0;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            outline: none;
-            box-shadow: none;
-            border-radius: 0;
-          }
+    .custom-file-input {
+      height: calc(1.5em + .75rem + 2px) !important;
+    }
 
-          label.custom-file-label::after {
-            content: "Upload";
-            height: 1.5rem;
-            background: white;
-            color: orange;
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 0 2rem;
-            border-radius: 0.3rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            top: 0.4rem;
-          }
-  
-          input {
-            background: transparent;
-            border: none;
-            outline: none !important;
-            box-shadow: none;
-            border-bottom: 1px solid white;
-            border-radius: 0;
-            padding: 0;
-            color: white;
-            height: 1.5rem;
-          }
-          
-          ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-            color: white;
-            opacity: 1; /* Firefox */
-          }
-          
-          :-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: white;
-          }
-          
-          ::-ms-input-placeholder { /* Microsoft Edge */
-            color: white;
-          }
-        }
-  
-        Button {
-          background: white;
-          width: 100%;
-          color: orange;
-          margin-top: 2rem;
-          border: 1rem;
-          height: 50px;
-          text-transform: uppercase;
-          font-weight: 700;
-          font-size: 0.9rem;
-        }
-  
-        .signin-btn {
-          height: 50px;
-          text-align: center;
-          text-transform: uppercase;
-          font-weight: 700;
-          font-size: 0.9rem;
-          width: 100%;
-          color: white;
-  
-          a {
-            cursor: pointer;
-          }
-        }
-      }
+    input {
+      background: transparent;
+      border: none;
+      outline: none !important;
+      box-shadow: none;
+      border-bottom: 1px solid white;
+      border-radius: 0;
+      padding: 0;
+      color: white;
+      height: 1.5rem;
+    }
+    
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: white;
+      opacity: 1; /* Firefox */
+    }
+    
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: white;
+    }
+    
+    ::-ms-input-placeholder { /* Microsoft Edge */
+      color: white;
+    }
+  }
+
+  Button {
+    background: white;
+    width: 100%;
+    color: orange;
+    margin-top: 1rem;
+    border: 1rem;
+    height: 50px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .signin-btn {
+    height: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.9rem;
+    width: 100%;
+    color: white;
+
+    a {
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: 991px){
+    .form-group {
+      margin-bottom: 0.5rem;
+    }
+
+    Button {
+      height: 40px;
+    }
+
+    .signin-btn {
+      height: 40px;
     }
   }
 }

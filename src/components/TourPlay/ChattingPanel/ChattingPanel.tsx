@@ -69,8 +69,8 @@ const ChattingPanel = () => {
 };
 
 const ChatImg = styled.img`
-  width: 31.85px;
-  height: 30.5px;
+  width: 20px;
+  height: 20px;
   margin-right: 10px;
 `
 

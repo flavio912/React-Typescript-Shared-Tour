@@ -11,6 +11,7 @@
       font-size: 4rem;    
       font-weight: 700;
       line-height: 1;
+      text-transform: uppercase;
     }
     
     .description {
@@ -45,6 +46,15 @@
       flex: 0 1 33.33%;
       height: 55px;
       font-size: 1.2rem;
+
+      a {
+        color: #A3A1A1;
+
+        &:hover {
+          text-decoration: none;
+          color: white;
+        }
+      }
     }
 
     .btn-bugress-outline.clickable {
@@ -66,59 +76,23 @@
       border-color: #FF0050 !important;
     }
   }
-}
 
-#secret-accordion {
-  position: absolute; 
-  left: 0;
-  top: 0;
-}
+  @media screen and (max-width: 991px) {
+    .main-header {
+      height: 130px;
 
-#headingOne {
-  width: 200px;
-  height: 35px;
-  line-height: 35px;
-  color: white;
-  font-weight: 400;
-  padding: 0 15px;
-  font-size: 16px;
-  background-color: #2b303a;
-  top: 0;
-  left: 0;
-  cursor: pointer;
-  margin: 0;
-}
+      .title {
+        font-size: 2.5rem;
+      }
 
-#secret-accordion .item-one {
-  line-height: 24px;
-  padding: 0 15px;
-  font-size: 12px;
-  color: white;
-  background-color: rgba(42, 53, 65, 0.8);
-  border-top: 1px solid rgba(92, 111, 131, 0.6);
-  cursor: pointer;
-}
+      .description {
+        font-size: 1rem;
+      }
+    }
 
-#secret-accordion .title {
-  display: flex;
-  justify-content: space-between;
-}
-
-#secret-accordion .title svg {
-  width: 18px;
-}
-
-#secret-accordion .item-one-child {
-  padding: 0 15px;
-  background: #4e617b;
-  color: white;
-  font-size: 12px;  
-}
-
-#secret-accordion .item-one-child {
-  line-height: 24px;
-}
-
-#secret-accordion .item-one-child div {
-  cursor: pointer;
+    .btn-container .btn-bugress-outline {
+      font-size: 1rem;
+      height: 45px;
+    }
+  }
 }

@@ -26,6 +26,11 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
     isShow: false,
     msg: ''
   });
+  const [uploadStatus, setUploadStatus] = useState({
+    isShow: false,
+    status: 'success',
+    msg: ''
+  });
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState(new File([""], ""));
 
@@ -136,12 +141,34 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
       if(avatar.name !== ''){
         const upload_res = await RequestHelper.upload(avatar);
         if(!upload_res.data.success){
-          setReturnError({
+          setUploadStatus({
             isShow: true,
+            status: 'danger',
             msg: upload_res.data.error
           });
+
+          window.setTimeout(() => {
+            setUploadStatus({
+              isShow: true,
+              status: 'danger',
+              msg: upload_res.data.error
+            });
+          }, 1000)
         }else {
           avatar_url = upload_res.data.url;
+          setUploadStatus({
+            isShow: true,
+            status: 'success',
+            msg: "Avatar uploaded successfully!"
+          });
+
+          window.setTimeout(() => {
+            setUploadStatus({
+              isShow: false,
+              status: 'success',
+              msg: "Avatar uploaded successfully!"
+            });
+          }, 1000)
         }
       }
 
@@ -161,10 +188,17 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
               isShow: true,
               msg: res.data.error
             });
+
+            window.setTimeout(() => {
+              setReturnError({
+                isShow: false,
+                msg: res.data.error
+              });
+            }, 1000)
           }else {
             // call registerUserAction
             registerUserAction(res.data.data);
-            hideModal();
+            hideModal('register_'+userType);
           }
           setLoading(false);
         })
@@ -192,12 +226,11 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
       <Modal.Body>
         <h1>Register as a <span className="user-type">{userType}</span></h1>
         <Form onSubmit={onSubmit}>
-          <Form.Group controlId="registerForm.userName">
-            <Form.Label>Full Name</Form.Label>
+          <Form.Group controlId="registerForm.userName">           
             <Form.Control 
               type="text" 
-              placeholder="Aaron Smith" 
-              value={formData.userName.value} 
+              value={formData.userName.value}
+              placeholder="full name"
               onChange={(e) => {
                 setFormData({
                   ...formData,
@@ -210,16 +243,16 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
               }}
               isInvalid={!formData.userName.validate}
             />
+            <Form.Label>Full Name</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.userName.errorMsg}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="registerForm.country">
-            <Form.Label>Country</Form.Label>
             <Form.Control 
               type="text" 
-              placeholder="United Kingdom" 
               value={formData.country.value}
+              placeholder="country"
               onChange={(e) => {
                 setFormData({
                   ...formData,
@@ -232,16 +265,16 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
               }}
               isInvalid={!formData.country.validate}
             />
+            <Form.Label>Country</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.country.errorMsg}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="registerForm.email">
-            <Form.Label>Email</Form.Label>
             <Form.Control 
               type="email" 
-              placeholder="Aaron.Smith@email.com" 
               value={formData.email.value}
+              placeholder="email"
               onChange={(e) => {
                 setFormData({
                   ...formData,
@@ -254,16 +287,16 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
               }}
               isInvalid={!formData.email.validate}
             />
+            <Form.Label>Email</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.email.errorMsg}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="registerForm.phone">
-            <Form.Label>Mobile Phone</Form.Label>
             <Form.Control 
               type="text" 
-              placeholder="+44 (0)7985 630956" 
               value={formData.phone.value}
+              placeholder="phone"
               onChange={(e) => {
                 setFormData({
                   ...formData,
@@ -276,16 +309,16 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
               }}
               isInvalid={!formData.phone.validate}
             />
+            <Form.Label>Mobile Phone</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.phone.errorMsg}
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="registerForm.password">
-            <Form.Label>Password</Form.Label>
             <Form.Control 
               type="password" 
-              placeholder="Password" 
               value={formData.password.value}
+              placeholder="password"
               onChange={(e) => {
                 setFormData({
                   ...formData,
@@ -298,6 +331,7 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
               }}
               isInvalid={!formData.password.validate}
             />
+            <Form.Label>Password</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.password.errorMsg}
             </Form.Control.Feedback>
@@ -335,8 +369,9 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
           </div>
         </Form>
       </Modal.Body>
-      { returnError.isShow ?
-        <Alert variant="danger" dismissible>{returnError.msg}</Alert> : null}
+      <Alert variant="danger" show={returnError.isShow}>{returnError.msg}</Alert>
+      <Alert variant="success" show={uploadStatus.isShow && uploadStatus.status === 'success'}>{uploadStatus.msg}</Alert>
+      <Alert variant="danger" show={uploadStatus.isShow && uploadStatus.status === 'danger'}>{uploadStatus.msg}</Alert>
     </Modal>
   )
 }

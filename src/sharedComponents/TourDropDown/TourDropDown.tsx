@@ -1,8 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Dropdown } from 'react-bootstrap';
+import * as CONSTANTS from '../../constants';
 
-const TourDropDown = () => {
+type Props= {
+  curTour: any,
+  changeTour: Function
+}
+
+const TourDropDown = ({curTour, changeTour}: Props) => {
+  const tourList = CONSTANTS.HOME_TOURS;
 
   return (
     <Dropdown
@@ -14,25 +21,21 @@ const TourDropDown = () => {
 
       <DropdownMenu>
         <Title className="mb-4">Select tour</Title>
-        <DropdownItem>ADASTRA</DropdownItem>
-        <DropdownItem>AQUAMARINA</DropdownItem>
-        <DropdownItem>ANNA I</DropdownItem>
-        <DropdownItem>AVANT GARDE 2</DropdownItem>
-        <DropdownItem>BARBARA</DropdownItem>
-        <DropdownItem>BASH</DropdownItem>
-        <DropdownItem>ELYSIAN</DropdownItem>
-        <DropdownItem>EMINENCE</DropdownItem>
-        <DropdownItem>FORTUNATE SUN</DropdownItem>
-        <DropdownItem>INCEPTION</DropdownItem>
-        <DropdownItem>MUCHOS MAS</DropdownItem>
-        <DropdownItem>SECRET</DropdownItem>
-        <DropdownItem>TATII</DropdownItem>
+        {
+          tourList && tourList.length > 0 && (
+            tourList.map((item, nIndex) => {
+              return (
+                <DropdownItem className={curTour.name === item.name? 'active': ''} onClick={() => changeTour(item)}>{item.name}</DropdownItem>
+              )
+            })
+          )
+        }
+        
       </DropdownMenu>
-
     </Dropdown>
   )
 }
-const Title = styled.h4`  
+const Title = styled.h4`
   line-height: 1;
   font-size: 1.8rem;
   font-weight: 400;
@@ -93,6 +96,12 @@ const DropdownItem = styled(Dropdown.Item)`
   font-size: 1.2rem;
   padding: 0;
   line-height: 2.2rem;
+  text-transform: uppercase;
+
+  &.active {
+    background: none;
+    color: #00AFD3
+  }
 
   &:active, &:hover {
     background: none;

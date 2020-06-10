@@ -2,11 +2,18 @@
 
 #bugress-nav {
   height: 97px;
+
+  @media (max-width: 991px) {
+    height: 60px;
+  }
 }
 
 #navbar-bugress {
   width: 100%;
   justify-content: space-between;
+  background: white;
+  z-index: 1;
+
   .nav-item {
     display: flex;
     align-items: center;
@@ -25,9 +32,17 @@
     }
   }
   .navbar-nav {
+    align-items: center;
+    color: $primary-color;
+    font-weight: 700;
+
     .nav-link {
       font-size: 14px;
       font-weight: 600;
+
+      &.logout {
+        color: $primary-color;
+      }
     }
   }
 }

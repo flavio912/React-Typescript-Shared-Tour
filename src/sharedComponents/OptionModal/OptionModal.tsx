@@ -55,7 +55,7 @@ const OptionModal = ({isShow, hideModal}: Props) => {
         </li>
       </CustomUl>      
 
-      <SubmitButton variant="outline-primary">Submit</SubmitButton>
+      <SubmitButton variant="outline-primary" onClick={hideModal}>Submit</SubmitButton>
       </Modal.Body>
   </CustomModal>
   )
@@ -67,8 +67,12 @@ const CustomModal = styled(Modal)`
   border: none;  
   left: calc(50% - 138px) !important;
   
-  .modal-body {
-    padding: 25px;
+  .modal-content {
+    background-color: white;
+    
+    .modal-body {
+      padding: 25px;
+    }  
   }
 `
 

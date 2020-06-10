@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <NavMenu />
+      <NavMenu page="dashboard" />
       <div className="dashboard main-container container">
         <div className="main-page-section">
           <SidePanel curTab={curTab} setTab={(selectedTab: string) => {handleChange(selectedTab)}} />
@@ -55,6 +55,7 @@ const MainPanel = styled.div`
   padding-right: 2rem;
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   position: relative;
 

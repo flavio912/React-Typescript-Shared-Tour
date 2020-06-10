@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import * as CONSTANTS from "../../../constants";
 import ImgBack from './../../../assets/images/SECRET.svg';
 import playSvg from './../../../assets/images/play.svg';
-import SecretDropDown from '../../../sharedComponents/SecretDropDown';
+import SelectTourDropDown from '../../../sharedComponents/SelectTourDropDown';
 import PlayButton from '../../../sharedComponents/PlayButton';
 
 type Props = {
@@ -59,7 +59,7 @@ const ActionPanel = ({curPage, setPage}: Props) => {
             <h3>SECRET</h3>
             <p>VIRTUAL TOUR</p>
             <PlayButton>
-              <Link to="/full-view" target={"_blank"}>
+              <Link to="/tour/view" target={"_blank"}>
                 <img src={playSvg} style={{width: '40px', height: '40px'}}/>
               </Link>
             </PlayButton>
@@ -71,7 +71,7 @@ const ActionPanel = ({curPage, setPage}: Props) => {
         (curPage === CONSTANTS.TOUR_PLAY_PAGE || 
           curPage === CONSTANTS.TOUR_PAUSE_PAGE || 
           curPage === CONSTANTS.TOUR_STOP_PAGE ) && (
-          <SecretDropDown></SecretDropDown>
+          <SelectTourDropDown></SelectTourDropDown>
         )
       }
 

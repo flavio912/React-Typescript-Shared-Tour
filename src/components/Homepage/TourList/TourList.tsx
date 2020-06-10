@@ -10,13 +10,17 @@ const TourList = () => {
     <div className="tour-list">
       <div className="container py-5">
         <div className="row justify-content-center">
-          {tourList.map((item, nIndex) => {
-            return(
-              <div className="col-md-4" key={nIndex}>
-                <TourCard data={item} />
-              </div>
-            );
-          })}
+          {
+            tourList && tourList.length > 0 && (
+              tourList.map((item, nIndex) => {
+                return(
+                  <div className="col-md-4" key={nIndex}>
+                    <TourCard data={item} />
+                  </div>
+                );
+              })  
+            )
+          }
         </div>
       </div>
     </div>

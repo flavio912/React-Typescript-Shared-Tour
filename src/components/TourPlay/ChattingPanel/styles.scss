@@ -46,6 +46,7 @@
 
         h5 {
           font-weight: 700;
+          font-size: 1rem;
         }
       }
     }
@@ -79,42 +80,26 @@
       }
     }
   }
-}
 
-/* width */
-::-webkit-scrollbar {
-  width: 11px;
-}
+  @media (max-width: 991px) {
+    flex: 1 0 240px;
 
-/* Track */
-::-webkit-scrollbar-track {  
-  background: linear-gradient(to left, transparent, transparent 5px, #A3A1A1 6px, transparent, 7px, transparent 100%);  
-  background-size: 100% auto;
-  background-repeat: repeat-y;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: $primary-color;   
-}
+    .user-img {
+      height: 130px;
+    }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: $primary-color; 
-}
+    .control-div {
+      h5 {
+        font-size: 1.2rem;
+      }
 
-::-webkit-scrollbar-button:start:decrement {
-  display: none;  
-}
+      p {
+        font-size: 0.9rem;
+      }
 
-::-webkit-scrollbar-button:end:increment {
-  display: none;
-}
-
-.last-chat::-webkit-scrollbar-thumb {
-  background: #A3A1A1;   
-}
-
-.last-chat::-webkit-scrollbar-thumb:hover {
-  background: #A3A1A1; 
+      img {
+        width: 30px;
+      }
+    }
+  }
 }

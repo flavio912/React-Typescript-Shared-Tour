@@ -9,10 +9,11 @@ import { loginUserAction } from '../../store/user/actions';
 type Props = {
   isShow: boolean,
   hideModal: Function,
+  userType: string,
   loginUserAction: Function,
 }
 
-const SigninModal = ({isShow, hideModal, loginUserAction}: Props) => {
+const SigninModal = ({isShow, hideModal, userType, loginUserAction}: Props) => {
   const [formData, setFormData] = useState({
     email: {value: '', validate: true, errorMsg: ''},
     password: {value: '', validate: true, errorMsg: ''},
@@ -92,7 +93,7 @@ const SigninModal = ({isShow, hideModal, loginUserAction}: Props) => {
             });
           }else {
             loginUserAction(res.data.data);
-            hideModal();
+            hideModal('signin_'+userType);
           }
           setLoading(false);
         })
@@ -118,10 +119,10 @@ const SigninModal = ({isShow, hideModal, loginUserAction}: Props) => {
         <h2>A shared virtual experience</h2>
       </Modal.Header>
       <Modal.Body>
-        <h1>Sign In</h1>
+        <h1>Sign In as a <span className="user-type">{userType}</span></h1>
         <Form onSubmit={onSubmit} className="d-flex flex-column justify-content-center">
           <img src={UserAvatarSvg} />
-          <Form.Group controlId="signinForm.email" className="mt-3 mb-0">
+          <Form.Group controlId="signinForm.email">
             <Form.Control 
               type="email" 
               placeholder="Email" 
@@ -138,11 +139,12 @@ const SigninModal = ({isShow, hideModal, loginUserAction}: Props) => {
               }}
               isInvalid={!formData.email.validate}
             />
+            <Form.Label>Email</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.email.errorMsg}
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="signinForm.password" className="mt-3">
+          <Form.Group controlId="signinForm.password">
             <Form.Control 
               type="password" 
               placeholder="Password" 
@@ -159,6 +161,7 @@ const SigninModal = ({isShow, hideModal, loginUserAction}: Props) => {
               }}
               isInvalid={!formData.password.validate}
             />
+            <Form.Label>Password</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.password.errorMsg}
             </Form.Control.Feedback>

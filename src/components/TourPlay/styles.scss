@@ -5,6 +5,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 991px) {
+    height: calc(100vh - 60px);
+  }
 }
 
 .main-page-section {

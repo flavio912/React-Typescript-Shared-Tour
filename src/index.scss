@@ -45,6 +45,10 @@ body {
   &:hover {
     border-color: $primary-color;
     color: $primary-color;
+
+    a {
+      color: white !important;
+    }
   }
 }
 
@@ -102,12 +106,147 @@ body {
   background-color: white;
 }
 
+.form-group {
+  display: flex;
+  flex-flow: column-reverse;
+  margin-bottom: 1em;
+
+  label, input[type=text], input[type=password], input[type=email] {
+    transition: all 0.2s;
+    touch-action: manipulation;
+  }
+
+  input[type=text] + label,
+  input[type=email] + label,
+  input[type=password] + label {
+    cursor: text;
+    max-width: 66.66%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform-origin: left bottom;
+    transform: translate(0, 1.525rem) scale(1.2);
+  }
+
+
+  input:not(:placeholder-shown) + label,
+  input[type=text]:focus + label,
+  input[type=email]:focus + label,
+  input[type=password]:focus + label {
+    transform: translate(0, 0) scale(1);
+    cursor: pointer;
+  }
+
+  input::-webkit-input-placeholder {
+    color: transparent !important;
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px $primary-color inset !important;
+    -webkit-text-fill-color: white;
+  }
+}
+
+.alert {
+  position: fixed;
+  right: 10px;
+  top: 30px;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.modal-dialog {
+  max-width: 768px;
+
+  .modal-content {
+    background-color: $primary-color;
+    border: none;
+    border-radius: 0.8rem;
+
+    .modal-header {
+      border-bottom: none;
+      padding-top: 2rem;
+      padding-bottom: 0;
+      text-align: center;
+
+      h1 {
+        width: 100%;
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      h2 {
+        width: 100%;
+        color: white;
+        font-weight: 700;
+        font-size: 1.7rem;
+      }
+    }
+    
+    .modal-body {
+      padding: 10px 200px;
+
+      h1 {
+        color: white;
+        text-align: center;
+        font-size: 1.7rem;
+
+        span.user-type {
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {  
+  background: linear-gradient(to left, transparent, transparent 5px, #A3A1A1 6px, transparent, 7px, transparent 100%);  
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $primary-color;
+  height: 30px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $primary-color; 
+}
+
+::-webkit-scrollbar-button:start:decrement {
+  display: none;  
+}
+
+::-webkit-scrollbar-button:end:increment {
+  display: none;
+}
+
+.last-chat::-webkit-scrollbar-thumb {
+  background: #A3A1A1;   
+}
+
+.last-chat::-webkit-scrollbar-thumb:hover {
+  background: #A3A1A1; 
+}
+
 @media (min-width: 768px){
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
   .seven-cols .col-lg-1  {
-    width: 100%;
-    *width: 100%;
+    width: 14.285714285714285714285714285714%;
+    *width: 14.285714285714285714285714285714%;
     max-width: inherit;
     flex: inherit;
   }
@@ -136,6 +275,34 @@ body {
     *width: 14.285714285714285714285714285714%;
     max-width: inherit;
     flex: inherit;
+  }
+}
+
+@media (max-width: 991px) {
+  .modal-dialog {
+    max-width: 600px;
+
+    .modal-content {
+      .modal-header {
+        padding-top: 1.5rem;
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        h2 {
+          font-size: 1.4rem;
+        }
+      }
+
+      .modal-body {
+        padding: 10px 100px;
+
+        h1 {
+          font-size: 1.4rem;
+        }
+      }
+    }
   }
 }
 

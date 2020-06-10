@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import * as CONSTANTS from "../../../constants";
 
@@ -9,7 +10,6 @@ type Props = {
 };
 
 const BtnPanel = ({ curPage, setPage }: Props) => {
-  let stopSessionBtnClickableClass = (curPage === CONSTANTS.TOUR_PLAY_PAGE) ? 'clickable': '';
 
   return (
     <div className="btn-container d-flex justify-content-end mt-2">
@@ -76,7 +76,7 @@ const BtnPanel = ({ curPage, setPage }: Props) => {
             variant="outline-primary"
             className="btn-bugress-outline btn-secondary mr-2 clickable"
           >
-            Go to tour
+            <Link to="/tour/view" target={"_blank"}>Go to tour</Link>
           </Button>
           <Button
             variant="outline-primary"
@@ -98,14 +98,14 @@ const BtnPanel = ({ curPage, setPage }: Props) => {
         <>
           <Button
             variant="outline-primary"
-            className="btn-bugress-outline btn-secondary mr-2"
+            className="btn-bugress-outline btn-secondary mr-2 clickable"
           >
-            Go to tour
+            <Link to="/tour/view" target={"_blank"}>Go to tour</Link>
           </Button>
           <Button
             variant="outline-primary"
             className="btn-bugress-outline btn-secondary mr-2 clickable"
-            onClick={() => setPage(CONSTANTS.TOUR_PAUSE_PAGE)}
+            onClick={() => setPage(CONSTANTS.TOUR_STOP_PAGE)}
           >
             Stop session
           </Button>

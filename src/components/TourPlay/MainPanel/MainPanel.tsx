@@ -12,6 +12,7 @@ import ArrowSVG from '../../../assets/images/arrow.svg';
 const MainPanel = () => {
   const [curPage, setCurPage] = useState(CONSTANTS.TOUR_HOME_PAGE);
   const [showOptionModal, setShowOptionModal] = useState(false);
+  const [curTour, setTour] = useState(CONSTANTS.HOME_TOURS[0]);
 
   const onClickStart = (selectedOne:string) => {
     setCurPage(selectedOne);
@@ -21,9 +22,9 @@ const MainPanel = () => {
     <div className="right-panel d-flex flex-column">
       <div className="main-header d-flex flex-column">
         <div className="d-flex justify-content-between">
-          <h1 className="title">SECRET</h1>
+          <h1 className="title">{curTour.name}</h1>
           <div className="d-flex flex-column">
-            <TourDropDown />
+            <TourDropDown curTour={curTour} changeTour={(tour: any) => setTour(tour)} />
             {curPage !== CONSTANTS.TOUR_HOME_PAGE && (
               <ArrowBtn onClick={() => {setShowOptionModal(true)}}>
                 <img src={ArrowSVG} style={{width: '39px', height: '35px'}}/>
@@ -32,9 +33,9 @@ const MainPanel = () => {
           </div>
         </div>
         <div className="d-flex flex-column">
-          <h3 className="description">82.5m (270.6ft)</h3>
+          <h3 className="description">{curTour.info.length}</h3>
           <h3 className="description">
-            2013 (refitted 2018), Abeking & Rasmussen, Germany
+            {curTour.info.year} {curTour.info.content}
           </h3>
         </div>
       </div>
@@ -57,6 +58,10 @@ const ArrowBtn = styled(Button)`
   cursor: pointer;
   &:after {
     display: none;
+  }
+
+  @media screen and (max-width: 991px) {
+    margin-top: 0.5rem;
   }
 `
 

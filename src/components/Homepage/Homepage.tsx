@@ -33,7 +33,7 @@ const Homepage = () => {
     setShowSigninModal(false);
     if(value === 'register')
       setShowRegisterModal(true);
-    else
+    else if(value === 'signin_broker')
       history.push('/dashboard');
   }
 
@@ -42,7 +42,7 @@ const Homepage = () => {
 
     if(value === 'signin')
       setShowSigninModal(true);
-    else
+    else if(value === 'register_broker')
       history.push('/dashboard');
   }
 
@@ -172,7 +172,7 @@ const Homepage = () => {
       </Container>
 
       <RegisterModal isShow={showRegisterModal} hideModal={(val: string) => handleRegister(val)} userType="client" />
-      <SigninModal isShow={showSigninModal} hideModal={(val: string) => handleLogin(val)} />
+      <SigninModal isShow={showSigninModal} hideModal={(val: string) => handleLogin(val)} userType="client" />
       <EnterCodeModal isShow={showEnterCodeModal} hideModal={() => setShowEnterCodeModal(false)} />
       <ThankyouModal isShow={showThankyouModal} hideModal={() => setShowThankyouModal(false)} />
     </>

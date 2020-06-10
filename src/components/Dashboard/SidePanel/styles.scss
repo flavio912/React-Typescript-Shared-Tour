@@ -4,3 +4,9 @@
   background-color: white;
   padding-top: 4rem;
 }
+
+@media (max-width: 991px) {
+  .side-panel {
+    width: 60px;
+  }
+}

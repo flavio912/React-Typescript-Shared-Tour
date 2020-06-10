@@ -2,7 +2,7 @@ import React from "react";
 import { Accordion, Card } from "react-bootstrap";
 import styled from 'styled-components';
 
-const SecretDropDown = () => {
+const SelectTourDropDown = () => {
 
   return (
     <Container>
@@ -143,4 +143,4 @@ const Container = styled.div`
     }
   }
 `
-export default SecretDropDown;
+export default SelectTourDropDown;

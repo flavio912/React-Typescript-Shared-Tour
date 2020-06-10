@@ -19,7 +19,7 @@ class RequestHelper {
     return this._token;
   }
 
-  remoteToken = () => {
+  removeToken = () => {
     localStorage.removeItem('token')
     this._token = "";
   }
