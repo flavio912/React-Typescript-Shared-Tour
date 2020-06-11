@@ -20,7 +20,7 @@ const TourCard = ({data}: Props) => {
 
   return (
     <div className="tour-card">
-      <img src={CardImg} style={{width: '100%'}} onClick={() => {history.push('/tour/start')}} />
+      <img src={CardImg} style={{width: '100%'}} onClick={() => {history.push('/tour/request?url=https://burgess.theatro360.com/tour/54-02LL')}} />
       <h1>{data.name}</h1>
       <p>{data.type}</p>
       <p>{data.info.length}, {data.info.year}, {data.info.content}</p>

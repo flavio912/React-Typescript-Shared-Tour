@@ -1,17 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import styled from 'styled-components';
 
 import NavMenu from '../../sharedComponents/NavMenu';
+import RequestHelper from '../../utils/Request.Utils';
+import { loginUserDialogAction } from '../../store/dialog/actions';
+import SigninModal from '../../sharedComponents/SigninModal';
+
 const qs = require('qs');
 
-const TourRequest = ({ location }: any) => {
+type Props = {
+  loginUserDialogAction: Function,
+  location: any
+}
+
+const TourRequest = ({ location, loginUserDialogAction }: Props) => {
   const [curTourUrl, setTourUrl] = useState('');
 
   useEffect(() => {
+    const token = RequestHelper.getToken();
     const params = qs.parse(location.search);
     setTourUrl(params['?url']);
-  }, [location.search])
+    
+    if(token === ''){
+      loginUserDialogAction(true);
+    }else {
+      RequestHelper
+        .post('/tour-session/request', {
+          tourUrl: curTourUrl,
+          scheduleTime: new Date()
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+  }, [curTourUrl, location.search, loginUserDialogAction])
 
   return (
     <>
@@ -19,6 +46,7 @@ const TourRequest = ({ location }: any) => {
       <CustomContainer>
         <iframe src={curTourUrl} width="100%" height="100%" style={{border: 'none'}} />
       </CustomContainer>
+      <SigninModal userType="client" />
     </>
   )
 }
@@ -31,4 +59,4 @@ const CustomContainer = styled.div`
   }
 `
 
-export default withRouter(TourRequest);
+export default withRouter(connect(null, { loginUserDialogAction })(TourRequest));
