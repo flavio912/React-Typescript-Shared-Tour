@@ -22,11 +22,7 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
     password: {value: '', validate: true, errorMsg: ''},
     imgUrl: {value: '', validate: true, errorMsg: ''}
   });
-  const [returnError, setReturnError] = useState({
-    isShow: false,
-    msg: ''
-  });
-  const [uploadStatus, setUploadStatus] = useState({
+  const [alert, setAlert] = useState({
     isShow: false,
     status: 'success',
     msg: ''
@@ -141,14 +137,14 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
       if(avatar.name !== ''){
         const upload_res = await RequestHelper.upload(avatar);
         if(!upload_res.data.success){
-          setUploadStatus({
+          setAlert({
             isShow: true,
             status: 'danger',
             msg: upload_res.data.error
           });
 
           window.setTimeout(() => {
-            setUploadStatus({
+            setAlert({
               isShow: true,
               status: 'danger',
               msg: upload_res.data.error
@@ -156,14 +152,14 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
           }, 1000)
         }else {
           avatar_url = upload_res.data.url;
-          setUploadStatus({
+          setAlert({
             isShow: true,
             status: 'success',
             msg: "Avatar uploaded successfully!"
           });
 
           window.setTimeout(() => {
-            setUploadStatus({
+            setAlert({
               isShow: false,
               status: 'success',
               msg: "Avatar uploaded successfully!"
@@ -184,27 +180,33 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
         })
         .then((res) => {
           if(!res.data.success) {
-            setReturnError({
+            setAlert({
               isShow: true,
+              status: 'danger',
               msg: res.data.error
             });
 
             window.setTimeout(() => {
-              setReturnError({
+              setAlert({
                 isShow: false,
+                status: 'danger',
                 msg: res.data.error
               });
             }, 1000)
           }else {
             // call registerUserAction
             registerUserAction(res.data.data);
-            hideModal('register_'+userType);
+            if(userType === 'broker')
+              hideModal('dashboard');
+            else
+              hideModal('');
           }
           setLoading(false);
         })
         .catch((error) => {
-          setReturnError({
+          setAlert({
             isShow: true,
+            status: 'danger',
             msg: error
           });
           setLoading(false);
@@ -369,9 +371,9 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
           </div>
         </Form>
       </Modal.Body>
-      <Alert variant="danger" show={returnError.isShow}>{returnError.msg}</Alert>
-      <Alert variant="success" show={uploadStatus.isShow && uploadStatus.status === 'success'}>{uploadStatus.msg}</Alert>
-      <Alert variant="danger" show={uploadStatus.isShow && uploadStatus.status === 'danger'}>{uploadStatus.msg}</Alert>
+      <Alert variant="danger" show={alert.isShow}>{alert.msg}</Alert>
+      <Alert variant="success" show={alert.isShow && alert.status === 'success'}>{alert.msg}</Alert>
+      <Alert variant="danger" show={alert.isShow && alert.status === 'danger'}>{alert.msg}</Alert>
     </Modal>
   )
 }

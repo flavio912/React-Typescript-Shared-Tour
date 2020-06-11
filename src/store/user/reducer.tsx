@@ -18,7 +18,6 @@ export const userReducer: Reducer<IUserState, IDispatchUserAction> = (state = in
       return {...state, ...action.payload.data.user};
     }
     case Constants.LOGIN_USER:{
-      console.log(action.payload.data.user);
       RequestHelper.setToken(action.payload.data.token)
       return {...state, ...action.payload};
     }

@@ -9,6 +9,8 @@ import RegisterModal from '../../sharedComponents/RegisterModal';
 import SigninModal from '../../sharedComponents/SigninModal';
 import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
 import ThankyouModal from '../../sharedComponents/ThankyouModal';
+import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
+import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
 
 import HeaderBg from '../../assets/images/home-header.jpg';
 import DegreeSvg from '../../assets/images/360-icon.svg';
@@ -27,23 +29,60 @@ const Homepage = () => {
   const [showSigninModal, setShowSigninModal] = useState(false);
   const [showEnterCodeModal, setShowEnterCodeModal] = useState(false);
   const [showThankyouModal, setShowThankyouModal] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(true);
 
   const history = useHistory();
-  const handleLogin = (value: string) => {
+  const handleLogin = (page: string) => {
     setShowSigninModal(false);
-    if(value === 'register')
-      setShowRegisterModal(true);
-    else if(value === 'signin_broker')
-      history.push('/dashboard');
+
+    switch (page) {
+      case 'register':
+        setShowRegisterModal(true);
+        break;
+      case 'forgotPassword':
+        setShowForgotPasswordModal(true);
+        break;
+      case 'dashboard':
+        history.push('/dashboard');
+        break;
+      default:
+        break;
+    }
   }
 
-  const handleRegister = (value: string) => {
+  const handleRegister = (page: string) => {
     setShowRegisterModal(false);
 
-    if(value === 'signin')
-      setShowSigninModal(true);
-    else if(value === 'register_broker')
-      history.push('/dashboard');
+    switch (page) {
+      case 'signin':
+        setShowSigninModal(true);
+        break;
+      case 'dashboard':
+        history.push('/dashboard');
+        break;
+      default:
+        break;
+    }
+  }
+  
+  const handleForgotPassword = (page: string) => {
+    setShowForgotPasswordModal(false);
+
+    switch (page) {
+      case "SignIn":
+        setShowSigninModal(true);
+        break;
+      case "ResetPassword":
+        break;
+      default:
+        break;
+    }
+  }
+
+  const handleResetPassword = () => {
+    setShowResetPasswordModal(false);
+    setShowSigninModal(true);
   }
 
   return (
@@ -175,6 +214,8 @@ const Homepage = () => {
       <SigninModal isShow={showSigninModal} hideModal={(val: string) => handleLogin(val)} userType="client" />
       <EnterCodeModal isShow={showEnterCodeModal} hideModal={() => setShowEnterCodeModal(false)} />
       <ThankyouModal isShow={showThankyouModal} hideModal={() => setShowThankyouModal(false)} />
+      <ForgotPasswordModal isShow={showForgotPasswordModal} hideModal={(val: string) => handleForgotPassword(val)} />
+      <ResetPasswordModal isShow={showResetPasswordModal} hideModal={() => handleResetPassword()} />
     </>
   )
 }
