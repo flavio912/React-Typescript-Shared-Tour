@@ -27,7 +27,6 @@ const TourStart = () => {
         <p>Powered By THEATRO 360</p>
       </Container>
       <Option onClick={() => {setShowRegisterModal(true)}}></Option>
-      <RegisterModal isShow={showRegisterModal} hideModal={() => {setShowRegisterModal(false);}} userType="client" />
     </>
   )
 }

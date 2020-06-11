@@ -1,19 +1,23 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
 import { registerUserAction } from '../../store/user/actions';
+import { registerUserDialogAction, loginUserDialogAction } from '../../store/dialog/actions';
+import { Constants } from '../../store/dialog/types';
 
 type Props = {
-  isShow: boolean,
-  hideModal: Function,
   userType: string,
   registerUserAction: Function, 
+  registerUserDialogAction: Function,
+  loginUserDialogAction: Function,
 }
 
-const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props) => {
+const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, loginUserDialogAction}: Props) => {
+
   const [formData, setFormData] = useState({
     userName: {value: '', validate: true, errorMsg: ''},
     country: {value: '', validate: true, errorMsg: ''},
@@ -29,6 +33,11 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
   });
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState(new File([""], ""));
+  const history = useHistory();
+
+  const { dialog } = useSelector((state: any) => ({
+    dialog: state.dialog
+  }))
 
   useEffect(() => {
     bsCustomFileInput.init();
@@ -196,10 +205,11 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
           }else {
             // call registerUserAction
             registerUserAction(res.data.data);
-            if(userType === 'broker')
-              hideModal('dashboard');
-            else
-              hideModal('');
+            registerUserDialogAction(false);
+
+            if(userType === 'broker'){
+              history.push('/dashboard');
+            }            
           }
           setLoading(false);
         })
@@ -216,8 +226,8 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
 
   return (
     <Modal
-      show={isShow}
-      onHide={hideModal}
+      show={dialog.isOpened && dialog.name === Constants.REGISTER_USER_DIALOG}
+      onHide={() => {registerUserDialogAction(false)}}
       centered
       className="register-modal"
     >
@@ -367,7 +377,7 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
             </Button>
           }
           <div className="signin-btn d-flex justify-content-center align-items-center">
-            <a onClick={() => hideModal('signin')}>Sign In</a>
+            <a onClick={() => {loginUserDialogAction(true)}}>Sign In</a>
           </div>
         </Form>
       </Modal.Body>
@@ -378,4 +388,4 @@ const RegisterModal = ({isShow, hideModal, userType, registerUserAction}: Props)
   )
 }
 
-export default connect(null, {registerUserAction})(RegisterModal);
+export default connect(null, {registerUserAction, registerUserDialogAction, loginUserDialogAction})(RegisterModal);

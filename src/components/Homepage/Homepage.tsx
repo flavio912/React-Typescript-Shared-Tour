@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import NavMenu from './../../sharedComponents/NavMenu';
@@ -11,6 +11,7 @@ import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
 import ThankyouModal from '../../sharedComponents/ThankyouModal';
 import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
 import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
+import { registerUserDialogAction } from '../../store/dialog/actions';
 
 import HeaderBg from '../../assets/images/home-header.jpg';
 import DegreeSvg from '../../assets/images/360-icon.svg';
@@ -24,67 +25,11 @@ import InstagramSvg from '../../assets/images/instagram.svg';
 import LinkedinSvg from '../../assets/images/linkedin.svg';
 import YoutubeSvg from '../../assets/images/youtube.svg';
 
-const Homepage = () => {
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showSigninModal, setShowSigninModal] = useState(false);
-  const [showEnterCodeModal, setShowEnterCodeModal] = useState(false);
-  const [showThankyouModal, setShowThankyouModal] = useState(false);
-  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
-  const [showResetPasswordModal, setShowResetPasswordModal] = useState(true);
+type Props = {
+  registerUserDialogAction: Function
+}
 
-  const history = useHistory();
-  const handleLogin = (page: string) => {
-    setShowSigninModal(false);
-
-    switch (page) {
-      case 'register':
-        setShowRegisterModal(true);
-        break;
-      case 'forgotPassword':
-        setShowForgotPasswordModal(true);
-        break;
-      case 'dashboard':
-        history.push('/dashboard');
-        break;
-      default:
-        break;
-    }
-  }
-
-  const handleRegister = (page: string) => {
-    setShowRegisterModal(false);
-
-    switch (page) {
-      case 'signin':
-        setShowSigninModal(true);
-        break;
-      case 'dashboard':
-        history.push('/dashboard');
-        break;
-      default:
-        break;
-    }
-  }
-  
-  const handleForgotPassword = (page: string) => {
-    setShowForgotPasswordModal(false);
-
-    switch (page) {
-      case "SignIn":
-        setShowSigninModal(true);
-        break;
-      case "ResetPassword":
-        break;
-      default:
-        break;
-    }
-  }
-
-  const handleResetPassword = () => {
-    setShowResetPasswordModal(false);
-    setShowSigninModal(true);
-  }
-
+const Homepage = ({registerUserDialogAction}: Props) => {  
   return (
     <>
       <NavMenu />
@@ -102,7 +47,7 @@ const Homepage = () => {
               </div>
               <div className="virtual-guide d-flex align-items-center">
                 <h4 className="mb-0 mr-2">Virtual guide</h4>                
-                <RegisterButton className="register-button" onClick={() => {setShowRegisterModal(true)}}>
+                <RegisterButton className="register-button" onClick={() => {registerUserDialogAction(true)}}>
                   <img src={SharedDegreeSvg} />
                 </RegisterButton>
               </div>
@@ -210,12 +155,12 @@ const Homepage = () => {
         </div>
       </Container>
 
-      <RegisterModal isShow={showRegisterModal} hideModal={(val: string) => handleRegister(val)} userType="client" />
-      <SigninModal isShow={showSigninModal} hideModal={(val: string) => handleLogin(val)} userType="client" />
-      <EnterCodeModal isShow={showEnterCodeModal} hideModal={() => setShowEnterCodeModal(false)} />
-      <ThankyouModal isShow={showThankyouModal} hideModal={() => setShowThankyouModal(false)} />
-      <ForgotPasswordModal isShow={showForgotPasswordModal} hideModal={(val: string) => handleForgotPassword(val)} />
-      <ResetPasswordModal isShow={showResetPasswordModal} hideModal={() => handleResetPassword()} />
+      <RegisterModal userType="client" />
+      <SigninModal userType="client" />
+      <EnterCodeModal />
+      <ThankyouModal />
+      <ForgotPasswordModal />
+      <ResetPasswordModal />
     </>
   )
 }
@@ -283,4 +228,4 @@ const CountrySection = styled.div`
     text-align: center;
   }
 `
-export default Homepage
+export default connect(null, { registerUserDialogAction })(Homepage)

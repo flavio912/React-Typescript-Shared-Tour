@@ -1,19 +1,23 @@
-import React, { useState, FormEvent } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, FormEvent, useEffect } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import UserAvatarSvg from '../../assets/images/man-1.svg';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
 import { loginUserAction } from '../../store/user/actions';
+import { loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction } from '../../store/dialog/actions';
+import { Constants } from '../../store/dialog/types';
 
 type Props = {
-  isShow: boolean,
-  hideModal: Function,
   userType: string,
   loginUserAction: Function,
+  loginUserDialogAction: Function,
+  registerUserDialogAction: Function,
+  forgotPasswordDialogAction: Function
 }
 
-const SigninModal = ({isShow, hideModal, userType, loginUserAction}: Props) => {
+const SigninModal = ({userType, loginUserAction, loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction}: Props) => {
   const [formData, setFormData] = useState({
     email: {value: '', validate: true, errorMsg: ''},
     password: {value: '', validate: true, errorMsg: ''},
@@ -24,6 +28,11 @@ const SigninModal = ({isShow, hideModal, userType, loginUserAction}: Props) => {
     msg: ''
   });
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
+  const { dialog } = useSelector((state: any) => ({
+    dialog: state.dialog
+  }))
 
   const checkEmailValidate = () => {
     if (formData.email.value.length === 0) {
@@ -103,10 +112,11 @@ const SigninModal = ({isShow, hideModal, userType, loginUserAction}: Props) => {
             }, 1000)
           }else {
             loginUserAction(res.data.data);
+            loginUserDialogAction(false);
+
             if(userType === 'broker')
-              hideModal('dashboard');
-            else
-              hideModal('');
+              history.push('/dashboard');
+            
           }
           setLoading(false);
         })
@@ -131,8 +141,8 @@ const SigninModal = ({isShow, hideModal, userType, loginUserAction}: Props) => {
 
   return (
     <Modal
-      show={isShow}
-      onHide={hideModal}
+      show={dialog.isOpened && dialog.name === Constants.LOGIN_USER_DIALOG}
+      onHide={() => {loginUserDialogAction(false)}}
       centered
       className="signin-modal"
     >
@@ -204,9 +214,9 @@ const SigninModal = ({isShow, hideModal, userType, loginUserAction}: Props) => {
               Sign In
             </Button>
           }
-          <a onClick={() => hideModal('forgotPassword')}>Forgot password?</a>
+          <a onClick={() => {forgotPasswordDialogAction(true)}}>Forgot password?</a>
           <div className="signin-btn d-flex justify-content-center align-items-center mt-3">
-            <a onClick={() => hideModal('register')}>Register</a>
+            <a onClick={() => {registerUserDialogAction(true)}}>Register</a>
           </div>
         </Form>
       </Modal.Body>
@@ -215,4 +225,4 @@ const SigninModal = ({isShow, hideModal, userType, loginUserAction}: Props) => {
   )
 }
 
-export default connect(null, {loginUserAction})(SigninModal);
+export default connect(null, {loginUserAction, loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction})(SigninModal);

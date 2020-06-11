@@ -39,7 +39,7 @@ const TourInside = () => {
           </div>
         </ControllBar>
       </Container>
-      <EnterCodeModal isShow={showEnterCodeModal} hideModal={(val: string) => handleEnterCode(val)} />
+      <EnterCodeModal />
       <ChooseTourModal isShow={showChooseTourModal} hideModal={() => setShowChooseTourModal(false)} />
     </>
   )

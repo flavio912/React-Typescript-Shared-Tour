@@ -1,16 +1,22 @@
 import React from 'react';
-import {Modal, Button, Form} from 'react-bootstrap';
+import { connect, useSelector } from 'react-redux';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { enterCodeDialogAction } from '../../store/dialog/actions';
+import { Constants } from '../../store/dialog/types';
 
 type Props = {
-  isShow: boolean,
-  hideModal: Function,
+  enterCodeDialogAction: Function
 }
 
-const EnterCodeModal = ({isShow, hideModal}: Props) => {
+const EnterCodeModal = ({enterCodeDialogAction}: Props) => {
+  const { dialog } = useSelector((state: any) => ({
+    dialog: state.dialog
+  }))
+
   return (
     <Modal
-      show={isShow}
-      onHide={hideModal}
+      show={dialog.isOpened && dialog.name === Constants.ENTER_CODE_DIALOG}
+      onHide={() => {enterCodeDialogAction(false)}}
       centered
       className="enter-code-modal"
     >
@@ -28,7 +34,7 @@ const EnterCodeModal = ({isShow, hideModal}: Props) => {
             <Form.Control type="text" className="code-number" />
           </Form.Group>
           <p>A code has been sent to your registered devices. <br/> Please enter it above.</p>
-          <Button onClick={() => hideModal('next')}>
+          <Button onClick={() => enterCodeDialogAction(false)}>
             Enter
           </Button>
           <a>Resend code</a>
@@ -41,4 +47,4 @@ const EnterCodeModal = ({isShow, hideModal}: Props) => {
   )
 }
 
-export default EnterCodeModal;
+export default connect(null, {enterCodeDialogAction})(EnterCodeModal);

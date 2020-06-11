@@ -1,16 +1,22 @@
 import React from 'react';
+import { connect, useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap';
+import { thankyouDialogAction } from '../../store/dialog/actions';
+import { Constants } from '../../store/dialog/types';
 
 type Props = {
-  isShow: boolean,
-  hideModal: Function,
+  thankyouDialogAction: Function
 }
 
-const ThankyouModal = ({isShow, hideModal}: Props) => {
+const ThankyouModal = ({thankyouDialogAction}: Props) => {
+  const { dialog } = useSelector((state: any) => ({
+    dialog: state.dialog
+  }))
+
   return (
     <Modal
-      show={isShow}
-      onHide={hideModal}
+      show={dialog.isOpened && dialog.name === Constants.THANKYOU_DIALOG}
+      onHide={() => {thankyouDialogAction(false)}}
       centered
       className="thankyou-modal"
     >
@@ -22,4 +28,4 @@ const ThankyouModal = ({isShow, hideModal}: Props) => {
   )
 }
 
-export default ThankyouModal;
+export default connect(null, {thankyouDialogAction})(ThankyouModal);

@@ -1,15 +1,22 @@
 import React, { useState, FormEvent } from 'react';
+import { connect, useSelector } from 'react-redux';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import validator from 'validator';
 import styled from 'styled-components';
 import RequestHelper from '../../utils/Request.Utils';
+import { resetPasswordDialogAction, loginUserDialogAction } from '../../store/dialog/actions';
+import { Constants } from '../../store/dialog/types';
 
 type Props = {
-  isShow: boolean,
-  hideModal: Function,
+  resetPasswordDialogAction: Function,
+  loginUserDialogAction: Function
 }
 
-const ResetPasswordModal = ({isShow, hideModal}: Props) => {
+const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: Props) => {
+  const { dialog } = useSelector((state: any) => ({
+    dialog: state.dialog
+  }))
+
   const [formData, setFormData] = useState({
     email: {value: '', validate: true, errorMsg: ''},
     code: {value: '', validate: true, errorMsg: ''},
@@ -82,7 +89,6 @@ const ResetPasswordModal = ({isShow, hideModal}: Props) => {
     return formData.newPassword.value.length !== 0;
   }
 
-
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -128,7 +134,7 @@ const ResetPasswordModal = ({isShow, hideModal}: Props) => {
                 msg: ''
               });
 
-              hideModal('SignIn');
+              loginUserDialogAction(true);
             }, 1000)
           }
           setLoading(false);
@@ -154,8 +160,8 @@ const ResetPasswordModal = ({isShow, hideModal}: Props) => {
 
   return (
     <CustomModal
-      show={isShow}
-      onHide={hideModal}
+      show={dialog.isOpened && dialog.name === Constants.RESET_PASSWORD_DIALOG}
+      onHide={() => {resetPasswordDialogAction(false)}}
       centered
       className="reset-password-modal"
     >
@@ -244,7 +250,7 @@ const ResetPasswordModal = ({isShow, hideModal}: Props) => {
               Submit
             </Button>
           }
-          <a className="signin-btn" onClick={() => hideModal('SignIn')}>Sign In</a>
+          <a className="signin-btn" onClick={() => {loginUserDialogAction(true)}}>Sign In</a>
         </Form>
       </Modal.Body>
       <Alert variant="success" show={alert.isShow && alert.status === 'success'}>{alert.msg}</Alert>
@@ -323,4 +329,4 @@ const CustomModal = styled(Modal)`
   }
 `
 
-export default ResetPasswordModal;
+export default connect(null, {resetPasswordDialogAction, loginUserDialogAction})(ResetPasswordModal);

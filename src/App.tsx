@@ -10,6 +10,7 @@ import TourPlay from './components/TourPlay';
 import TourView from './components/TourView';
 import TourStart from './components/TourStart';
 import TourInside from './components/TourInside';
+import TourRequest from './components/TourRequest';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route exact path="/tour/view" component={TourView} />
       <Route exact path="/tour/start" component={TourStart} />
       <Route exact path="/tour/inside" component={TourInside} />
+      <Route exact path="/tour/request" component={TourRequest} />
     </BrowserRouter>    
   );
 }
