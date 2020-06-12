@@ -16,11 +16,14 @@ class RequestHelper {
   }
 
   getToken = () => {
+    let token = localStorage.getItem('token');
+    if(token && token !== '') this._token = token;
+
     return this._token;
   }
 
   removeToken = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
     this._token = "";
   }
 
@@ -42,7 +45,7 @@ class RequestHelper {
     return newUrl;
   }
 
-  get = async (URL: string, queryObject: object) => {
+  get = async (URL: string, queryObject: any) => {
     const urlWithQuery = this.querify(CONFIG['API_URL'] + URL, queryObject);
     const res = await axios.request({
       url: urlWithQuery,

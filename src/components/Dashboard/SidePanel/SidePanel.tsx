@@ -21,19 +21,19 @@ const SidePanel = ({ curTab, setTab }: Props) => {
   return (
     <div className="side-panel">
       <div className="tabs">
-        <TabItem className={"pending " + (curTab === 'pending'? 'active': '')} onClick={() => setTab('pending')}>
+        <TabItem className={"pending " + (curTab === 'Pending'? 'active': '')} onClick={() => setTab('Pending')}>
           <span>Pending</span>
         </TabItem>
-        <TabItem className={"connected " + (curTab === 'connected'? 'active': '')} onClick={() => setTab('connected')}>
+        <TabItem className={"connected " + (curTab === 'Connected'? 'active': '')} onClick={() => setTab('Connected')}>
           <span>Connected</span>
         </TabItem>
-        <TabItem className={"available " + (curTab === 'available'? 'active': '')} onClick={() => setTab('available')}>
+        {/* <TabItem className={"available " + (curTab === 'available'? 'active': '')} onClick={() => setTab('available')}>
           <span>Available</span>
         </TabItem>
         <TabItem className={"unavailable " + (curTab === 'unavailable'? 'active': '')} onClick={() => setTab('unavailable')}>
           <span>Unavailable</span>
-        </TabItem>
-        <TabItem className={"history " + (curTab === 'complete'? 'active': '')} onClick={() => setTab('complete')}>
+        </TabItem> */}
+        <TabItem className={"history " + (curTab === 'Complete'? 'active': '')} onClick={() => setTab('Complete')}>
           <span>History</span>
         </TabItem>
       </div>

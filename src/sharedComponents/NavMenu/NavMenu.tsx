@@ -1,19 +1,33 @@
-import React from 'react';
-import {Navbar, Nav} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { connect, useSelector } from 'react-redux';
+import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
+import { loginUserDialogAction } from '../../store/dialog/actions';
 import RequestHelper from '../../utils/Request.Utils';
 import UserSvg from '../../assets/images/users.svg';
 import LogoutSvg from '../../assets/images/signs.svg';
 
 type Props = {
-  page?: string
+  page?: string,
+  loginUserDialogAction: Function
 }
 
-const NavMenu = ({page}: Props) => {
+const NavMenu = ({page, loginUserDialogAction}: Props) => {
+  const [userToken, setUserToken] = useState(RequestHelper.getToken());
+
+  const { userInfo } = useSelector((state: any) => ({
+    userInfo: state.user
+  }))
+
+  useEffect(() => {
+    if(userToken === '')
+      loginUserDialogAction(true);
+  },[loginUserDialogAction, userToken])
 
   const handleLogout = () => {
     RequestHelper.removeToken();
+    setUserToken('');
   }
 
   return (
@@ -23,7 +37,7 @@ const NavMenu = ({page}: Props) => {
         {page === 'dashboard' ? (
           <Nav>
             <img src={UserSvg} />
-            <span className="ml-2">Tim Vickers</span>
+            <span className="ml-2"></span>
           </Nav>
         ): (
           <Nav>
@@ -40,10 +54,16 @@ const NavMenu = ({page}: Props) => {
         
         {page === 'dashboard' ? (
           <Nav>
-            <Nav.Link className="logout" onClick={() => handleLogout}>
-              <span className="mr-2">Logout</span>
-              <img src={LogoutSvg} />
-            </Nav.Link>
+            {(userToken !== '' || userInfo.token !== '') ? (
+              <Nav.Link className="logout" onClick={() => handleLogout()}>
+                <span className="mr-2">Logout</span>
+                <img src={LogoutSvg} />
+              </Nav.Link>
+            ): (
+              <Nav.Link className="login" onClick={() => loginUserDialogAction(true)}>
+                <span className="mr-2">Login</span>
+              </Nav.Link>
+            )}
           </Nav>
         ): (
           <Nav>
@@ -59,4 +79,4 @@ const NavMenu = ({page}: Props) => {
   )
 }
 
-export default NavMenu;
+export default connect(null, {loginUserDialogAction})(NavMenu);

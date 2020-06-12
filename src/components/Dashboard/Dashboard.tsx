@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
-import { Dropdown } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Dropdown, Alert, Spinner } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import NavMenu from './../../sharedComponents/NavMenu';
+import RegisterModal from '../../sharedComponents/RegisterModal';
+import SigninModal from '../../sharedComponents/SigninModal';
+import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
+import ThankyouModal from '../../sharedComponents/ThankyouModal';
+import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
+import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
+import CustomLoading from '../../sharedComponents/CustomLoading';
 import SidePanel from './SidePanel';
 import TourItem from './TourItem';
 import OptionPanel from '../../sharedComponents/OptionPanel';
-import * as CONSTANTS from "../../constants";
+import RequestHelper from '../../utils/Request.Utils';
 
 const Dashboard = () => {
-  const [curTab, setTab] = useState('pending');
+  const [curTab, setTab] = useState('Pending');
   const [showOptionPanel, setShowOptionPanel] = useState(false);
-  const tourList = CONSTANTS.TOURS.filter((item) => item.status.toLowerCase() === curTab);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailAlert, setShowFailAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tourList, setTourList] = useState([]);
+
+  const { userToken } = useSelector((state: any) => ({
+    userToken: state.user.token
+  }))
+
+  useEffect(() => {
+    setIsLoading(true);
+    RequestHelper
+      .get('/tour-session/list?status='+curTab, null)
+      .then((res) => {
+        if(!res.data.success) {
+          setShowFailAlert(true);
+          window.setTimeout(() => {setShowFailAlert(false)}, 2000);
+        }else {
+          console.log(res.data);
+          setTourList(res.data.data);
+        }
+        setIsLoading(false);
+      })
+  }, [curTab, userToken])
 
   const handleChange = (selectedTab: string) => {
     setTab(selectedTab);
@@ -32,13 +63,19 @@ const Dashboard = () => {
                 </DropdownToggle>
               </div>
               <div className="content p-4">
-                {tourList.map((item, nIndex) => {
-                  return(
-                    <div className="col-md-6 mb-3 p-0 float-left" key={nIndex}>
-                      <TourItem data={item} />
-                    </div>
-                  );
-                })}
+                {isLoading ? (
+                  <CustomLoading />
+                ) :(
+                  <>
+                    {tourList.map((item, nIndex) => {
+                      return(
+                        <div className="col-md-6 mb-3 p-0 float-left" key={nIndex}>
+                          <TourItem tourInfo={item} />
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
               </div>
             </div>
           </MainPanel>
@@ -47,6 +84,16 @@ const Dashboard = () => {
           : null }
         </div>
       </div>
+      
+      <RegisterModal role="broker" />
+      <SigninModal role="broker" />
+      <EnterCodeModal />
+      <ThankyouModal />
+      <ForgotPasswordModal />
+      <ResetPasswordModal />
+      
+      <Alert variant="success" show={showSuccessAlert}>Tour Request sent successfully!</Alert>
+      <Alert variant="danger" show={showFailAlert}>Error! Permision Denied! You must login as a broker!</Alert>
     </>
   )
 }

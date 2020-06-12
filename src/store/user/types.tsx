@@ -1,12 +1,15 @@
 import { Action } from 'redux';
 
 export interface IUserState {
-  email: string,
-	password: string,
-	name: string,
-	phone: string,
-	role: string,
-	country: string
+  token: string,
+  user: {
+    email: string,
+    password: string,
+    name: string,
+    phone: string,
+    role: string,
+    country: string  
+  }
 }
 
 export interface IDispatchUserAction extends Action {

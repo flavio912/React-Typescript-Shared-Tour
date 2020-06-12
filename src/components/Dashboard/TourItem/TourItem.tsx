@@ -1,30 +1,53 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-
-import CardImg from './../../../assets/images/SECRET.svg';
 import PlaySvg from '../../../assets/images/play.svg';
 
 type Props = {
-  data: {
-    id: string,
+  tourInfo: {
+    ID: number,
+    broker: {
+      ID: number,
+      avatar: string,
+      country: string,
+      email: string,
+      name: string,
+      phone: string,
+      role: string,
+      createdAt: string,
+      updatedAt: string
+    },
+    brokerId: number,
+    client: {
+      ID: number,
+      avatar: string,
+      country: string,
+      email: string,
+      name: string,
+      phone: string,
+      role: string,
+      createdAt: string,
+      updatedAt: string
+    },
+    clientId: number,
+    scheduleTime: string,
+    socketCode: string,
     status: string,
-    broker: string,
-    client: string,
-    email: string,
-    telephone: string,
-    name: string,
-    date: string
-  }
+    tourName: string,
+    tourThumbnail: string,
+    tourUrl: string,
+    createdAt: string,
+    updatedAt: string
+  } 
 }
 
-const TourItem = ({data}: Props) => {
+const TourItem = ({tourInfo}: Props) => {
 
   return (
     <div className="tour-item d-flex">
       <div className="tour-image">
-        <img src={CardImg} />
+        <img src={tourInfo.tourThumbnail} />
         <button>
-          <Link to="/tour">
+          <Link to={`/virtual-tour/${tourInfo.ID}`} target="_blank">
             <img src={PlaySvg} />
           </Link>
         </button>
@@ -32,31 +55,31 @@ const TourItem = ({data}: Props) => {
       <div className="info">
         <div className="status">
           <label>Status:</label>
-          <span className={data.status.toLowerCase()}>{data.status}</span>
+          <span className={tourInfo.status.toLowerCase()}>{tourInfo.status}</span>
         </div>
         <div className="broker">
           <label>Broker:</label>
-          {data.broker}
+          {tourInfo.broker.name}
         </div>
         <div className="client">
           <label>Client:</label>
-          {data.client}
+          {tourInfo.client.name}
         </div>
         <div className="email">
           <label>Email:</label>
-          {data.email}
+          {tourInfo.client.email}
         </div>
         <div className="telephone">
           <label>Telephone:</label>
-          {data.telephone}
+          {tourInfo.client.phone}
         </div>
         <div className="name">
           <label>Tour:</label>
-          {data.name}
+          {tourInfo.tourName}
         </div>
         <div className="date">
           <label>Date/Time:</label>
-          {data.date}
+          {tourInfo.updatedAt}
         </div>
       </div>
     </div>

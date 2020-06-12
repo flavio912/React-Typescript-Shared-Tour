@@ -10,13 +10,13 @@ import { registerUserDialogAction, loginUserDialogAction } from '../../store/dia
 import { Constants } from '../../store/dialog/types';
 
 type Props = {
-  userType: string,
+  role: string,
   registerUserAction: Function, 
   registerUserDialogAction: Function,
   loginUserDialogAction: Function,
 }
 
-const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, loginUserDialogAction}: Props) => {
+const RegisterModal = ({role, registerUserAction, registerUserDialogAction, loginUserDialogAction}: Props) => {
 
   const [formData, setFormData] = useState({
     userName: {value: '', validate: true, errorMsg: ''},
@@ -154,11 +154,10 @@ const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, 
 
           window.setTimeout(() => {
             setAlert({
-              isShow: true,
-              status: 'danger',
-              msg: upload_res.data.error
+              ...alert,
+              isShow: true
             });
-          }, 1000)
+          }, 2000)
         }else {
           avatar_url = upload_res.data.url;
           setAlert({
@@ -169,11 +168,10 @@ const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, 
 
           window.setTimeout(() => {
             setAlert({
-              isShow: false,
-              status: 'success',
-              msg: "Avatar uploaded successfully!"
+              ...alert,
+              isShow: false
             });
-          }, 1000)
+          }, 2000)
         }
       }
 
@@ -184,7 +182,7 @@ const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, 
           password: formData.password.value,
           phone: formData.phone.value,
           country: formData.country.value,
-          role: userType,
+          role: role,
           avatar: avatar_url
         })
         .then((res) => {
@@ -197,28 +195,23 @@ const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, 
 
             window.setTimeout(() => {
               setAlert({
+                ...alert,
                 isShow: false,
-                status: 'danger',
-                msg: res.data.error
               });
-            }, 1000)
+            }, 2000)
           }else {
             // call registerUserAction
             registerUserAction(res.data.data);
             registerUserDialogAction(false);
 
-            if(userType === 'broker'){
+            if(role === 'broker'){
               history.push('/dashboard');
             }            
           }
           setLoading(false);
         })
         .catch((error) => {
-          setAlert({
-            isShow: true,
-            status: 'danger',
-            msg: error
-          });
+          console.log(error);
           setLoading(false);
         })
     }
@@ -236,7 +229,7 @@ const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, 
         <h2>A shared virtual experience</h2>
       </Modal.Header>
       <Modal.Body>
-        <h1>Register as a <span className="user-type">{userType}</span></h1>
+        <h1>Register as a <span className="user-type">{role}</span></h1>
         <Form onSubmit={onSubmit}>
           <Form.Group controlId="registerForm.userName">           
             <Form.Control 
@@ -357,7 +350,7 @@ const RegisterModal = ({userType, registerUserAction, registerUserDialogAction, 
                 accept=".jpg, .jpeg, .png, .gif" 
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {setAvatar(e.target.files? e.target.files[0]: new File([""], ""))}} 
               />
-              <label className="custom-file-label">Upload image</label>
+              <label className="custom-file-label">{avatar.name !== ''? avatar.name :'Upload image'}</label>
             </div>
           </Form.Group>
           { loading?

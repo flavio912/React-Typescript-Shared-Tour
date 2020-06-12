@@ -16,6 +16,10 @@ export const dialogReducer: Reducer<IDialogState, IDispatchDialogAction> = (stat
       return {...state, ...action.payload};
     case Constants.RESET_PASSWORD_DIALOG:
       return {...state, ...action.payload};
+    case Constants.ENTER_CODE_DIALOG:
+      return {...state, ...action.payload};
+    case Constants.THANKYOU_DIALOG:
+      return {...state, ...action.payload};
     default:
       return state;
   }

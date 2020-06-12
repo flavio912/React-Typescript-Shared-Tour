@@ -3,22 +3,25 @@ import { Constants, IUserState, IDispatchUserAction } from './types';
 import RequestHelper from '../../utils/Request.Utils';
 
 const initUser: IUserState = {
-  email: '',
-  password: '',
-  name: '',
-  phone: '',
-  role: '',
-  country: ''
+  token: '',
+  user: {
+    email: '',
+    password: '',
+    name: '',
+    phone: '',
+    role: '',
+    country: ''  
+  }
 };
 
 export const userReducer: Reducer<IUserState, IDispatchUserAction> = (state = initUser, action) => {
   switch (action.type) {
     case Constants.REGISTER_USER:{
-      RequestHelper.setToken(action.payload.data.token)
-      return {...state, ...action.payload.data.user};
+      RequestHelper.setToken(action.payload.token)
+      return {...state, ...action.payload};
     }
     case Constants.LOGIN_USER:{
-      RequestHelper.setToken(action.payload.data.token)
+      RequestHelper.setToken(action.payload.token)
       return {...state, ...action.payload};
     }
     case Constants.UPDATTE_USER:

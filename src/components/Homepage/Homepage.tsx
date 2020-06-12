@@ -155,8 +155,8 @@ const Homepage = ({registerUserDialogAction}: Props) => {
         </div>
       </Container>
 
-      <RegisterModal userType="client" />
-      <SigninModal userType="client" />
+      <RegisterModal role="client" />
+      <SigninModal role="client" />
       <EnterCodeModal />
       <ThankyouModal />
       <ForgotPasswordModal />

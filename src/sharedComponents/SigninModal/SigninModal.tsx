@@ -10,14 +10,14 @@ import { loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAc
 import { Constants } from '../../store/dialog/types';
 
 type Props = {
-  userType: string,
+  role: string,
   loginUserAction: Function,
   loginUserDialogAction: Function,
   registerUserDialogAction: Function,
   forgotPasswordDialogAction: Function
 }
 
-const SigninModal = ({userType, loginUserAction, loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction}: Props) => {
+const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction}: Props) => {
   const [formData, setFormData] = useState({
     email: {value: '', validate: true, errorMsg: ''},
     password: {value: '', validate: true, errorMsg: ''},
@@ -109,32 +109,33 @@ const SigninModal = ({userType, loginUserAction, loginUserDialogAction, register
                 status: 'danger',
                 msg: res.data.error
               });
-            }, 1000)
+            }, 2000)
           }else {
-            loginUserAction(res.data.data);
-            loginUserDialogAction(false);
-
-            if(userType === 'broker')
-              history.push('/dashboard');
-            
+            if(res.data.data.user.role === role){
+              loginUserAction(res.data.data);
+              loginUserDialogAction(false);
+              
+              if(role === 'broker')
+                history.push('/dashboard');
+            }else {
+              setAlert({
+                isShow: true,
+                status: 'danger',
+                msg: "Permission Denied!"
+              });
+  
+              window.setTimeout(() => {
+                setAlert({
+                  ...alert,
+                  isShow: false,
+                });
+              }, 2000)
+            }            
           }
           setLoading(false);
         })
         .catch((error) => {
-          setAlert({
-            isShow: true,
-            status: 'danger',
-            msg: error
-          });
-
-          window.setTimeout(() => {
-            setAlert({
-              isShow: false,
-              status: 'danger',
-              msg: error
-            })
-          }, 1000)
-          setLoading(false);
+          console.log(error);          
         })
     }
   }
@@ -151,7 +152,7 @@ const SigninModal = ({userType, loginUserAction, loginUserDialogAction, register
         <h2>A shared virtual experience</h2>
       </Modal.Header>
       <Modal.Body>
-        <h1>Sign In as a <span className="user-type">{userType}</span></h1>
+        <h1>Sign In as a <span className="user-type">{role}</span></h1>
         <Form onSubmit={onSubmit} className="d-flex flex-column justify-content-center">
           <img src={UserAvatarSvg} />
           <Form.Group controlId="signinForm.email">
