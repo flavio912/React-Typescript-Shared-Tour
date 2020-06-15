@@ -25,7 +25,8 @@ export function forgotPasswordDialogAction(data: any) {
 export function resetPasswordDialogAction(data: any) {
   return action(Constants.RESET_PASSWORD_DIALOG, {
     name: Constants.RESET_PASSWORD_DIALOG,
-    isOpened: data
+    isOpened: data.isOpened,
+    code: data.code
   })
 }
 

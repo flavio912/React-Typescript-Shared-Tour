@@ -1,29 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Navbar, Nav } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
-import { loginUserDialogAction } from '../../store/dialog/actions';
+import { loginUserDialogAction, resetPasswordDialogAction } from '../../store/dialog/actions';
 import RequestHelper from '../../utils/Request.Utils';
 import UserSvg from '../../assets/images/users.svg';
 import LogoutSvg from '../../assets/images/signs.svg';
+const qs = require('qs');
 
 type Props = {
-  page?: string,
-  loginUserDialogAction: Function
+  location: any,
+  loginUserDialogAction: Function,
+  resetPasswordDialogAction: Function
 }
 
-const NavMenu = ({page, loginUserDialogAction}: Props) => {
+const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction}: Props) => {
+  const [curPath, setCurPath] = useState('');
   const [userToken, setUserToken] = useState(RequestHelper.getToken());
-
   const { userInfo } = useSelector((state: any) => ({
     userInfo: state.user
   }))
 
   useEffect(() => {
-    if(userToken === '')
-      loginUserDialogAction(true);
-  },[loginUserDialogAction, userToken])
+    setCurPath(location.pathname);
+
+    if(location.pathname === '/reset-password') {
+      const params = qs.parse(location.search);
+      resetPasswordDialogAction({isOpened: true, code: params['?code']});
+    }else {
+      if(userToken === '')
+        loginUserDialogAction(true);
+    }
+  }, [location.pathname, location.search, loginUserDialogAction, resetPasswordDialogAction, userToken])
 
   const handleLogout = () => {
     RequestHelper.removeToken();
@@ -34,7 +43,7 @@ const NavMenu = ({page, loginUserDialogAction}: Props) => {
     <Navbar id="bugress-nav" bg="white" expand="lg">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="navbar-bugress">
-        {page === 'dashboard' ? (
+        {(curPath === '/dashboard' || curPath === '/virtual-tour') ? (
           <Nav>
             <img src={UserSvg} />
             <span className="ml-2"></span>
@@ -52,7 +61,7 @@ const NavMenu = ({page, loginUserDialogAction}: Props) => {
           <Link to="/">BURGESS</Link>
         </Navbar.Brand>
         
-        {page === 'dashboard' ? (
+        {(curPath === '/dashboard' || curPath === '/virtual-tour') ? (
           <Nav>
             {(userToken !== '' || userInfo.token !== '') ? (
               <Nav.Link className="logout" onClick={() => handleLogout()}>
@@ -79,4 +88,4 @@ const NavMenu = ({page, loginUserDialogAction}: Props) => {
   )
 }
 
-export default connect(null, {loginUserDialogAction})(NavMenu);
+export default withRouter(connect(null, { loginUserDialogAction, resetPasswordDialogAction })(NavMenu));

@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import validator from 'validator';
@@ -28,6 +28,17 @@ const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: 
     status: 'success',
     msg: ''
   })
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      code: {
+        value: dialog.code, 
+        validate: true,
+        errorMsg: ''
+      }
+    })
+  },[dialog.code, formData])
 
   const checkEmailValidate = () => {
     if (formData.email.value.length === 0) {

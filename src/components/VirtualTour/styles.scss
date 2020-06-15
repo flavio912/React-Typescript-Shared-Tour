@@ -1,0 +1,23 @@
+.main-container {
+  display: flex;
+  height: calc(100vh - 97px);
+  padding: 55px 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 991px) {
+    height: calc(100vh - 60px);
+  }
+}
+
+.main-page-section {
+  display: flex;
+  overflow: hidden;
+  flex: 100%;
+  align-self: flex-start;
+  width: 100%;
+}
+
+@import "./ChattingPanel/styles.scss";
+@import "./MainPanel/styles.scss";

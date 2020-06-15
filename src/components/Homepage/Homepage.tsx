@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
@@ -29,7 +29,8 @@ type Props = {
   registerUserDialogAction: Function
 }
 
-const Homepage = ({registerUserDialogAction}: Props) => {  
+const Homepage = ({registerUserDialogAction}: Props) => {
+
   return (
     <>
       <NavMenu />
@@ -228,4 +229,4 @@ const CountrySection = styled.div`
     text-align: center;
   }
 `
-export default connect(null, { registerUserDialogAction })(Homepage)
+export default connect(null, { registerUserDialogAction })(Homepage);

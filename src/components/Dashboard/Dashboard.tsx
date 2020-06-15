@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Dropdown, Alert, Spinner } from 'react-bootstrap';
+import { Dropdown, Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import NavMenu from './../../sharedComponents/NavMenu';
@@ -37,7 +37,6 @@ const Dashboard = () => {
           setShowFailAlert(true);
           window.setTimeout(() => {setShowFailAlert(false)}, 2000);
         }else {
-          console.log(res.data);
           setTourList(res.data.data);
         }
         setIsLoading(false);
@@ -50,7 +49,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <NavMenu page="dashboard" />
+      <NavMenu />
       <div className="dashboard main-container container">
         <div className="main-page-section">
           <SidePanel curTab={curTab} setTab={(selectedTab: string) => {handleChange(selectedTab)}} />
