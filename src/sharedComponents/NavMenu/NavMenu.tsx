@@ -24,15 +24,15 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction}: P
 
   useEffect(() => {
     setCurPath(location.pathname);
-
     if(location.pathname === '/reset-password') {
       const params = qs.parse(location.search);
       resetPasswordDialogAction({isOpened: true, code: params['?code']});
-    }else {
-      if(userToken === '')
+    }
+    else {
+      if(RequestHelper.getToken() === '')
         loginUserDialogAction(true);
     }
-  }, [location.pathname, location.search, loginUserDialogAction, resetPasswordDialogAction, userToken])
+  }, [location, location.pathname, location.search, loginUserDialogAction, resetPasswordDialogAction])
 
   const handleLogout = () => {
     RequestHelper.removeToken();
@@ -43,7 +43,7 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction}: P
     <Navbar id="bugress-nav" bg="white" expand="lg">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="navbar-bugress">
-        {(curPath === '/dashboard' || curPath === '/virtual-tour') ? (
+        {(curPath === '/dashboard' || curPath.slice(0, curPath.lastIndexOf('/')) === '/virtual-tour') ? (
           <Nav>
             <img src={UserSvg} />
             <span className="ml-2"></span>
@@ -61,7 +61,7 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction}: P
           <Link to="/">BURGESS</Link>
         </Navbar.Brand>
         
-        {(curPath === '/dashboard' || curPath === '/virtual-tour') ? (
+        {(curPath === '/dashboard' || curPath.slice(0, curPath.lastIndexOf('/')) === '/virtual-tour') ? (
           <Nav>
             {(userToken !== '' || userInfo.token !== '') ? (
               <Nav.Link className="logout" onClick={() => handleLogout()}>

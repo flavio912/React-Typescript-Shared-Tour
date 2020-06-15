@@ -6,7 +6,7 @@ const initDialog: IDialogState = {
   isOpened: false,
 };
 
-export const dialogReducer: Reducer<IDialogState, IDispatchDialogAction> = (state = initDialog, action) => {
+export const dialogReducer: Reducer<IDialogState, IDispatchDialogAction> = (state = initDialog, action) => {  
   switch (action.type) {
     case Constants.REGISTER_USER_DIALOG:
       return {...state, ...action.payload};

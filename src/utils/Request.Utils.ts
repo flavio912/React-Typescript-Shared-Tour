@@ -22,6 +22,14 @@ class RequestHelper {
     return this._token;
   }
 
+  setMe = (user: object) => {
+    localStorage.setItem('me', JSON.stringify(user));
+  }
+
+  getMe = () => {
+    return JSON.parse(localStorage.getItem('me'));
+  }
+
   removeToken = () => {
     localStorage.removeItem('token');
     this._token = "";

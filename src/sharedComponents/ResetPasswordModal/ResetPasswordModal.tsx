@@ -37,8 +37,8 @@ const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: 
         validate: true,
         errorMsg: ''
       }
-    })
-  },[dialog.code, formData])
+    })  
+  },[dialog.code]) // eslint-disable-line 
 
   const checkEmailValidate = () => {
     if (formData.email.value.length === 0) {

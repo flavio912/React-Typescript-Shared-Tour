@@ -11,10 +11,14 @@ import VolumnOn from '../../../assets/images/volumn-on.svg';
 import ChatSvg from '../../../assets/images/chat.svg';
 import ChatSvgDisableSvg from '../../../assets/images/chat-disable.svg';
 
+import io from '../../../utils/Socket.Utils';
+
 const ChattingPanel = () => {
   let { id } = useParams();
   const [socketCode, setSocketCode] = useState('');
- 
+  const curUser = RequestHelper.getMe();
+  const token = RequestHelper.getToken();
+
   useEffect(() => {
     console.log(id);
     RequestHelper
@@ -26,8 +30,47 @@ const ChattingPanel = () => {
       .catch(error => console.log(error));
   },[id])
 
-  // var socketCode = "4-XYYYC3gS3w";
-  // var socket = io("api.burgess-shared-tour.devserver.london"+"/"+socketCode);
+  useEffect(() => {
+    if(socketCode !== ''){
+      // let socket = io("api.burgess-shared-tour.devserver.london"+"/"+socketCode);
+
+      // removeSocketScript();
+
+      // let script = document.createElement('script');
+      // script.setAttribute('id', 'socketEmbed');
+
+      // script.onload = () => {
+      //   let newScript = document.createElement('script');
+      //   newScript.setAttribute('id', 'socketScript');
+      //   let inlineScript = document.createTextNode('var socketCode = "'+ socketCode +'"; var socket = io("api.burgess-shared-tour.devserver.london"+"/"+socketCode);');
+
+      //   // Online Socket Script
+      //   let socketOnlineScript = document.createTextNode('socket.on("ONLINE", function(msg){console.log("ONLINE:", msg);}); socket.emit("ONLINE", {id: '+curUser.ID+', token: "'+token+'"});');
+      //   // Offline Socket Script
+      //   let socketOfflineScript = document.createTextNode('socket.on("OFFLINE", function(msg){console.log("OFFLINE:", msg);});');
+      //   // Chat socket script
+      //   let socketChatScript = document.createTextNode('socket.emit("CHAT", {message: "testtest"}); socket.on("CHAT", function(data){console.log("CHAT:", data);});');
+        
+      //   newScript.appendChild(inlineScript); 
+      //   newScript.appendChild(socketOnlineScript); 
+      //   newScript.appendChild(socketOfflineScript); 
+      //   newScript.appendChild(socketChatScript); 
+      //   document.getElementsByTagName('head')[0].appendChild(newScript); 
+      // };
+  
+      // script.src = "https://api.burgess-shared-tour.devserver.london/socket.js";
+      // document.getElementsByTagName('head')[0].appendChild(script);
+    }
+  }, [socketCode]) // eslint-disable-line
+
+  const removeSocketScript = () => {
+    let socketEmbed = document.getElementById('socketEmbed');
+    let socketScript = document.getElementById('socketScript');
+    if (socketEmbed && socketScript) {
+      socketEmbed.remove(); 
+      socketScript.remove();
+    }
+  }
 
   return (
     <div className="left-panel d-flex flex-column mr-4">

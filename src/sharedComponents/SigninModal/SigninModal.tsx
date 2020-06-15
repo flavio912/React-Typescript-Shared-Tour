@@ -111,7 +111,7 @@ const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUser
               });
             }, 2000)
           }else {
-            if(res.data.data.user.role === role){
+            if(res.data.data.user.role === role || role === 'all' ){
               loginUserAction(res.data.data);
               loginUserDialogAction(false);
               
@@ -152,7 +152,11 @@ const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUser
         <h2>A shared virtual experience</h2>
       </Modal.Header>
       <Modal.Body>
-        <h1>Sign In as a <span className="user-type">{role}</span></h1>
+        {role !== 'all'? 
+          (<h1>Sign In as a <span className="user-type">{role}</span></h1>)
+          :
+          (<h1>Sign In</h1>)
+        }
         <Form onSubmit={onSubmit} className="d-flex flex-column justify-content-center">
           <img src={UserAvatarSvg} />
           <Form.Group controlId="signinForm.email">

@@ -17,17 +17,25 @@ const initUser: IUserState = {
 export const userReducer: Reducer<IUserState, IDispatchUserAction> = (state = initUser, action) => {
   switch (action.type) {
     case Constants.REGISTER_USER:{
-      RequestHelper.setToken(action.payload.token)
+      RequestHelper.setToken(action.payload.token);
+      RequestHelper.setMe(action.payload.user);
       return {...state, ...action.payload};
     }
     case Constants.LOGIN_USER:{
-      RequestHelper.setToken(action.payload.token)
+      RequestHelper.setToken(action.payload.token);
+      RequestHelper.setMe(action.payload.user);
       return {...state, ...action.payload};
     }
     case Constants.UPDATTE_USER:
       return {...state, ...action.payload};
-    case Constants.SET_LOADING:
-      return {...state, ...action.payload};
+    case Constants.GET_USER_INFO: {
+      RequestHelper
+        .get('/users/me', {})
+        .then((res) => {
+          return {...state, ...action.payload};
+        })
+        .catch(error => console.log(error));
+    }
     default:
       return state;
   }

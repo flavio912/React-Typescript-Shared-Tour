@@ -38,7 +38,6 @@ const RegisterModal = ({role, registerUserAction, registerUserDialogAction, logi
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
   }))
-console.log(dialog);
 
   useEffect(() => {
     bsCustomFileInput.init();
