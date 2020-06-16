@@ -8,6 +8,11 @@ export const TOUR_PAUSE_PAGE = "Tour Pause Page";
 export const TOUR_STOP_PAGE = "Tour Stop Page";
 export const WELCOME_PAGE = "Welcome page";
 
+export const UserRoles = {
+  broker: "broker",
+  client: "client",
+};
+
 export const HOME_TOURS = [
   {
     name: "Secret",

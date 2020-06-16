@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import { Constants, IUserState, IDispatchUserAction } from './types';
 import RequestHelper from '../../utils/Request.Utils';
 
-const initUser: IUserState = {
+export const initUser: IUserState = {
   token: '',
   user: {
     email: '',
@@ -18,23 +18,17 @@ export const userReducer: Reducer<IUserState, IDispatchUserAction> = (state = in
   switch (action.type) {
     case Constants.REGISTER_USER:{
       RequestHelper.setToken(action.payload.token);
-      RequestHelper.setMe(action.payload.user);
       return {...state, ...action.payload};
     }
     case Constants.LOGIN_USER:{
-      RequestHelper.setToken(action.payload.token);
-      RequestHelper.setMe(action.payload.user);
+      RequestHelper.setToken(action.payload.token);      
       return {...state, ...action.payload};
     }
     case Constants.UPDATTE_USER:
       return {...state, ...action.payload};
-    case Constants.GET_USER_INFO: {
-      RequestHelper
-        .get('/users/me', {})
-        .then((res) => {
-          return {...state, ...action.payload};
-        })
-        .catch(error => console.log(error));
+    case Constants.LOGOUT_USER:{
+      RequestHelper.removeToken();
+      return {...state, ...initUser};
     }
     default:
       return state;

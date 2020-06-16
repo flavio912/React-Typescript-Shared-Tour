@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
@@ -16,17 +16,19 @@ import TourRequest from './components/TourRequest';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Route exact path="/" component={Homepage} />
-      <Route exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/virtual-tour/:id" component={VirtualTour} />
-      <Route exact path="/tour/request" component={TourRequest} />
-      <Route exact path="/reset-password" component={Homepage} />
-      {/* <Route exact path="/tour" component={TourPlay} />
-      <Route exact path="/tour/view" component={TourView} />
-      <Route exact path="/tour/start" component={TourStart} />
-      <Route exact path="/tour/inside" component={TourInside} /> */}
-    </BrowserRouter>    
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Homepage} />
+        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/virtual-tour/:id" component={VirtualTour} />
+        <Route exact path="/tour/request" component={TourRequest} />
+        <Route exact path="/reset-password" component={Homepage} />
+        {/* <Route exact path="/tour" component={TourPlay} />
+        <Route exact path="/tour/view" component={TourView} />
+        <Route exact path="/tour/start" component={TourStart} />
+        <Route exact path="/tour/inside" component={TourInside} /> */}
+      </Switch>
+    </Router>    
   );
 }
 

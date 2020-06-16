@@ -35,6 +35,7 @@ const Dashboard = () => {
       .then((res) => {
         if(!res.data.success) {
           setShowFailAlert(true);
+          setTourList([]);
           window.setTimeout(() => {setShowFailAlert(false)}, 2000);
         }else {
           setTourList(res.data.data);
