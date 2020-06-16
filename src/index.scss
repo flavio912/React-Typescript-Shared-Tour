@@ -137,7 +137,7 @@ body {
     cursor: pointer;
   }
 
-  input::-webkit-input-placeholder {
+  input::-webkit-input-placeholder, input::placeholder {
     color: transparent !important;
   }
   input:-webkit-autofill,
