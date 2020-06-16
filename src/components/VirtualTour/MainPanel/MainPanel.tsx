@@ -9,7 +9,11 @@ import TransferModal from "../../../sharedComponents/TransferModal";
 import { Button } from 'react-bootstrap';
 import ArrowSVG from '../../../assets/images/arrow.svg';
 
-const MainPanel = () => {
+type Props = {
+  tourSession: any;
+}
+
+const MainPanel = ({tourSession}: Props) => {
   const [curPage, setCurPage] = useState(CONSTANTS.TOUR_HOME_PAGE);
   const [showOptionModal, setShowOptionModal] = useState(false);
   const [curTour, setTour] = useState(CONSTANTS.HOME_TOURS[0]);

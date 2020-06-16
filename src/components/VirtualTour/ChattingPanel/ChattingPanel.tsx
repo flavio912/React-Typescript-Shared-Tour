@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Button } from "react-bootstrap";
 import styled from 'styled-components';
 
 import RequestHelper from '../../../utils/Request.Utils';
+import * as Constants from '../../../constants';
 import UserImg from '../../../assets/images/left-back1.png';
 import PhotoSvg from '../../../assets/images/photo.svg';
 import MicSvg from '../../../assets/images/mic.svg';
@@ -11,78 +13,86 @@ import VolumnOn from '../../../assets/images/volumn-on.svg';
 import ChatSvg from '../../../assets/images/chat.svg';
 import ChatSvgDisableSvg from '../../../assets/images/chat-disable.svg';
 
-import io from '../../../utils/Socket.Utils';
+declare var io;
 
-const ChattingPanel = () => {
+type Props = {
+  tourSession: any;
+}
+
+const ChattingPanel = ({tourSession}: Props) => {
   let { id } = useParams();
-  const [socketCode, setSocketCode] = useState('');
-  const curUser = RequestHelper.getMe();
-  const token = RequestHelper.getToken();
+  const { userInfo } = useSelector((state: any) => ({
+    userInfo: state.user
+  }))
+console.log(userInfo);  
+console.log(tourSession);
+  useEffect(() => {    
+    if(!userInfo.user.ID) return;
 
-  useEffect(() => {
-    console.log(id);
-    RequestHelper
-      .post(`/tour-session/${id}/start`, {})
-      .then((res) => {
-        if(res.data.success)
-          setSocketCode(res.data.data.socketCode);
-      })
-      .catch(error => console.log(error));
-  },[id])
+    async function fetchData() {
+      let socketCode = '';
+      const response = await RequestHelper.post(`/tour-session/${id}/start`, {});
+      if(!response.data.success)
+        console.log(response.data.error)
+      else{
+        socketCode = response.data.data.socketCode;
+        let socket = io(`api.burgess-shared-tour.devserver.london/${socketCode}`);
 
-  useEffect(() => {
-    if(socketCode !== ''){
-      // let socket = io("api.burgess-shared-tour.devserver.london"+"/"+socketCode);
+        // receiving message
+        socket.on("ONLINE", (msg) => {
+          console.log(msg);
+        });
 
-      // removeSocketScript();
+        // sending message out
+        socket.emit("ONLINE", {
+          id: userInfo.user.ID,
+          token: localStorage.token
+        });
 
-      // let script = document.createElement('script');
-      // script.setAttribute('id', 'socketEmbed');
+        socket.emit("CHAT", {
+          message: "testtest"
+        })
 
-      // script.onload = () => {
-      //   let newScript = document.createElement('script');
-      //   newScript.setAttribute('id', 'socketScript');
-      //   let inlineScript = document.createTextNode('var socketCode = "'+ socketCode +'"; var socket = io("api.burgess-shared-tour.devserver.london"+"/"+socketCode);');
-
-      //   // Online Socket Script
-      //   let socketOnlineScript = document.createTextNode('socket.on("ONLINE", function(msg){console.log("ONLINE:", msg);}); socket.emit("ONLINE", {id: '+curUser.ID+', token: "'+token+'"});');
-      //   // Offline Socket Script
-      //   let socketOfflineScript = document.createTextNode('socket.on("OFFLINE", function(msg){console.log("OFFLINE:", msg);});');
-      //   // Chat socket script
-      //   let socketChatScript = document.createTextNode('socket.emit("CHAT", {message: "testtest"}); socket.on("CHAT", function(data){console.log("CHAT:", data);});');
-        
-      //   newScript.appendChild(inlineScript); 
-      //   newScript.appendChild(socketOnlineScript); 
-      //   newScript.appendChild(socketOfflineScript); 
-      //   newScript.appendChild(socketChatScript); 
-      //   document.getElementsByTagName('head')[0].appendChild(newScript); 
-      // };
-  
-      // script.src = "https://api.burgess-shared-tour.devserver.london/socket.js";
-      // document.getElementsByTagName('head')[0].appendChild(script);
+        socket.on("CHAT", (res) => {
+          console.log(res);
+        })
+      }
     }
-  }, [socketCode]) // eslint-disable-line
-
-  const removeSocketScript = () => {
-    let socketEmbed = document.getElementById('socketEmbed');
-    let socketScript = document.getElementById('socketScript');
-    if (socketEmbed && socketScript) {
-      socketEmbed.remove(); 
-      socketScript.remove();
-    }
-  }
+    fetchData();
+  },[userInfo.user.ID]) // eslint-disable-line
 
   return (
     <div className="left-panel d-flex flex-column mr-4">
       <div className="user-img h-20">
-        <img src={UserImg} />        
+        {tourSession && (userInfo.user.role === Constants.UserRoles.broker)?
+          <img src={tourSession.broker.avatar} />: null
+        }
+        {tourSession && (userInfo.user.role === Constants.UserRoles.client)?
+          <img src={tourSession.client.avatar} />: null
+        }        
       </div>
       <div className="control-div px-4 py-2 d-flex justify-content-between">
         <div className="d-flex flex-column pt-2">
-          <h5 className="name mb-0">Tim Vickers</h5>          
-          <p className="mb-0">Sales Broker</p>                  
-          <p className="mb-0">Location: Monaco</p>
-          <p className="mb-0">Speaks: English</p>  
+          {tourSession && (userInfo.user.role === Constants.UserRoles.broker)?
+            (
+              <>
+                <h5 className="name mb-0">{tourSession.broker.name}</h5>
+                <p className="mb-0">Sales Broker</p>
+                <p className="mb-0">Location: {tourSession.broker.country}</p>
+                <p className="mb-0">Speaks: English</p>  
+              </>
+            ): null
+          }
+          {tourSession && (userInfo.user.role === Constants.UserRoles.client)?
+            (
+              <>
+                <h5 className="name mb-0">{tourSession.client.name}</h5>
+                <p className="mb-0">Client</p>
+                <p className="mb-0">Location: {tourSession.client.country}</p>
+                <p className="mb-0">Speaks: English</p>  
+              </>
+            ): null
+          }
         </div>                  
         <div className="d-flex flex-column justify-content-between">
           <img className="ml-auto" src={VolumnOn} onClick={() => {console.log("Click Volumn")}}/>

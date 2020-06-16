@@ -23,15 +23,15 @@ type Props = {
 
 const TourRequest = ({ location, loginUserDialogAction }: Props) => {
   const [curTourUrl, setTourUrl] = useState('');
+  // const [alert, setAlert] = useState({})
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showFailAlert, setShowFailAlert] = useState(false);
 
   useEffect(() => {
-    const token = RequestHelper.getToken();
     const params = qs.parse(location.search);
     setTourUrl(params['?url']);
     
-    if(token === ''){
+    if(!localStorage.token){
       loginUserDialogAction(true);
     }else {
       if(curTourUrl !== '') {
