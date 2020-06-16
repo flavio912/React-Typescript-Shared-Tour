@@ -47,6 +47,7 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction, up
 
   const handleLogout = () => {
     logoutUserAction();
+    loginUserDialogAction(true);
   }
 
   return (

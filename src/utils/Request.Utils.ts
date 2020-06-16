@@ -100,6 +100,20 @@ class RequestHelper {
     };
   }
 
+  post_voice = async (URL: string, bodyObject: object) => {
+    const res = await axios.request({
+      url: CONFIG['VOICE_SERVICE_URL'] + URL,
+      method: 'post',
+      headers: this.makeHeader("POST"),
+      data: JSON.stringify(bodyObject)
+    });
+    return {
+      headers: res.headers,
+      json: async () => res,
+      text: async () => res,
+      data: res.data,
+    };
+  }
 }
 
 export default new RequestHelper();

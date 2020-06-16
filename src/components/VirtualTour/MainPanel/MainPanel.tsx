@@ -26,7 +26,7 @@ const MainPanel = ({tourSession}: Props) => {
     <div className="right-panel d-flex flex-column">
       <div className="main-header d-flex flex-column">
         <div className="d-flex justify-content-between">
-          <h1 className="title">{curTour.name}</h1>
+          <h1 className="title">{tourSession? tourSession.tourName: ''}</h1>
           <div className="d-flex flex-column">
             <TourDropDown curTour={curTour} changeTour={(tour: any) => setTour(tour)} />
             {curPage !== CONSTANTS.TOUR_HOME_PAGE && (

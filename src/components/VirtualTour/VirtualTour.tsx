@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import NavMenu from './../../sharedComponents/NavMenu';
@@ -16,6 +17,9 @@ import RequestHelper from '../../utils/Request.Utils';
 const VirtualTour = () => {
   let { id } = useParams();
   const [tourSession, setTourSession] = useState(null);
+  const { userToken } = useSelector((state: any) => ({
+    userToken: state.user.token
+  }))
 
   useEffect(() => {
     async function fetchData() {
@@ -24,7 +28,7 @@ const VirtualTour = () => {
       setTourSession(response.data.data);
     }
     fetchData();
-  }, [id])
+  }, [id, userToken])
 
   return (
     <>
