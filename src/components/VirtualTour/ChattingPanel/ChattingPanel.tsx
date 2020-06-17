@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Button } from "react-bootstrap";
@@ -6,12 +6,11 @@ import styled from 'styled-components';
 
 import RequestHelper from '../../../utils/Request.Utils';
 import * as Constants from '../../../constants';
-import UserImg from '../../../assets/images/left-back1.png';
 import PhotoSvg from '../../../assets/images/photo.svg';
 import MicSvg from '../../../assets/images/mic.svg';
 import VolumnOn from '../../../assets/images/volumn-on.svg';
 import ChatSvg from '../../../assets/images/chat.svg';
-import ChatSvgDisableSvg from '../../../assets/images/chat-disable.svg';
+import ChatDisableSvg from '../../../assets/images/chat-disable.svg';
 
 declare var io;
 declare var Twilio;
@@ -24,10 +23,11 @@ const ChattingPanel = ({tourSession}: Props) => {
   let { id } = useParams();
   const { userInfo } = useSelector((state: any) => ({
     userInfo: state.user
-  }))
+  })); 
   const [chatHistories, setChatHistories] = useState([]);
   const [socket, setSocket] = useState(null);
   const [newMessage, setNewMessage] = useState('');
+  const chattingEndRef = useRef(null);
 
   useEffect(() => {    
     if(!userInfo.user.ID) return;
@@ -40,22 +40,35 @@ const ChattingPanel = ({tourSession}: Props) => {
       else{
         socketCode = response.data.data.socketCode;
         setSocket(io(`api.burgess-shared-tour.devserver.london/${socketCode}`));
-
-        initiateVoiceSetup(socketCode, userInfo.user.name);
-        // receiving message
-        // socket.on("ONLINE", (msg) => {
-        //   console.log(msg);
-        // });
-
-        // // sending message out
-        // socket.emit("ONLINE", {
-        //   id: userInfo.user.ID,
-        //   token: localStorage.token
-        // });
+        initiateVoiceSetup(socketCode);
       }
     }
     fetchData();
   },[userInfo.user.ID]) // eslint-disable-line
+
+  useEffect(() => {
+    if(!socket) return;
+
+    // sending message out
+    socket.emit("ONLINE", {
+      id: userInfo.user.ID,
+      token: localStorage.token
+    });
+
+    // receiving message
+    socket.on("ONLINE", (msg) => {
+      console.log(msg);
+    });
+  }, [socket]) // eslint-disable-line
+
+  useEffect(() => {
+    if(!socket) return;
+
+    socket.on("CHAT", (res) => {
+      setChatHistories([...chatHistories, {payload: {Name: res.Name, Message: res.Message}}]);
+      chattingEndRef.current.scrollIntoView(true);
+    });
+  }, [socket, chatHistories]);
 
   useEffect(() => {
     async function fetchData() {
@@ -65,6 +78,7 @@ const ChattingPanel = ({tourSession}: Props) => {
       }else {
         let chat_histories = response.data.data.filter(item => item.action === 'CHAT').map(item => {return {...item, ...{payload: JSON.parse(item.payload)}}});
         setChatHistories(chat_histories);
+        chattingEndRef.current.scrollIntoView(true);
       }
     }
     fetchData();
@@ -74,22 +88,21 @@ const ChattingPanel = ({tourSession}: Props) => {
     socket.emit("CHAT", {
       message: newMessage
     });
-    
-    socket.on("CHAT", (res) => {
-      setChatHistories([...chatHistories, {payload: {Name: res.Name, Message: res.Message}}])
-    });
-
     setNewMessage('');    
   }
 
-  const initiateVoiceSetup = (socketCode, name) => {
-    const voiceName = `${socketCode}-${name}-${Date.now()}`;
+  const initiateVoiceSetup = (socketCode) => {
+    const voiceName = `${socketCode}-${Date.now()}`;
     async function fetchData() {
       const response = await RequestHelper.post_voice('/token/generate', {name: voiceName});
       console.log(response);
       Twilio.Device.setup(response.data.token);
     }
     fetchData();
+  }
+
+  const handleVoiceCall = () => {
+
   }
 
   /* Callback to let us know Twilio Client is ready */
@@ -158,7 +171,7 @@ const ChattingPanel = ({tourSession}: Props) => {
           }
         </div>                  
         <div className="d-flex flex-column justify-content-between">
-          <img className="ml-auto" src={VolumnOn} onClick={() => {console.log("Click Volumn")}}/>
+          <img className="ml-auto" src={VolumnOn} onClick={() => handleVoiceCall()}/>
           <img className="ml-auto" src={MicSvg} onClick={() => {console.log("Click Mic")}}/>
           <img className="ml-auto" src={PhotoSvg} onClick={() => {console.log("Click Camera")}}/>
         </div>
@@ -166,15 +179,17 @@ const ChattingPanel = ({tourSession}: Props) => {
       <div className="chatting-info d-flex flex-column pl-4 pr-2 py-2">
         <div className="chatting-history">
           {chatHistories.map((historyItem, nIndex) => (
-                <div key={nIndex} className="chating-text-box py-2 pr-3">
-                  <h5><ChatImg src={ChatSvgDisableSvg} />{historyItem?.payload.Name}</h5>
-                  <p className="m-0">
-                    {historyItem?.payload.Message}
-                  </p>
-                </div>
-              )
-            )
-          }          
+            <div key={nIndex} className="chating-text-box py-2 pr-3">
+              {userInfo.user.name === historyItem.payload.Name ?
+                <h5><ChatImg src={ChatSvg} />Me</h5> : 
+                <h5><ChatImg src={ChatDisableSvg} />{historyItem?.payload.Name}</h5>
+              }
+              <p className="m-0">
+                {historyItem?.payload.Message}
+              </p>
+            </div>
+          ))}
+          <div ref={chattingEndRef} />
         </div>
         <div className="last-chat">
           <textarea 

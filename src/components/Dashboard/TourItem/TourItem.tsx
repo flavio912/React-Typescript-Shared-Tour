@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { Alert, Spinner } from 'react-bootstrap';
+import Moment from 'react-moment';
 import styled from 'styled-components';
 
 import RequestHelper from '../../../utils/Request.Utils';
@@ -108,7 +109,7 @@ const TourItem = ({tourInfo}: Props) => {
           </div>
           <div className="date">
             <label>Date/Time:</label>
-            {tourInfo.updatedAt}
+            <Moment format="YYYY-MM-DD HH:mm">{tourInfo.updatedAt}</Moment>
           </div>
         </div>
 
