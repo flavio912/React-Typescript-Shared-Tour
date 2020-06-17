@@ -29,8 +29,11 @@ const ChattingPanel = ({tourSession}: Props) => {
   const [newMessage, setNewMessage] = useState('');
   const chattingEndRef = useRef(null);
 
-  useEffect(() => {    
-    if(!userInfo.user.ID) return;
+  useEffect(() => {
+    if(!userInfo.user.ID) {
+      setChatHistories([]);
+      return;
+    }
 
     async function fetchData() {
       let socketCode = '';
@@ -82,7 +85,7 @@ const ChattingPanel = ({tourSession}: Props) => {
       }
     }
     fetchData();
-  }, [id])
+  }, [id, userInfo.token])
 
   const handleSendMessage = () => {    
     socket.emit("CHAT", {

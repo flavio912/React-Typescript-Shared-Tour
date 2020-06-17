@@ -28,6 +28,8 @@ const VirtualTour = () => {
       setTourSession(response.data.data);
     }
     fetchData();
+
+    if(!userToken) setTourSession(null);
   }, [id, userToken])
 
   return (
