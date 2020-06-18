@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Button } from "react-bootstrap";
 import styled from 'styled-components';
 
+import { voiceChattingDialogAction, setTwilioConnectionAction } from '../../../store/dialog/actions';
 import RequestHelper from '../../../utils/Request.Utils';
 import * as Constants from '../../../constants';
+import { DialogNames } from '../../../store/dialog/types';
 import PhotoSvg from '../../../assets/images/photo.svg';
 import MicSvg from '../../../assets/images/mic.svg';
 import VolumnOn from '../../../assets/images/volumn-on.svg';
@@ -21,13 +23,18 @@ type Props = {
 
 const ChattingPanel = ({tourSession}: Props) => {
   let { id } = useParams();
-  const { userInfo } = useSelector((state: any) => ({
-    userInfo: state.user
+  const dispatch = useDispatch();
+  const { userInfo, dialogState } = useSelector((state: any) => ({
+    userInfo: state.user,
+    dialogState: state.dialog
   })); 
   const [chatHistories, setChatHistories] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [socketCode, setSocketCode] = useState('');
   const [newMessage, setNewMessage] = useState('');
   const chattingEndRef = useRef(null);
+  const [twilioToken, setTwilioToken] = useState('');
+  const [acceptCall, setAcceptCall] = useState(false);
 
   useEffect(() => {
     if(!userInfo.user.ID) {
@@ -36,14 +43,14 @@ const ChattingPanel = ({tourSession}: Props) => {
     }
 
     async function fetchData() {
-      let socketCode = '';
       const response = await RequestHelper.post(`/tour-session/${id}/start`, {});
       if(!response.data.success)
         console.log(response.data.error)
       else{
-        socketCode = response.data.data.socketCode;
-        setSocket(io(`api.burgess-shared-tour.devserver.london/${socketCode}`));
-        initiateVoiceSetup(socketCode);
+        setSocketCode(response.data.data.socketCode);
+        setSocket(io(`api.burgess-shared-tour.devserver.london/${response.data.data.socketCode}`));
+        const voiceName = generateVoiceName(response.data.data.socketCode, userInfo.user.name);
+        initiateVoiceSetup(voiceName);
       }
     }
     fetchData();
@@ -85,7 +92,71 @@ const ChattingPanel = ({tourSession}: Props) => {
       }
     }
     fetchData();
-  }, [id, userInfo.token])
+  }, [id, userInfo.token]);
+
+  useEffect(() => {
+    if(twilioToken === '') return;
+
+    /* Callback to let us know Twilio Client is ready */
+    Twilio.Device.ready((device) => {
+      console.log("DEVICE READY");
+    });
+  
+    /* Report any errors to the call status display */
+    Twilio.Device.error((error) => {
+      console.log("ERROR: " + error.message);
+      const voiceName = generateVoiceName(socketCode, userInfo.user.name);
+      initiateVoiceSetup(voiceName);
+    });
+  
+    /* Callback for when Twilio Client initiates a new connection */
+    Twilio.Device.connect((connection) => {
+      console.log(connection);
+    });
+  
+    /* Callback for when a call ends */
+    Twilio.Device.disconnect((connection) => {
+      console.log(connection);
+    });
+
+    /* Callback for when Twilio Client receives a new incoming call */
+    Twilio.Device.incoming((connection) => {
+      console.log("INCOMING", connection);
+      dispatch(voiceChattingDialogAction({isOpened: true, role: 'slave', action: 'call'}));
+      dispatch(setTwilioConnectionAction(connection));
+
+      // Set a callback to be executed when the connection is accepted
+      connection.accept(function() {
+        console.log("In call with someone");
+        dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'start'}));
+        dispatch(voiceChattingDialogAction({isOpened: true, role: 'slave', action: 'start'}));
+      });
+    });
+  }, [twilioToken, voiceChattingDialogAction]); // eslint-disable-line
+
+  const handleAcceptCall = () => {
+    if(!dialogState.connection) return;
+    
+    dialogState.connection.accept();
+  }
+
+  useEffect(() => {
+    if(dialogState.name !== DialogNames.VOICE_CHATTING_DIALOG) return;
+
+    switch (dialogState.action) {
+      case Constants.VoiceCallActions.call:
+        // Twilio.Device.connect({name: })
+        break;
+      case Constants.VoiceCallActions.accept:
+        handleAcceptCall();
+        break;
+      case Constants.VoiceCallActions.hangup:
+        Twilio.Device.disconnectAll();        
+        break;
+      default:
+        break;
+    }
+  }, [dialogState, handleAcceptCall]);
 
   const handleSendMessage = () => {    
     socket.emit("CHAT", {
@@ -94,51 +165,33 @@ const ChattingPanel = ({tourSession}: Props) => {
     setNewMessage('');    
   }
 
-  const initiateVoiceSetup = (socketCode) => {
-    const voiceName = `${socketCode}-${Date.now()}`;
+  const initiateVoiceSetup = (voiceName) => {
     async function fetchData() {
       const response = await RequestHelper.post_voice('/token/generate', {name: voiceName});
-      console.log(response);
       Twilio.Device.setup(response.data.token);
+      setTwilioToken(response.data.token);
     }
     fetchData();
   }
 
-  const handleVoiceCall = () => {
-
+  const generateVoiceName = (socketCode, name) => {
+    const voiceName = `${socketCode}-${name.replace(/\s/g,'')}`;
+    return voiceName;
   }
 
-  /* Callback to let us know Twilio Client is ready */
-  Twilio.Device.ready((device) => {
-    console.log("DEVICE READY");
-  });
+  const handleVoiceCall = (socketCode) => {
+    if(!socketCode) return;
 
-  /* Report any errors to the call status display */
-  Twilio.Device.error((error) => {
-    console.log("ERROR: " + error.message);
-  });
+    let connectName;
+    if(userInfo.user.role === Constants.UserRoles.broker)
+      connectName = generateVoiceName(socketCode, tourSession.client.name);
+    else if(userInfo.user.role === Constants.UserRoles.client)
+      connectName = generateVoiceName(socketCode, tourSession.broker.name);
 
-  /* Callback for when Twilio Client initiates a new connection */
-  Twilio.Device.connect((connection) => {
-    console.log(connection);
-  });
+    Twilio.Device.connect({ name: connectName });
 
-  /* Callback for when a call ends */
-  Twilio.Device.disconnect((connection) => {
-    console.log(connection);
-  });
-
-  /* Callback for when Twilio Client receives a new incoming call */
-  Twilio.Device.incoming((connection) => {
-    console.log("INCOMING");
-    // Set a callback to be executed when the connection is accepted
-    connection.accept(function() {
-      console.log("In call with someone");
-    });
-
-    // Set a callback on the answer button and enable it
-    console.log(1);
-  });
+    dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'call'}));
+  } 
 
   return (
     <div className="left-panel d-flex flex-column mr-4">
@@ -174,7 +227,7 @@ const ChattingPanel = ({tourSession}: Props) => {
           }
         </div>                  
         <div className="d-flex flex-column justify-content-between">
-          <img className="ml-auto" src={VolumnOn} onClick={() => handleVoiceCall()}/>
+          <img className="ml-auto" src={VolumnOn} onClick={() => handleVoiceCall(socketCode)}/>
           <img className="ml-auto" src={MicSvg} onClick={() => {console.log("Click Mic")}}/>
           <img className="ml-auto" src={PhotoSvg} onClick={() => {console.log("Click Camera")}}/>
         </div>

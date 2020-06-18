@@ -12,6 +12,7 @@ import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
 import ThankyouModal from '../../sharedComponents/ThankyouModal';
 import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
 import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
+import VoiceChattingModal from '../../sharedComponents/VoiceChattingModal';
 import RequestHelper from '../../utils/Request.Utils';
 
 const VirtualTour = () => {
@@ -41,12 +42,14 @@ const VirtualTour = () => {
           <MainPanel  tourSession={tourSession} />
         </div>        
       </div>
+
       <RegisterModal role="client" />
       <SigninModal role="all" />
       <EnterCodeModal />
       <ThankyouModal />
       <ForgotPasswordModal />
       <ResetPasswordModal />
+      <VoiceChattingModal />
     </>
   )
 }

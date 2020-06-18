@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { enterCodeDialogAction } from '../../store/dialog/actions';
-import { Constants } from '../../store/dialog/types';
+import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
   enterCodeDialogAction: Function
@@ -15,7 +15,7 @@ const EnterCodeModal = ({enterCodeDialogAction}: Props) => {
 
   return (
     <Modal
-      show={dialog.isOpened && dialog.name === Constants.ENTER_CODE_DIALOG}
+      show={dialog.isOpened && dialog.name === DialogNames.ENTER_CODE_DIALOG}
       onHide={() => {enterCodeDialogAction(false)}}
       centered
       className="enter-code-modal"

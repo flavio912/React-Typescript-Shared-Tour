@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import { thankyouDialogAction } from '../../store/dialog/actions';
-import { Constants } from '../../store/dialog/types';
+import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
   thankyouDialogAction: Function
@@ -15,7 +15,7 @@ const ThankyouModal = ({thankyouDialogAction}: Props) => {
 
   return (
     <Modal
-      show={dialog.isOpened && dialog.name === Constants.THANKYOU_DIALOG}
+      show={dialog.isOpened && dialog.name === DialogNames.THANKYOU_DIALOG}
       onHide={() => {thankyouDialogAction(false)}}
       centered
       className="thankyou-modal"

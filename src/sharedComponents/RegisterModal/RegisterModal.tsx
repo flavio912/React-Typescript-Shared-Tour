@@ -7,7 +7,7 @@ import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
 import { registerUserAction } from '../../store/user/actions';
 import { registerUserDialogAction, loginUserDialogAction } from '../../store/dialog/actions';
-import { Constants } from '../../store/dialog/types';
+import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
   role: string,
@@ -219,7 +219,7 @@ const RegisterModal = ({role, registerUserAction, registerUserDialogAction, logi
 
   return (
     <Modal
-      show={dialog.isOpened && dialog.name === Constants.REGISTER_USER_DIALOG}
+      show={dialog.isOpened && dialog.name === DialogNames.REGISTER_USER_DIALOG}
       onHide={() => {registerUserDialogAction(false)}}
       centered
       className="register-modal"

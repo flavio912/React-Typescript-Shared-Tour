@@ -7,7 +7,7 @@ import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
 import { loginUserAction } from '../../store/user/actions';
 import { loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction } from '../../store/dialog/actions';
-import { Constants } from '../../store/dialog/types';
+import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
   role: string,
@@ -142,7 +142,7 @@ const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUser
 
   return (
     <Modal
-      show={dialog.isOpened && dialog.name === Constants.LOGIN_USER_DIALOG}
+      show={dialog.isOpened && dialog.name === DialogNames.LOGIN_USER_DIALOG}
       onHide={() => {loginUserDialogAction(false)}}
       centered
       className="signin-modal"

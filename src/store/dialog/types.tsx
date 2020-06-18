@@ -9,11 +9,13 @@ export interface IDispatchDialogAction extends Action {
   payload?: any;
 }
 
-export enum Constants {
-  REGISTER_USER_DIALOG = 'REGISTER_USER_DIALOG',
-  LOGIN_USER_DIALOG = 'LOGIN_USER_DIALOG',
-  FORGOT_PASSWORD_DIALOG = 'FORGOT_PASSWORD_DIALOG',
-  RESET_PASSWORD_DIALOG = 'RESET_PASSWORD_DIALOG',
-  ENTER_CODE_DIALOG = 'ENTER_CODE_DIALOG',
-  THANKYOU_DIALOG = 'THANKYOU_DIALOG'
+export enum DialogNames {
+  REGISTER_USER_DIALOG = 'register_user',
+  LOGIN_USER_DIALOG = 'login_user',
+  FORGOT_PASSWORD_DIALOG = 'forgot_password',
+  RESET_PASSWORD_DIALOG = 'reset_password',
+  ENTER_CODE_DIALOG = 'enter_code',
+  THANKYOU_DIALOG = 'thankyou',
+  VOICE_CHATTING_DIALOG = 'voice_chatting',
+  SET_TWILIO_CONNECTION = 'set_twilio_connection'
 }

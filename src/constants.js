@@ -13,6 +13,19 @@ export const UserRoles = {
   client: "client",
 };
 
+export const VoiceCallActions = {
+  call: "call",
+  accept: "accept",
+  decline: "decline",
+  hangup: "hangup",
+  start: "start",
+};
+
+export const VoiceCallRoles = {
+  master: "master",
+  slave: "slave",
+};
+
 export const HOME_TOURS = [
   {
     name: "Secret",

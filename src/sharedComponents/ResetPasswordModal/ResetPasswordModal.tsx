@@ -5,7 +5,7 @@ import validator from 'validator';
 import styled from 'styled-components';
 import RequestHelper from '../../utils/Request.Utils';
 import { resetPasswordDialogAction, loginUserDialogAction } from '../../store/dialog/actions';
-import { Constants } from '../../store/dialog/types';
+import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
   resetPasswordDialogAction: Function,
@@ -171,7 +171,7 @@ const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: 
 
   return (
     <CustomModal
-      show={dialog.isOpened && dialog.name === Constants.RESET_PASSWORD_DIALOG}
+      show={dialog.isOpened && dialog.name === DialogNames.RESET_PASSWORD_DIALOG}
       onHide={() => {resetPasswordDialogAction(false)}}
       centered
       className="reset-password-modal"

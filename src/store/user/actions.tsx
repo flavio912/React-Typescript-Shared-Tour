@@ -1,18 +1,18 @@
 import { action } from 'typesafe-actions';
 import { Constants } from './types';
 
-export function registerUserAction(data: object) {
+export const registerUserAction = (data: object) => {
   return action(Constants.REGISTER_USER, data);
 }
 
-export function loginUserAction(data: object) {
+export const loginUserAction = (data: object) => {
   return action(Constants.LOGIN_USER, data);
 }
 
-export function updateUserAction(data: object) {
+export const updateUserAction = (data: object) => {
   return action(Constants.UPDATTE_USER, data);
 }
 
-export function logoutUserAction() {
+export const logoutUserAction = () => {
   return action(Constants.LOGOUT_USER);
 }

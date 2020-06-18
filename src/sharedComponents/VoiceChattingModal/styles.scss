@@ -1,0 +1,58 @@
+@import '../../variables.scss';
+
+.voice-chatting-modal {
+  .modal-dialog {
+    max-width: 600px;
+
+    .modal-content {
+      .modal-body {
+        padding: 20px 150px;
+          
+        p {
+          font-size: 2rem;
+          text-align: center;
+          color: white;
+          font-weight: 500;
+          margin-top: 1rem;
+          margin-bottom: 2rem;
+        }        
+  
+        Button {
+          background: white;
+          width: 100%;
+          color: orange;
+          margin-top: 0;
+          border: 1rem;
+          height: 40px;
+          text-transform: uppercase;
+          font-weight: 700;
+          font-size: 0.9rem;
+        }
+  
+        a {
+          text-align: center;
+          font-size: 0.8rem;
+          margin-top: 0.5rem;
+          color: white;
+          opacity: 0.8;
+          cursor: pointer;
+        }
+  
+        .cancel-btn {
+          height: 40px;
+          text-align: center;
+          text-transform: uppercase;
+          font-weight: 700;
+          font-size: 0.9rem;
+          width: 100%;
+          color: white;
+  
+          a {
+            cursor: pointer;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
