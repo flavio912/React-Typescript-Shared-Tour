@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {Modal, Button} from 'react-bootstrap';
 import { voiceChattingDialogAction } from '../../store/dialog/actions';
@@ -10,12 +10,6 @@ const VoiceChattingModal = () => {
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
   }));
-  const [status, setStatus] = useState('');
-  
-  useEffect(() => {
-console.log(dialog.action);    
-    setStatus(dialog.action);
-  }, [dialog.action])
   
   return (
     <Modal

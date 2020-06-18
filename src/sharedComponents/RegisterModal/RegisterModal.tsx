@@ -6,7 +6,7 @@ import bsCustomFileInput from 'bs-custom-file-input';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
 import { registerUserAction } from '../../store/user/actions';
-import { registerUserDialogAction, loginUserDialogAction } from '../../store/dialog/actions';
+import { registerUserDialogAction, loginUserDialogAction, thankyouDialogAction } from '../../store/dialog/actions';
 import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
@@ -201,10 +201,14 @@ const RegisterModal = ({ role }: Props) => {
             // call registerUserAction
             dispatch(registerUserAction(res.data.data));
             dispatch(registerUserDialogAction(false));
+            dispatch(thankyouDialogAction(true));
 
-            if(role === 'broker'){
-              history.push('/dashboard');
-            }            
+            window.setTimeout(() => {
+              dispatch(thankyouDialogAction(false));
+              if(role === 'broker'){
+                history.push('/dashboard');
+              }
+            }, 3000);
           }
           setLoading(false);
         })

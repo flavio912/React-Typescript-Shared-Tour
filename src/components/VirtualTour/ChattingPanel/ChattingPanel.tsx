@@ -151,7 +151,10 @@ const ChattingPanel = ({tourSession}: Props) => {
         handleAcceptCall();
         break;
       case Constants.VoiceCallActions.hangup:
-        Twilio.Device.disconnectAll();        
+        Twilio.Device.disconnectAll();
+        break;
+      case Constants.VoiceCallActions.decline:
+        Twilio.Device.disconnectAll();
         break;
       default:
         break;
@@ -189,7 +192,6 @@ const ChattingPanel = ({tourSession}: Props) => {
       connectName = generateVoiceName(socketCode, tourSession.broker.name);
 
     Twilio.Device.connect({ name: connectName });
-
     dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'call'}));
   } 
 
