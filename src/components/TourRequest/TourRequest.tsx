@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -16,12 +16,8 @@ import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
 
 const qs = require('qs');
 
-type Props = {
-  loginUserDialogAction: Function,
-  location: any
-}
-
-const TourRequest = ({ location, loginUserDialogAction }: Props) => {
+const TourRequest = ({ location }: RouteComponentProps) => {
+  const dispatch = useDispatch();
   const [curTourUrl, setTourUrl] = useState('');
   // const [alert, setAlert] = useState({})
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -32,7 +28,7 @@ const TourRequest = ({ location, loginUserDialogAction }: Props) => {
     setTourUrl(params['?url']);
     
     if(!localStorage.token){
-      loginUserDialogAction(true);
+      dispatch(loginUserDialogAction(true));
     }else {
       if(curTourUrl !== '') {
         RequestHelper
@@ -54,7 +50,7 @@ const TourRequest = ({ location, loginUserDialogAction }: Props) => {
         })
       }
     }
-  }, [curTourUrl, location.search, loginUserDialogAction])
+  }, [curTourUrl, dispatch, location.search])
 
   return (
     <>
@@ -83,4 +79,4 @@ const CustomContainer = styled.div`
   }
 `
 
-export default withRouter(connect(null, { loginUserDialogAction })(TourRequest));
+export default withRouter(TourRequest);

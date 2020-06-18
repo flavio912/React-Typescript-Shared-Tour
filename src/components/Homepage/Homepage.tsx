@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import NavMenu from './../../sharedComponents/NavMenu';
@@ -25,11 +25,8 @@ import InstagramSvg from '../../assets/images/instagram.svg';
 import LinkedinSvg from '../../assets/images/linkedin.svg';
 import YoutubeSvg from '../../assets/images/youtube.svg';
 
-type Props = {
-  registerUserDialogAction: Function
-}
-
-const Homepage = ({registerUserDialogAction}: Props) => {
+const Homepage = () => {
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -48,7 +45,7 @@ const Homepage = ({registerUserDialogAction}: Props) => {
               </div>
               <div className="virtual-guide d-flex align-items-center">
                 <h4 className="mb-0 mr-2">Virtual guide</h4>                
-                <RegisterButton className="register-button" onClick={() => {registerUserDialogAction(true)}}>
+                <RegisterButton className="register-button" onClick={() => {dispatch(registerUserDialogAction(true))}}>
                   <img src={SharedDegreeSvg} />
                 </RegisterButton>
               </div>
@@ -229,4 +226,4 @@ const CountrySection = styled.div`
     text-align: center;
   }
 `
-export default connect(null, { registerUserDialogAction })(Homepage);
+export default Homepage;

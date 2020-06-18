@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import validator from 'validator';
 import styled from 'styled-components';
@@ -7,16 +7,11 @@ import RequestHelper from '../../utils/Request.Utils';
 import { resetPasswordDialogAction, loginUserDialogAction } from '../../store/dialog/actions';
 import { DialogNames } from '../../store/dialog/types';
 
-type Props = {
-  resetPasswordDialogAction: Function,
-  loginUserDialogAction: Function
-}
-
-const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: Props) => {
+const ResetPasswordModal = () => {
+  const dispatch = useDispatch();
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
   }))
-
   const [formData, setFormData] = useState({
     email: {value: '', validate: true, errorMsg: ''},
     code: {value: '', validate: true, errorMsg: ''},
@@ -145,7 +140,7 @@ const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: 
                 msg: ''
               });
 
-              loginUserDialogAction(true);
+              dispatch(loginUserDialogAction(true));
             }, 1000)
           }
           setLoading(false);
@@ -172,7 +167,7 @@ const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: 
   return (
     <CustomModal
       show={dialog.isOpened && dialog.name === DialogNames.RESET_PASSWORD_DIALOG}
-      onHide={() => {resetPasswordDialogAction(false)}}
+      onHide={() => {dispatch(resetPasswordDialogAction(false))}}
       centered
       className="reset-password-modal"
     >
@@ -261,7 +256,7 @@ const ResetPasswordModal = ({resetPasswordDialogAction, loginUserDialogAction}: 
               Submit
             </Button>
           }
-          <a className="signin-btn" onClick={() => {loginUserDialogAction(true)}}>Sign In</a>
+          <a className="signin-btn" onClick={() => {dispatch(loginUserDialogAction(true))}}>Sign In</a>
         </Form>
       </Modal.Body>
       <Alert variant="success" show={alert.isShow && alert.status === 'success'}>{alert.msg}</Alert>
@@ -340,4 +335,4 @@ const CustomModal = styled(Modal)`
   }
 `
 
-export default connect(null, {resetPasswordDialogAction, loginUserDialogAction})(ResetPasswordModal);
+export default ResetPasswordModal;

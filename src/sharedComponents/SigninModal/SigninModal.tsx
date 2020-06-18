@@ -1,5 +1,5 @@
-import React, { useState, FormEvent, useEffect } from 'react';
-import { connect, useSelector } from 'react-redux';
+import React, { useState, FormEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import UserAvatarSvg from '../../assets/images/man-1.svg';
@@ -10,14 +10,11 @@ import { loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAc
 import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
-  role: string,
-  loginUserAction: Function,
-  loginUserDialogAction: Function,
-  registerUserDialogAction: Function,
-  forgotPasswordDialogAction: Function
+  role: string
 }
 
-const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction}: Props) => {
+const SigninModal = ({ role }: Props) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: {value: '', validate: true, errorMsg: ''},
     password: {value: '', validate: true, errorMsg: ''},
@@ -112,8 +109,8 @@ const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUser
             }, 2000)
           }else {
             if(res.data.data.user.role === role || role === 'all' ){
-              loginUserAction(res.data.data);
-              loginUserDialogAction(false);
+              dispatch(loginUserAction(res.data.data));
+              dispatch(loginUserDialogAction(false));
               
               if(role === 'broker')
                 history.push('/dashboard');
@@ -143,7 +140,7 @@ const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUser
   return (
     <Modal
       show={dialog.isOpened && dialog.name === DialogNames.LOGIN_USER_DIALOG}
-      onHide={() => {loginUserDialogAction(false)}}
+      onHide={() => {dispatch(loginUserDialogAction(false))}}
       centered
       className="signin-modal"
     >
@@ -219,9 +216,9 @@ const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUser
               Sign In
             </Button>
           }
-          <a onClick={() => {forgotPasswordDialogAction(true)}}>Forgot password?</a>
+          <a onClick={() => {dispatch(forgotPasswordDialogAction(true))}}>Forgot password?</a>
           <div className="signin-btn d-flex justify-content-center align-items-center mt-3">
-            <a onClick={() => {registerUserDialogAction(true)}}>Register</a>
+            <a onClick={() => {dispatch(registerUserDialogAction(true))}}>Register</a>
           </div>
         </Form>
       </Modal.Body>
@@ -230,4 +227,4 @@ const SigninModal = ({role, loginUserAction, loginUserDialogAction, registerUser
   )
 }
 
-export default connect(null, {loginUserAction, loginUserDialogAction, registerUserDialogAction, forgotPasswordDialogAction})(SigninModal);
+export default SigninModal;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
@@ -10,13 +10,11 @@ import { registerUserDialogAction, loginUserDialogAction } from '../../store/dia
 import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
-  role: string,
-  registerUserAction: Function, 
-  registerUserDialogAction: Function,
-  loginUserDialogAction: Function,
+  role: string
 }
 
-const RegisterModal = ({role, registerUserAction, registerUserDialogAction, loginUserDialogAction}: Props) => {
+const RegisterModal = ({ role }: Props) => {
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     userName: {value: '', validate: true, errorMsg: ''},
@@ -201,8 +199,8 @@ const RegisterModal = ({role, registerUserAction, registerUserDialogAction, logi
             }, 2000)
           }else {
             // call registerUserAction
-            registerUserAction(res.data.data);
-            registerUserDialogAction(false);
+            dispatch(registerUserAction(res.data.data));
+            dispatch(registerUserDialogAction(false));
 
             if(role === 'broker'){
               history.push('/dashboard');
@@ -220,7 +218,7 @@ const RegisterModal = ({role, registerUserAction, registerUserDialogAction, logi
   return (
     <Modal
       show={dialog.isOpened && dialog.name === DialogNames.REGISTER_USER_DIALOG}
-      onHide={() => {registerUserDialogAction(false)}}
+      onHide={() => {dispatch(registerUserDialogAction(false))}}
       centered
       className="register-modal"
     >
@@ -370,7 +368,7 @@ const RegisterModal = ({role, registerUserAction, registerUserDialogAction, logi
             </Button>
           }
           <div className="signin-btn d-flex justify-content-center align-items-center">
-            <a onClick={() => {loginUserDialogAction(true)}}>Sign In</a>
+            <a onClick={() => {dispatch(loginUserDialogAction(true))}}>Sign In</a>
           </div>
         </Form>
       </Modal.Body>
@@ -381,4 +379,4 @@ const RegisterModal = ({role, registerUserAction, registerUserDialogAction, logi
   )
 }
 
-export default connect(null, {registerUserAction, registerUserDialogAction, loginUserDialogAction})(RegisterModal);
+export default RegisterModal;

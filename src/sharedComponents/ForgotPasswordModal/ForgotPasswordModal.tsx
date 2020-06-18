@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import validator from 'validator';
 import styled from 'styled-components';
@@ -7,13 +7,8 @@ import RequestHelper from '../../utils/Request.Utils';
 import { forgotPasswordDialogAction, resetPasswordDialogAction, loginUserDialogAction } from '../../store/dialog/actions';
 import { DialogNames } from '../../store/dialog/types';
 
-type Props = {
-  forgotPasswordDialogAction: Function,
-  resetPasswordDialogAction: Function,
-  loginUserDialogAction: Function
-}
-
-const ForgotPasswordModal = ({forgotPasswordDialogAction, resetPasswordDialogAction, loginUserDialogAction}: Props) => {
+const ForgotPasswordModal = () => {
+  const dispatch = useDispatch();
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
   }))
@@ -101,7 +96,7 @@ const ForgotPasswordModal = ({forgotPasswordDialogAction, resetPasswordDialogAct
                 msg: ''
               });
 
-              resetPasswordDialogAction(true);
+              dispatch(resetPasswordDialogAction(true));
             }, 1000)
           }
           setLoading(false);
@@ -128,7 +123,7 @@ const ForgotPasswordModal = ({forgotPasswordDialogAction, resetPasswordDialogAct
   return (
     <CustomModal
       show={dialog.isOpened && dialog.name === DialogNames.FORGOT_PASSWORD_DIALOG}
-      onHide={() => {forgotPasswordDialogAction(false)}}
+      onHide={() => {dispatch(forgotPasswordDialogAction(false))}}
       centered
       className="forgot-password-modal"
     >
@@ -173,7 +168,7 @@ const ForgotPasswordModal = ({forgotPasswordDialogAction, resetPasswordDialogAct
               Send
             </Button>
           }
-          <a className="signin-btn" onClick={() => loginUserDialogAction(true)}>Sign In</a>
+          <a className="signin-btn" onClick={() => {dispatch(loginUserDialogAction(true))}}>Sign In</a>
         </Form>
       </Modal.Body>
       <Alert variant="success" show={alert.isShow && alert.status === 'success'}>{alert.msg}</Alert>
@@ -252,4 +247,4 @@ const CustomModal = styled(Modal)`
   }
 `
 
-export default connect(null, {forgotPasswordDialogAction, resetPasswordDialogAction, loginUserDialogAction})(ForgotPasswordModal);
+export default ForgotPasswordModal;

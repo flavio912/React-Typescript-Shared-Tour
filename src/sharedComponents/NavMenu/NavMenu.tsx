@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navbar, Nav } from 'react-bootstrap';
-import { Link, withRouter } from "react-router-dom";
+import { RouteComponentProps, Link, withRouter } from "react-router-dom";
 
 import { loginUserDialogAction, resetPasswordDialogAction } from '../../store/dialog/actions';
 import { updateUserAction, logoutUserAction } from '../../store/user/actions';
@@ -11,15 +11,8 @@ import LogoutSvg from '../../assets/images/signs.svg';
 
 const qs = require('qs');
 
-type Props = {
-  location: any,
-  loginUserDialogAction: Function,
-  resetPasswordDialogAction: Function,
-  updateUserAction: Function,
-  logoutUserAction: Function
-}
-
-const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction, updateUserAction, logoutUserAction}: Props) => {
+const NavMenu = ({ location }: RouteComponentProps) => {
+  const dispatch = useDispatch();
   const [curPath, setCurPath] = useState(location.pathname);
   const { userInfo } = useSelector((state: any) => ({
     userInfo: state.user
@@ -28,16 +21,16 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction, up
   useEffect(() => {
     if(location.pathname === '/reset-password') {
       const params = qs.parse(location.search);
-      resetPasswordDialogAction({isOpened: true, code: params['?code']});
+      dispatch(resetPasswordDialogAction({isOpened: true, code: params['?code']}));
     } else {
       if(!localStorage.token) {
-        loginUserDialogAction(true);
+        dispatch(loginUserDialogAction(true));
       } else {
         if(userInfo.token === "") {
           RequestHelper
             .get('/users/me', {})
             .then((res) => {
-              if(res.data.success) updateUserAction({token: localStorage.token, user: res.data.data});
+              if(res.data.success) dispatch(updateUserAction({token: localStorage.token, user: res.data.data}));
             })
             .catch(error => console.log(error));
         }  
@@ -46,8 +39,8 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction, up
   }, []) // eslint-disable-line
 
   const handleLogout = () => {
-    logoutUserAction();
-    loginUserDialogAction(true);
+    dispatch(logoutUserAction());
+    dispatch(loginUserDialogAction(true));
   }
 
   return (
@@ -80,7 +73,7 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction, up
                 <img src={LogoutSvg} />
               </Nav.Link>
             ): (
-              <Nav.Link className="login" onClick={() => loginUserDialogAction(true)}>
+              <Nav.Link className="login" onClick={() => {dispatch(loginUserDialogAction(true))}}>
                 <span className="mr-2">Login</span>
               </Nav.Link>
             )}
@@ -99,4 +92,4 @@ const NavMenu = ({location, loginUserDialogAction, resetPasswordDialogAction, up
   )
 }
 
-export default withRouter(connect(null, { loginUserDialogAction, resetPasswordDialogAction, updateUserAction, logoutUserAction })(NavMenu));
+export default withRouter(NavMenu);
