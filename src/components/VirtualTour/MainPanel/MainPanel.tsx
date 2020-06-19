@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -31,7 +31,12 @@ const MainPanel = ({tourSession}: Props) => {
   };
 
   useEffect(() => {
-    let token = tourSession?.tourUrl.split("/").pop();
+    if(!tourSession) return;
+
+    let selectedTour = CONSTANTS.HOME_TOURS.filter(tour => tour.name === tourSession.tourName)[0];
+    setTour(selectedTour);
+
+    let token = tourSession.tourUrl.split("/").pop();
     setEmbedUrl(`${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1`);
     setTourToken(token);
 
@@ -86,7 +91,7 @@ const MainPanel = ({tourSession}: Props) => {
       <iframe id={`tour-${tourToken}`} ref={iframeRef} src={embedUrl} width="100%" height="100%" style={{border: 'none'}} />
       {/* <ActionPanel tourSession={tourSession} curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} /> */}
       <BtnPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}}/>
-      <button onClick={() => testTourControl()}>test</button>
+      {/* <button onClick={() => testTourControl()}>test</button> */}
       <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
       {/* <TransferModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
     </div>

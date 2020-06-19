@@ -28,105 +28,120 @@ export const VoiceCallRoles = {
 
 export const HOME_TOURS = [
   {
-    name: "Secret",
+    name: "ODYSSEY II",
     type: "For Sale and charter",
     info: {
       length: "82.5m (270.6ft)",
       year: 2013,
       content: "Abeking & Rasmussen, 12 guests",
     },
-    imgUrl: "./../../../assets/images/left-back1.png",
+    token: "54-02LL",
+    imgUrl:
+      "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
   },
   {
-    name: "Hasna",
-    type: "For Sale",
-    info: {
-      length: "73m (239.5ft)",
-      year: 2017,
-      content: "Feadship, 12 guests",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
-  {
-    name: "Barbara",
+    name: "SECRET",
     type: "For Sale and charter",
     info: {
-      length: "88.5m (290.4ft)",
-      year: 2017,
-      content: "Oceanco, 12 guests",
+      length: "82.5m (270.6ft)",
+      year: 2013,
+      content: "Abeking & Rasmussen, 12 guests",
     },
-    imgUrl: "../../../assets/images/SECRET.svg",
+    token: "NY-6B28",
+    imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
   },
-  {
-    name: "Anna I",
-    type: "For Sale",
-    info: {
-      length: "67m (219.8ft)",
-      year: 2007,
-      content: "Feadship, De Vries",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
-  {
-    name: "Lady Christine",
-    type: "For Sale",
-    info: {
-      length: "68m (223.1ft)",
-      year: 2010,
-      content: "Feadship, Royal Van Lent",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
-  {
-    name: "Inception",
-    type: "For Sale",
-    info: {
-      length: "50m (164ft)",
-      year: 2008,
-      content: "Heesen",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
-  {
-    name: "Bash",
-    type: "For Sale",
-    info: {
-      length: "56m (183.7ft)",
-      year: 2012,
-      content: "Benetti",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
-  {
-    name: "Ribelle",
-    type: "For Sale",
-    info: {
-      length: "32.6m (106.9ft)",
-      year: 2017,
-      content: "Vitters",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
-  {
-    name: "Slipstream",
-    type: "For charter",
-    info: {
-      length: "60m (196.9ft)",
-      year: 2009,
-      content: "CMN Shipyard, 12 guests",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
-  {
-    name: "Odyssey",
-    type: "For Sale",
-    info: {
-      length: "40.2m (131.9ft)",
-      year: 2015,
-      content: "Princess Yachts International",
-    },
-    imgUrl: "../../../assets/images/SECRET.svg",
-  },
+  // {
+  //   name: "ODYSSEY II",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "54-02LL",
+  //   imgUrl:
+  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
+  // },
+  // {
+  //   name: "SECRET",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "NY-6B28",
+  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
+  // },
+  // {
+  //   name: "ODYSSEY II",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "54-02LL",
+  //   imgUrl:
+  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
+  // },
+  // {
+  //   name: "SECRET",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "NY-6B28",
+  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
+  // },
+  // {
+  //   name: "ODYSSEY II",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "54-02LL",
+  //   imgUrl:
+  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
+  // },
+  // {
+  //   name: "SECRET",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "NY-6B28",
+  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
+  // },
+  // {
+  //   name: "ODYSSEY II",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "54-02LL",
+  //   imgUrl:
+  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
+  // },
+  // {
+  //   name: "SECRET",
+  //   type: "For Sale and charter",
+  //   info: {
+  //     length: "82.5m (270.6ft)",
+  //     year: 2013,
+  //     content: "Abeking & Rasmussen, 12 guests",
+  //   },
+  //   token: "NY-6B28",
+  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
+  // },
 ];
 
 export const TOURS = [

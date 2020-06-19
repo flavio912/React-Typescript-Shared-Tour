@@ -3,7 +3,8 @@ import { Constants, IVirtualTourState, IDispatchVirtualTourAction } from './type
 
 export const initVirtualTour: IVirtualTourState = {
   socket: null,
-  connection: null
+  connection: null,
+  tour: null
 };
 
 export const virtualTourReducer: Reducer<IVirtualTourState, IDispatchVirtualTourAction> = (state = initVirtualTour, action) => {
@@ -11,7 +12,9 @@ export const virtualTourReducer: Reducer<IVirtualTourState, IDispatchVirtualTour
     case Constants.SET_SOCKET:
       return {...state, ...action.payload};
     case Constants.SET_TWILIO_CONNECTION:
-      return {...state, ...action.payload};  
+      return {...state, ...action.payload};
+    case Constants.SET_TOUR:
+      return {...state, ...action.payload};
     default:
       return state;
   }

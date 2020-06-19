@@ -70,6 +70,10 @@ const ChattingPanel = ({tourSession}: Props) => {
     socket.on("ONLINE", (msg) => {
       console.log(msg);
     });
+
+    socket.on("VOICE_READY", (msg) => {
+      console.log("VOICE_READY", msg);
+    })
   }, [socket]) // eslint-disable-line
 
   useEffect(() => {
