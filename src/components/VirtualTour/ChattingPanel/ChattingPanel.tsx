@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { Button } from "react-bootstrap";
 import styled from 'styled-components';
 
-import { voiceChattingDialogAction, setTwilioConnectionAction } from '../../../store/dialog/actions';
+import { voiceChattingDialogAction } from '../../../store/dialog/actions';
+import { setTwilioConnectionAction } from '../../../store/virtualTour/actions';
 import RequestHelper from '../../../utils/Request.Utils';
 import * as Constants from '../../../constants';
 import { DialogNames } from '../../../store/dialog/types';
@@ -24,9 +25,10 @@ type Props = {
 const ChattingPanel = ({tourSession}: Props) => {
   let { id } = useParams();
   const dispatch = useDispatch();
-  const { userInfo, dialogState } = useSelector((state: any) => ({
+  const { userInfo, dialogState, virtualTourState } = useSelector((state: any) => ({
     userInfo: state.user,
-    dialogState: state.dialog
+    dialogState: state.dialog,
+    virtualTourState: state.virtualTour
   })); 
   const [chatHistories, setChatHistories] = useState([]);
   const [socket, setSocket] = useState(null);
@@ -34,7 +36,6 @@ const ChattingPanel = ({tourSession}: Props) => {
   const [newMessage, setNewMessage] = useState('');
   const chattingEndRef = useRef(null);
   const [twilioToken, setTwilioToken] = useState('');
-  const [acceptCall, setAcceptCall] = useState(false);
 
   useEffect(() => {
     if(!userInfo.user.ID) {
@@ -135,9 +136,9 @@ const ChattingPanel = ({tourSession}: Props) => {
   }, [twilioToken, voiceChattingDialogAction]); // eslint-disable-line
 
   const handleAcceptCall = () => {
-    if(!dialogState.connection) return;
+    if(!virtualTourState.connection) return;
     
-    dialogState.connection.accept();
+    virtualTourState.connection.accept();
   }
 
   useEffect(() => {

@@ -52,7 +52,3 @@ export const voiceChattingDialogAction = (data: any) => {
     action: data.action
   })
 }
-
-export const setTwilioConnectionAction = (connection: any)=> {  
-  return action(DialogNames.SET_TWILIO_CONNECTION, { connection });
-}

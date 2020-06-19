@@ -10,10 +10,11 @@ import PlayButton from '../../../sharedComponents/PlayButton';
 
 type Props = {
   curPage: string,
-  setPage: Function
+  setPage: Function,
+  tourSession: object
 }
 
-const ActionPanel = ({curPage, setPage}: Props) => {
+const ActionPanel = ({curPage, setPage, tourSession}: Props) => {
   if(curPage === CONSTANTS.CONNECTING_PAGE) {
     setTimeout(() => {
       setPage(CONSTANTS.CONNECTED_PAGE)
@@ -24,13 +25,13 @@ const ActionPanel = ({curPage, setPage}: Props) => {
     <Container>
       {curPage === CONSTANTS.TOUR_HOME_PAGE && (
         <>
-          <div style={{visibility: "hidden"}}></div>              
+          <div style={{visibility: "hidden"}}></div>
           <h2>
             Tap <span style={{ fontWeight: 600 }}>‘Start’</span> to link up with
             your
             <br /> BURGESS sales broker
           </h2>
-          <div style={{visibility: "hidden"}}></div>              
+          <div style={{visibility: "hidden"}}></div>
         </>
       )}
       {
@@ -38,7 +39,7 @@ const ActionPanel = ({curPage, setPage}: Props) => {
           <>
             <Connecting style={{visibility: 'hidden'}}>Connecting...</Connecting>
             <h2><span style={{fontWeight: 700}}>SECRET</span> has 87miles<br /> of electric cables...</h2>
-            <Connecting>Connecting...</Connecting>            
+            <Connecting>Connecting...</Connecting>
           </>
         )
       }
@@ -76,7 +77,7 @@ const ActionPanel = ({curPage, setPage}: Props) => {
       }
 
       {
-        curPage === CONSTANTS.TOUR_PAUSE_PAGE && (          
+        curPage === CONSTANTS.TOUR_PAUSE_PAGE && (
           <PauseScreen>
             <div className="pause-btn"></div>
           </PauseScreen>
@@ -84,7 +85,7 @@ const ActionPanel = ({curPage, setPage}: Props) => {
       }
 
       {
-        curPage === CONSTANTS.TOUR_STOP_PAGE && (          
+        curPage === CONSTANTS.TOUR_STOP_PAGE && (
           <PauseScreen>
             <h2>Are you sure you want to stop?</h2>
             <div className="pause-btn"></div>

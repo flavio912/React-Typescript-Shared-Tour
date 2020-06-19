@@ -19,30 +19,33 @@ const qs = require('qs');
 const TourRequest = ({ location }: RouteComponentProps) => {
   const dispatch = useDispatch();
   const [curTourUrl, setTourUrl] = useState('');
-  // const [alert, setAlert] = useState({})
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [showFailAlert, setShowFailAlert] = useState(false);
+  const [alert, setAlert] = useState({isShow: false, status: '', msg: ''});
 
   useEffect(() => {
     const params = qs.parse(location.search);
-    setTourUrl(params['?url']);
+    const tourUrl = params['?url'];
+    setTourUrl(tourUrl);
     
     if(!localStorage.token){
       dispatch(loginUserDialogAction(true));
     }else {
-      if(curTourUrl !== '') {
+      if(tourUrl !== '') {
         RequestHelper
         .post('/tour-session/request', {
-          tourUrl: curTourUrl,
+          tourUrl: tourUrl,
           scheduleTime: new Date()
         })
         .then((res) => {
           if(res.data.success){
-            setShowSuccessAlert(true);
-            window.setTimeout(() => {setShowSuccessAlert(false)}, 3000);
+            setAlert({isShow: true, status: 'success', msg: 'Tour Request Success!'});
+            window.setTimeout(() => {
+              setAlert({...alert, isShow: false});
+            }, 3000);
           }else {
-            setShowFailAlert(true);
-            window.setTimeout(() => {setShowFailAlert(false)}, 3000);
+            setAlert({isShow: true, status: 'danger', msg: res.data.error});
+            window.setTimeout(() => {
+              setAlert({...alert, isShow: false});
+            }, 3000);
           }
         })
         .catch((error) => {
@@ -50,7 +53,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
         })
       }
     }
-  }, [curTourUrl, dispatch, location.search])
+  }, [location.search]) // eslint-disable-line
 
   return (
     <>
@@ -58,8 +61,8 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       <CustomContainer>
         <iframe src={curTourUrl} width="100%" height="100%" style={{border: 'none'}} />
       </CustomContainer>
-      <Alert variant="success" show={showSuccessAlert}>Tour Request sent successfully!</Alert>
-      <Alert variant="danger" show={showFailAlert}>Error! Tour Request Error!</Alert>
+      <Alert variant="success" show={alert.isShow && alert.status==='success'}>{alert.msg}</Alert>
+      <Alert variant="danger" show={alert.isShow && alert.status==='danger'}>{alert.msg}</Alert>
 
       <RegisterModal role="client" />
       <SigninModal role="client" />

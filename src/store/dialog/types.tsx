@@ -17,5 +17,4 @@ export enum DialogNames {
   ENTER_CODE_DIALOG = 'enter_code',
   THANKYOU_DIALOG = 'thankyou',
   VOICE_CHATTING_DIALOG = 'voice_chatting',
-  SET_TWILIO_CONNECTION = 'set_twilio_connection'
 }

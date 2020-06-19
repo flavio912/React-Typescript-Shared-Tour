@@ -1,6 +1,5 @@
 import { Reducer } from 'redux';
 import { DialogNames, IDialogState, IDispatchDialogAction } from './types';
-import { stat } from 'fs';
 
 const initDialog: IDialogState = {
   name: '',
@@ -22,9 +21,6 @@ export const dialogReducer: Reducer<IDialogState, IDispatchDialogAction> = (stat
     case DialogNames.THANKYOU_DIALOG:
       return {...state, ...action.payload};
     case DialogNames.VOICE_CHATTING_DIALOG:
-      return {...state, ...action.payload};
-    case DialogNames.SET_TWILIO_CONNECTION:
-console.log({...state, ...action.payload});      
       return {...state, ...action.payload};
     default:
       return state;
