@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -23,7 +23,8 @@ const MainPanel = () => {
   const iframeRef = useRef(null);
   const [tourControl, setTourControl] = useState(null);
 
-  const { virtualTourState } = useSelector((state: any) => ({
+  const { virtualTourState, userState } = useSelector((state: any) => ({
+    userState: state.user,
     virtualTourState: state.virtualTour
   })); 
 
@@ -59,42 +60,53 @@ const MainPanel = () => {
     tourControl.on('PLAYER_TRANSITION_TO', (data) => {
       // callback when the tour navigate to somewhere
       console.log('PLAYER_TRANSITION_TO', data);
-      socket.emit('TOUR_CONTROL', {
-        event: 'PLAYER_TRANSITION_TO',
+      socket.emit("TOUR_CONTROL", {
+        event: "PLAYER_TRANSITION_TO",
         data,
       });
     });
-
-    // tourControl.on('TOUR_PROGRAMATICALLY_TRANSITION', (data) => {
-    //   // callback when the tour navigate to somewhere
-    //   console.log('TOUR_PROGRAMATICALLY_TRANSITION', data);
-    //   socket.emit('TOUR_CONTROL', {
-    //     event: 'TOUR_PROGRAMATICALLY_TRANSITION',
-    //     data,
-    //   });
-    // });
-  
+ 
     tourControl.on('PLAYER_TRANSITION_TO_IMMEDIATELY', (data) => {
       // callback when the tour navigate immediately to somewhere
-      console.log('PLAYER_TRANSITION_TO_IMMEDIATELY', data);
+      if(userState.user.role === CONSTANTS.UserRoles.broker){
+        socket.emit("TOUR_CONTROL", {
+          event: 'PLAYER_TRANSITION_TO_IMMEDIATELY',
+          data,
+        });
+      }
     });
 
     tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
       // callback when the middle play icon is clicked
-      console.log('THUMBNAIL_PLAY_CLICK', data);
+      // console.log('THUMBNAIL_PLAY_CLICK', data);
     });
     
     // in client code, replicate the tour action when receiving socket event
-    socket.on('TOUR_CONTROL', data => {
-      if (data.event === 'PLAYER_TRANSITION_TO') {
-        tourControl.transitionTo(data.data);
-      }
-    });
-  }, [virtualTourState.tourSession, tourToken, virtualTourState.socket])
+    socket.on("TOUR_CONTROL", (data) => {
+      if(userState.user.role !== CONSTANTS.UserRoles.client) return;
 
+      switch (data.event) {
+        case "THUMBNAIL_PLAY_CLICK":
+          tourControl.thumbnailPlayClick();    
+          break;
+        case "PLAYER_TRANSITION_TO":
+        case "PLAYER_TRANSITION_TO_IMMEDIATELY": {
+          tourControl.transitionTo(data.data);
+          break;
+        }      
+        default:
+          break;
+      }        
+    });
+  }, [virtualTourState.tourSession, tourToken, virtualTourState.socket]) // eslint-disable-line
+  
   const clickPlayThumbnail = () => {
-    console.log(tourControl);
+    // console.log(tourControl);
     tourControl.thumbnailPlayClick();
+    virtualTourState.socket.emit("TOUR_CONTROL", {
+      event: "THUMBNAIL_PLAY_CLICK",
+      data: null
+    })
   }
 
   const clickRandomGo = () => {
@@ -133,8 +145,6 @@ const MainPanel = () => {
       <iframe id={`tour-${tourToken}`} ref={iframeRef} src={embedUrl} width="100%" height="100%" style={{border: 'none'}} />
       {/* <ActionPanel tourSession={tourSession} curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} /> */}
       <BtnPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}}/>
-      <button onClick={() => clickPlayThumbnail()}>Click Play Thumbnail</button>
-      <button onClick={() => clickRandomGo()}>Randomly go to somewhere</button>
       <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
       {/* <TransferModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
     </div>

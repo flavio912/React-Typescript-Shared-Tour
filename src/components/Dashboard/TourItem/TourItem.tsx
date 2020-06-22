@@ -46,8 +46,7 @@ type Props = {
 }
 
 const TourItem = ({tourInfo}: Props) => {
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [showFailAlert, setShowFailAlert] = useState(false);
+  const [alert, setAlert] = useState({isShow: false, status: '', msg: ''});
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
@@ -57,8 +56,10 @@ const TourItem = ({tourInfo}: Props) => {
       .post('/tour-session/confirm-request', {id: id})
       .then((res) => {
         if(!res.data.success) {
-          setShowFailAlert(true);
-          window.setTimeout(() => {setShowFailAlert(false)}, 2000);
+          setAlert({isShow: true, status: 'danger', msg: res.data.error});
+          window.setTimeout(() => {
+            setAlert({...alert, isShow: false});
+          }, 3000);
         }else {
           const tourId = res.data.data.ID;
           history.push(`/virtual-tour/${tourId}`);
@@ -113,8 +114,7 @@ const TourItem = ({tourInfo}: Props) => {
           </div>
         </div>
 
-        <Alert variant="success" show={showSuccessAlert}>Success! Confirm Request.</Alert>
-        <Alert variant="danger" show={showFailAlert}>Error! Confirm Request.</Alert>
+        <Alert variant="danger" show={alert.isShow && alert.status=== 'danger'}>{alert.msg}</Alert>
       </div>
     </>    
   )

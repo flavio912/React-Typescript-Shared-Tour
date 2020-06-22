@@ -33,7 +33,7 @@ const SidePanel = ({ curTab, setTab }: Props) => {
         <TabItem className={"unavailable " + (curTab === 'unavailable'? 'active': '')} onClick={() => setTab('unavailable')}>
           <span>Unavailable</span>
         </TabItem> */}
-        <TabItem className={"history " + (curTab === 'Complete'? 'active': '')} onClick={() => setTab('Complete')}>
+        <TabItem className={"history " + (curTab === 'Completed'? 'active': '')} onClick={() => setTab('Completed')}>
           <span>History</span>
         </TabItem>
       </div>

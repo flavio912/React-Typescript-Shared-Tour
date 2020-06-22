@@ -72,7 +72,7 @@ const VirtualTour = () => {
 
     // receiving message
     socket.on("ONLINE", (msg) => {
-      console.log(msg);
+      console.log("ONLINE", msg);
     });
 
     socket.on("VOICE_READY", (msg) => {

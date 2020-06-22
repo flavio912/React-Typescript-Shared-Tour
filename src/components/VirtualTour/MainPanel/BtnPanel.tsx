@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -10,8 +11,15 @@ type Props = {
 };
 
 const BtnPanel = ({ curPage, setPage }: Props) => {
-  
+  const { virtualTourState } = useSelector((state: any) => ({
+    virtualTourState: state.virtualTour
+  }));
+
   const handleConnect = () => {
+    virtualTourState.socket.emit("ONLINE", {
+      id: virtualTourState.tourSession.broker.ID,
+      token: localStorage.token
+    })
     setPage(CONSTANTS.CONNECTING_PAGE);
   }
     
