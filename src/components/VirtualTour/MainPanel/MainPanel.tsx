@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -13,11 +14,7 @@ import ArrowSVG from '../../../assets/images/arrow.svg';
 
 declare var TourSDK;
 
-type Props = {
-  tourSession: any;
-}
-
-const MainPanel = ({tourSession}: Props) => {
+const MainPanel = () => {
   const [curPage, setCurPage] = useState(CONSTANTS.TOUR_HOME_PAGE);
   const [showOptionModal, setShowOptionModal] = useState(false);
   const [curTour, setTour] = useState(CONSTANTS.HOME_TOURS[0]);
@@ -26,54 +23,99 @@ const MainPanel = ({tourSession}: Props) => {
   const iframeRef = useRef(null);
   const [tourControl, setTourControl] = useState(null);
 
+  const { virtualTourState } = useSelector((state: any) => ({
+    virtualTourState: state.virtualTour
+  })); 
+
   const onClickStart = (selectedOne:string) => {
     setCurPage(selectedOne);
   };
 
   useEffect(() => {
-    if(!tourSession) return;
+    if(!virtualTourState.tourSession || !virtualTourState.socket) return;
 
-    let selectedTour = CONSTANTS.HOME_TOURS.filter(tour => tour.name === tourSession.tourName)[0];
+    const socket = virtualTourState.socket;
+    const selectedTour = CONSTANTS.HOME_TOURS.filter(tour => tour.name === virtualTourState.tourSession.tourName)[0];
     setTour(selectedTour);
 
-    let token = tourSession.tourUrl.split("/").pop();
+    const token = virtualTourState.tourSession.tourUrl.split("/").pop();
     setEmbedUrl(`${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1`);
     setTourToken(token);
 
     if(!token || iframeRef.current.id !== `tour-${token}`) return;
-
-    let tourControl = new TourSDK(`#tour-${token}`);
+    const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
     setTourControl(tourControl);
+
     tourControl.on('PLAYER_START_AUTO_SPIN', (data) => {
       // callback when the tour auto plays
+      console.log('tour auto plays');
     });
   
     tourControl.on('PLAYER_STOP_AUTO_SPIN', (data) => {
       // callback when the tour stops auto play
+      console.log('tour stops auto play');
     });
   
     tourControl.on('PLAYER_TRANSITION_TO', (data) => {
       // callback when the tour navigate to somewhere
+      console.log('PLAYER_TRANSITION_TO', data);
+      socket.emit('TOUR_CONTROL', {
+        event: 'PLAYER_TRANSITION_TO',
+        data,
+      });
     });
+
+    // tourControl.on('TOUR_PROGRAMATICALLY_TRANSITION', (data) => {
+    //   // callback when the tour navigate to somewhere
+    //   console.log('TOUR_PROGRAMATICALLY_TRANSITION', data);
+    //   socket.emit('TOUR_CONTROL', {
+    //     event: 'TOUR_PROGRAMATICALLY_TRANSITION',
+    //     data,
+    //   });
+    // });
   
     tourControl.on('PLAYER_TRANSITION_TO_IMMEDIATELY', (data) => {
       // callback when the tour navigate immediately to somewhere
+      console.log('PLAYER_TRANSITION_TO_IMMEDIATELY', data);
     });
-  
-  }, [tourSession, tourToken])
 
-  const testTourControl = () => {
+    tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
+      // callback when the middle play icon is clicked
+      console.log('THUMBNAIL_PLAY_CLICK', data);
+    });
+    
+    // in client code, replicate the tour action when receiving socket event
+    socket.on('TOUR_CONTROL', data => {
+      if (data.event === 'PLAYER_TRANSITION_TO') {
+        tourControl.transitionTo(data.data);
+      }
+    });
+  }, [virtualTourState.tourSession, tourToken, virtualTourState.socket])
+
+  const clickPlayThumbnail = () => {
     console.log(tourControl);
-    tourControl.startAutospin();
+    tourControl.thumbnailPlayClick();
+  }
+
+  const clickRandomGo = () => {
+    const ids = ["1606", "1605", "7906", "7905"];
+    const randomIndex = Math.floor(Math.random() * ids.length);
+    tourControl.transitionTo([ ids[randomIndex] ]);
+    // tourControl.startAutoSpin();
+  }
+
+  const changeTourSession = (tour) => {
+    setTour(tour);
+    // setTourSessionAction(tour);
   }
 
   return (
     <div className="right-panel d-flex flex-column">
       <div className="main-header d-flex flex-column">
         <div className="d-flex justify-content-between">
-          <h1 className="title">{tourSession? tourSession.tourName: ''}</h1>
+          <h1 className="title">{virtualTourState.tourSession? virtualTourState.tourSession.tourName: ''}</h1>
           <div className="d-flex flex-column">
-            <TourDropDown curTour={curTour} changeTour={(tour: any) => setTour(tour)} />
+            <TourDropDown curTour={curTour} changeTour={(tour: any) => {changeTourSession(tour)}} />
             {curPage !== CONSTANTS.TOUR_HOME_PAGE && (
               <ArrowBtn onClick={() => {setShowOptionModal(true)}}>
                 <img src={ArrowSVG} style={{width: '39px', height: '35px'}}/>
@@ -91,7 +133,8 @@ const MainPanel = ({tourSession}: Props) => {
       <iframe id={`tour-${tourToken}`} ref={iframeRef} src={embedUrl} width="100%" height="100%" style={{border: 'none'}} />
       {/* <ActionPanel tourSession={tourSession} curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} /> */}
       <BtnPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}}/>
-      {/* <button onClick={() => testTourControl()}>test</button> */}
+      <button onClick={() => clickPlayThumbnail()}>Click Play Thumbnail</button>
+      <button onClick={() => clickRandomGo()}>Randomly go to somewhere</button>
       <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} />
       {/* <TransferModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
     </div>

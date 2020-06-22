@@ -10,14 +10,18 @@ type Props = {
 };
 
 const BtnPanel = ({ curPage, setPage }: Props) => {
-
+  
+  const handleConnect = () => {
+    setPage(CONSTANTS.CONNECTING_PAGE);
+  }
+    
   return (
     <div className="btn-container d-flex justify-content-end mt-2">
       {curPage === CONSTANTS.TOUR_HOME_PAGE && (
         <Button
           variant="outline-primary"
           className="btn-start btn-bugress-outline"
-          onClick={() => setPage(CONSTANTS.CONNECTING_PAGE)}
+          onClick={() => handleConnect()}
         >
           Start
         </Button>

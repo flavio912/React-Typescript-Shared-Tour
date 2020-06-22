@@ -1,3 +1,4 @@
+// export const
 export const TOUR_HOME_PAGE = "Tour Home Page";
 export const CONNECTING_PAGE = "Connecting page";
 export const CONNECTED_PAGE = "Connected page";
