@@ -4,6 +4,7 @@ import { Alert, Spinner } from 'react-bootstrap';
 import Moment from 'react-moment';
 import styled from 'styled-components';
 
+import * as CONSTANT from '../../../constants';
 import RequestHelper from '../../../utils/Request.Utils';
 import PlaySvg from '../../../assets/images/play.svg';
 
@@ -51,22 +52,26 @@ const TourItem = ({tourInfo}: Props) => {
   const history = useHistory();
 
   const confirmRequest = (id: number) => {
-    setIsLoading(true);
-    RequestHelper
-      .post('/tour-session/confirm-request', {id: id})
-      .then((res) => {
-        if(!res.data.success) {
-          setAlert({isShow: true, status: 'danger', msg: res.data.error});
-          window.setTimeout(() => {
-            setAlert({...alert, isShow: false});
-          }, 3000);
-        }else {
-          const tourId = res.data.data.ID;
-          history.push(`/virtual-tour/${tourId}`);
-        }
-        setIsLoading(false);
-      })
-      .catch(error => console.log(error));
+    if(tourInfo.status === CONSTANT.TOUR_STATUS.PENDING) {
+      setIsLoading(true);
+      RequestHelper
+        .post('/tour-session/confirm-request', {id: id})
+        .then((res) => {
+          if(!res.data.success) {
+            setAlert({isShow: true, status: 'danger', msg: res.data.error});
+            window.setTimeout(() => {
+              setAlert({...alert, isShow: false});
+            }, 3000);
+          }else {
+            const tourId = res.data.data.ID;
+            history.push(`/virtual-tour/${tourId}`);
+          }
+          setIsLoading(false);
+        })
+        .catch(error => console.log(error));  
+    }else {
+      history.push(`/virtual-tour/${tourInfo.ID}`);
+    }
   }
 
   return (

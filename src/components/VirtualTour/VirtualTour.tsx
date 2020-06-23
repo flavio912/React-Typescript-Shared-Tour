@@ -9,7 +9,8 @@ import {
   setTourSessionAction, 
   setSocketCodeAction, 
   setSocketAction, 
-  setTwilioConnectionAction
+  setTwilioConnectionAction,
+  setTourControllerAction
 } from '../../store/virtualTour/actions';
 import { voiceChattingDialogAction } from '../../store/dialog/actions';
 
@@ -22,6 +23,7 @@ import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
 import VoiceChattingModal from '../../sharedComponents/VoiceChattingModal';
 import RequestHelper from '../../utils/Request.Utils';
 import { generateVoiceName } from '../../utils/Common.Utils';
+import * as CONSTANTS from '../../constants';
 
 declare var io;
 declare var Twilio;
@@ -53,6 +55,8 @@ const VirtualTour = () => {
       }else {
         dispatch(setSocketCodeAction(tour_session_start_res.data.data.socketCode));
         dispatch(setSocketAction(io(`api.burgess-shared-tour.devserver.london/${tour_session_start_res.data.data.socketCode}`)));
+        dispatch(setTourControllerAction(CONSTANTS.UserRoles.broker));
+        localStorage.setItem("controller", CONSTANTS.UserRoles.broker);
         const voiceName = generateVoiceName(tour_session_start_res.data.data.socketCode, userState.user.name);
         initiateVoiceSetup(voiceName);
       }

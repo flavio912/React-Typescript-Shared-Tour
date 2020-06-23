@@ -20,3 +20,7 @@ export const setTourControlAction = (tourControl: any) => {
 export const setTourSessionAction = (tourSession: any) => {
   return action(Constants.SET_TOUR_SESSION, { tourSession });
 }
+
+export const setTourControllerAction = (controller: any) => {
+  return action(Constants.SET_TOUR_CONTROLLER, { controller });
+}

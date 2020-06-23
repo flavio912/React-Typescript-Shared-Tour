@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
+import { setTourControllerAction } from '../../../store/virtualTour/actions';
 import * as CONSTANTS from "../../../constants";
 import CONFIG from '../../../config';
 import ActionPanel from "./ActionPanel";
@@ -20,8 +21,8 @@ const MainPanel = () => {
   const [curTour, setTour] = useState(CONSTANTS.HOME_TOURS[0]);
   const [embedUrl, setEmbedUrl] = useState('');
   const [tourToken, setTourToken] = useState('');
-  const [curController, setController] = useState(CONSTANTS.UserRoles.broker);
   const iframeRef = useRef(null);
+  const dispatch = useDispatch();
 
   const { virtualTourState, userState } = useSelector((state: any) => ({
     userState: state.user,
@@ -29,11 +30,11 @@ const MainPanel = () => {
   })); 
 
   useEffect(() => {
-    if(!virtualTourState.tourSession || !virtualTourState.socket) return;
+    if(!virtualTourState.tourSession || !virtualTourState.socket || !localStorage.controller) return;
 
     const socket = virtualTourState.socket;
     const selectedTour = CONSTANTS.HOME_TOURS.filter(tour => tour.name === virtualTourState.tourSession.tourName)[0];
-    setTour(selectedTour);
+    setTour({...selectedTour, ...virtualTourState.tourSession});
 
     const token = virtualTourState.tourSession.tourUrl.split("/").pop();
     setEmbedUrl(`${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1`);
@@ -42,14 +43,10 @@ const MainPanel = () => {
     if(!token || iframeRef.current.id !== `tour-${token}`) return;
     const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
 
-    // if(userState.user.role === CONSTANTS.UserRoles.client) {
-    //   tourControl.lockControl();
-    // }
-
     tourControl.on('PLAYER_START_AUTO_SPIN', (data) => {
       // callback when the tour auto plays
       console.log('tour auto plays');
-      if(userState.user.role === curController){
+      if(userState.user.role === localStorage.controller){
         socket.emit("TOUR_CONTROL", {
           event: "PLAYER_START_AUTO_SPIN",
           data,
@@ -60,7 +57,7 @@ const MainPanel = () => {
     tourControl.on('PLAYER_STOP_AUTO_SPIN', (data) => {
       // callback when the tour stops auto play
       console.log('tour stops auto play');
-      if(userState.user.role === curController){
+      if(userState.user.role === localStorage.controller){
         socket.emit("TOUR_CONTROL", {
           event: "PLAYER_STOP_AUTO_SPIN",
           data,
@@ -70,7 +67,7 @@ const MainPanel = () => {
   
     tourControl.on('PLAYER_TRANSITION_TO', (data) => {
       // callback when the tour navigate to somewhere
-      if(userState.user.role === curController){
+      if(userState.user.role === localStorage.controller){
         socket.emit("TOUR_CONTROL", {
           event: "PLAYER_TRANSITION_TO",
           data,
@@ -80,17 +77,32 @@ const MainPanel = () => {
  
     tourControl.on('PLAYER_TRANSITION_TO_IMMEDIATELY', (data) => {
       // callback when the tour navigate immediately to somewhere
-      // if(userState.user.role === curController){
-      //   socket.emit("TOUR_CONTROL", {
-      //     event: 'PLAYER_TRANSITION_TO_IMMEDIATELY',
-      //     data,
-      //   });
-      // }
+      if(userState.user.role === localStorage.controller){
+        socket.emit("TOUR_CONTROL", {
+          event: 'PLAYER_TRANSITION_TO_IMMEDIATELY',
+          data,
+        });
+      }
     });
 
     tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
       // callback when the middle play icon is clicked
       console.log('THUMBNAIL_PLAY_CLICK', data);
+      setEventType(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START);
+      
+      if(userState.user.role !== localStorage.controller) {
+        tourControl.lockControl();
+      }
+    });
+
+    tourControl.on('ACTIVE_HOTSPOT_CHANGE', (data) => {
+      console.log('ACTIVE_HOTSPOT_CHANGE', data);
+      // if(userState.user.role === localStorage.controller){
+      //   socket.emit("TOUR_CONTROL", {
+      //     event: 'PLAYER_TRANSITION_TO_IMMEDIATELY',
+      //     data,
+      //   });
+      // }
     });
     
     // in client code, replicate the tour action when receiving socket event
@@ -98,7 +110,6 @@ const MainPanel = () => {
       switch (data.event) {
         case "THUMBNAIL_PLAY_CLICK":{
           tourControl.thumbnailPlayClick();
-          setEventType(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START);
           break;
         }
         case "PLAYER_TRANSITION_TO":
@@ -118,10 +129,23 @@ const MainPanel = () => {
     });
 
     socket.on("SWITCH_CONTROL_TO_CLIENT", data => {
-      setController(CONSTANTS.UserRoles.client);
+      dispatch(setTourControllerAction(CONSTANTS.UserRoles.client));
+      localStorage.setItem("controller", CONSTANTS.UserRoles.client);
+
+      if(userState.user.role === CONSTANTS.UserRoles.client)
+        tourControl.unlockControl();
+      else
+        tourControl.lockControl();
     });
+
     socket.on("SWITCH_CONTROL_TO_BROKER", data => {
-      setController(CONSTANTS.UserRoles.broker);
+      dispatch(setTourControllerAction(CONSTANTS.UserRoles.broker));
+      localStorage.setItem("controller", CONSTANTS.UserRoles.broker);
+
+      if(userState.user.role === CONSTANTS.UserRoles.broker)
+        tourControl.unlockControl();
+      else
+        tourControl.lockControl();
     });
   }, [virtualTourState.tourSession, tourToken, virtualTourState.socket]) // eslint-disable-line
 
@@ -141,20 +165,21 @@ const MainPanel = () => {
     }
   };
 
-  const changeTourSession = (tour) => {
+  const switchTour = (tour) => {
+console.log(tour);
+console.log(virtualTourState.tourSession);
     setTour(tour);
     // setTourSessionAction(tour);
   }
 
-  const handleTransferControl = (isOk: boolean) => {
-    console.log(curController);
+  const handleTransferControl = (isOk: boolean) => {    
     if(isOk) {
-      if(curController === CONSTANTS.UserRoles.broker)
+      if(localStorage.controller === CONSTANTS.UserRoles.broker)
         virtualTourState.socket.emit("SWITCH_CONTROL_TO_CLIENT");
-      else if(curController === CONSTANTS.UserRoles.client)
+      else
         virtualTourState.socket.emit("SWITCH_CONTROL_TO_BROKER");
     }
-    setShowTransferModal(false);    
+    setShowTransferModal(false);
   }
 
   return (
@@ -165,12 +190,12 @@ const MainPanel = () => {
           <div className="d-flex flex-column">
             <TourDropDown 
               curTour={curTour}
-              isDisable={userState.user.role === curController? false: true}
-              changeTour={(tour: any) => {changeTourSession(tour)}} 
+              isDisable={userState.user.role === virtualTourState.controller? false: true}
+              changeTour={(tour: any) => {switchTour(tour)}} 
             />
             {eventType !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
               <ArrowBtn 
-                className={`${userState.user.role === curController ? '': 'btn-disable'}`}
+                className={`${userState.user.role === virtualTourState.controller ? '': 'btn-disable'}`}
                 onClick={() => {setShowTransferModal(true)}}
               >
                 <img src={ArrowSVG} style={{width: '39px', height: '35px'}}/>
@@ -187,7 +212,7 @@ const MainPanel = () => {
       </div>
       <iframe id={`tour-${tourToken}`} ref={iframeRef} src={embedUrl} width="100%" height="100%" style={{border: 'none'}} />
       {/* <ActionPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} /> */}
-      <BtnPanel controller={curController} status={eventType} handleEvent={(eventType: string) => {handleEvent(eventType)}}/>
+      <BtnPanel controller={virtualTourState.controller} status={eventType} handleEvent={(eventType: string) => {handleEvent(eventType)}}/>
       {/* <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
       <TransferModal isShow={showTransferModal} hideModal={(isOk: boolean) => handleTransferControl(isOk)} />
     </div>

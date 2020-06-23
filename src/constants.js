@@ -4,15 +4,12 @@ export const VIRTUAL_TOUR_CONTROL_EVENT = {
   GOTO: "goto",
   STOP: "stop",
 };
-export const TOUR_HOME_PAGE = "Tour Home Page";
-export const CONNECTING_PAGE = "Connecting page";
-export const CONNECTED_PAGE = "Connected page";
-export const TOUR_START_PAGE = "Tour Start Page";
-export const GO_TO_TOUR_PAGE = "Go To Tour Page";
-export const TOUR_PLAY_PAGE = "Tour Play Page";
-export const TOUR_PAUSE_PAGE = "Tour Pause Page";
-export const TOUR_STOP_PAGE = "Tour Stop Page";
-export const WELCOME_PAGE = "Welcome page";
+
+export const TOUR_STATUS = {
+  PENDING: "Pending",
+  CONNECTED: "Connected",
+  COMPLETED: "Completed",
+};
 
 export const UserRoles = {
   broker: "broker",
@@ -149,6 +146,16 @@ export const HOME_TOURS = [
   //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
   // },
 ];
+
+export const TOUR_HOME_PAGE = "Tour Home Page";
+export const CONNECTING_PAGE = "Connecting page";
+export const CONNECTED_PAGE = "Connected page";
+export const TOUR_START_PAGE = "Tour Start Page";
+export const GO_TO_TOUR_PAGE = "Go To Tour Page";
+export const TOUR_PLAY_PAGE = "Tour Play Page";
+export const TOUR_PAUSE_PAGE = "Tour Pause Page";
+export const TOUR_STOP_PAGE = "Tour Stop Page";
+export const WELCOME_PAGE = "Welcome page";
 
 export const TOURS = [
   {
