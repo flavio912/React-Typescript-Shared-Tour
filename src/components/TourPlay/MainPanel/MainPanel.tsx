@@ -24,7 +24,7 @@ const MainPanel = () => {
         <div className="d-flex justify-content-between">
           <h1 className="title">{curTour.name}</h1>
           <div className="d-flex flex-column">
-            <TourDropDown curTour={curTour} changeTour={(tour: any) => setTour(tour)} />
+            <TourDropDown curTour={curTour} isDisable changeTour={(tour: any) => setTour(tour)} />
             {curPage !== CONSTANTS.TOUR_HOME_PAGE && (
               <ArrowBtn onClick={() => {setShowOptionModal(true)}}>
                 <img src={ArrowSVG} style={{width: '39px', height: '35px'}}/>

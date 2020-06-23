@@ -5,36 +5,44 @@ import * as CONSTANTS from '../../constants';
 
 type Props= {
   curTour: any,
+  isDisable: boolean,
   changeTour: Function
 }
 
-const TourDropDown = ({curTour, changeTour}: Props) => {
+const TourDropDown = ({curTour, isDisable, changeTour}: Props) => {
   const tourList = CONSTANTS.HOME_TOURS;
 
   return (
-    <Dropdown
-      drop={"left"}
-    >
-      <DropdownToggle variant="success" id="dropdown-basic" className="p-0">
-        <Bar /><Bar /><Bar />
-      </DropdownToggle>
+    <CustomDropdown className={`${!isDisable? '': 'btn-disable'}`}>
+      <Dropdown
+        drop={"left"}
+      >
+        <DropdownToggle variant="success" id="dropdown-basic" className="p-0">
+          <Bar /><Bar /><Bar />
+        </DropdownToggle>
 
-      <DropdownMenu>
-        <Title className="mb-4">Select tour</Title>
-        {
-          tourList && tourList.length > 0 && (
-            tourList.map((item, nIndex) => {
-              return (
-                <DropdownItem className={curTour.name === item.name? 'active': ''} onClick={() => changeTour(item)} key={nIndex}>{item.name}</DropdownItem>
-              )
-            })
-          )
-        }
-        
-      </DropdownMenu>
-    </Dropdown>
+        <DropdownMenu>
+          <Title className="mb-4">Select tour</Title>
+          {
+            tourList && tourList.length > 0 && (
+              tourList.map((item, nIndex) => {
+                return (
+                  <DropdownItem className={curTour.name === item.name? 'active': ''} onClick={() => changeTour(item)} key={nIndex}>{item.name}</DropdownItem>
+                )
+              })
+            )
+          }
+          
+        </DropdownMenu>
+      </Dropdown>
+    </CustomDropdown>
+    
   )
 }
+
+const CustomDropdown = styled.div`
+
+`
 const Title = styled.h4`
   line-height: 1;
   font-size: 1.8rem;

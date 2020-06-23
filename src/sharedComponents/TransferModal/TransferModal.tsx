@@ -12,15 +12,15 @@ const TransferModal = ({isShow, hideModal}: Props) => {
   return (
     <CustomModal
       show={isShow}
-      onHide={hideModal}
+      onHide={() => hideModal(false)}
       centered
     >
       <Modal.Body>
         <Title>Transfer Control?</Title>
         <ControlDiv>
-          <ButtonRed variant="outline-primary">No</ButtonRed>
+          <ButtonRed variant="outline-primary" onClick={() => hideModal(false)}>No</ButtonRed>
           <img src={ArrowSvg} style={{ width: '59px', height: '47px', marginLeft: '32px', marginRight: '32px'}}/>
-          <ButtonBlue variant="outline-primary">Ok</ButtonBlue>
+          <ButtonBlue variant="outline-primary" onClick={() => hideModal(true)}>Ok</ButtonBlue>
         </ControlDiv>
         <Description>
           Do wish to transfer control of the <br /><br />tour? Please tap the <span>Ok</span> to transfer <br /><br />
@@ -35,8 +35,13 @@ const CustomModal = styled(Modal)`
   width: 417px;
   border-radius: 12px;  
   left: calc(50% - 208px) !important;
-  .modal-body {
-    padding: 23px 66px;
+
+  .modal-content {
+    background: white;
+
+    .modal-body {
+      padding: 23px 66px;
+    }  
   }
 `
 

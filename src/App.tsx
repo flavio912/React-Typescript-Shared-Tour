@@ -8,9 +8,9 @@ import Homepage from './components/Homepage';
 import Dashboard from './components/Dashboard';
 import VirtualTour from './components/VirtualTour';
 import TourRequest from './components/TourRequest';
+import TourView from './components/TourView';
 
 // import TourPlay from './components/TourPlay';
-// import TourView from './components/TourView';
 // import TourStart from './components/TourStart';
 // import TourInside from './components/TourInside';
 
@@ -23,8 +23,8 @@ function App() {
         <Route exact path="/virtual-tour/:id" component={VirtualTour} />
         <Route exact path="/tour/request" component={TourRequest} />
         <Route exact path="/reset-password" component={Homepage} />
+        <Route exact path="/tour/view/:token" component={TourView} />
         {/* <Route exact path="/tour" component={TourPlay} />
-        <Route exact path="/tour/view" component={TourView} />
         <Route exact path="/tour/start" component={TourStart} />
         <Route exact path="/tour/inside" component={TourInside} /> */}
       </Switch>

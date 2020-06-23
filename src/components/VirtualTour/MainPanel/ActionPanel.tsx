@@ -10,11 +10,10 @@ import PlayButton from '../../../sharedComponents/PlayButton';
 
 type Props = {
   curPage: string,
-  setPage: Function,
-  tourSession: object
+  setPage: Function
 }
 
-const ActionPanel = ({curPage, setPage, tourSession}: Props) => {
+const ActionPanel = ({curPage, setPage}: Props) => {
   if(curPage === CONSTANTS.CONNECTING_PAGE) {
     setTimeout(() => {
       setPage(CONSTANTS.CONNECTED_PAGE)
