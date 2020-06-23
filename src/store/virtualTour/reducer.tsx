@@ -1,6 +1,5 @@
 import { Reducer } from 'redux';
 import { Constants, IVirtualTourState, IDispatchVirtualTourAction } from './types';
-import * as CONSTANT from '../../constants';
 
 export const initVirtualTour: IVirtualTourState = {
   socket: null,
@@ -8,7 +7,8 @@ export const initVirtualTour: IVirtualTourState = {
   twilioConnection: null,
   tourControl: null,
   tourSession: null,
-  controller: null
+  controller: null,
+  tourToken: null
 };
 
 export const virtualTourReducer: Reducer<IVirtualTourState, IDispatchVirtualTourAction> = (state = initVirtualTour, action) => {
@@ -23,9 +23,10 @@ export const virtualTourReducer: Reducer<IVirtualTourState, IDispatchVirtualTour
       return {...state, ...action.payload};
     case Constants.SET_TOUR_SESSION:
         return {...state, ...action.payload};
-    case Constants.SET_TOUR_CONTROLLER:{
+    case Constants.SET_TOUR_CONTROLLER:
       return {...state, ...action.payload};
-    }  
+    case Constants.SET_TOUR_TOKEN:
+      return {...state, ...action.payload};  
     default:
       return state;
   }

@@ -6,7 +6,8 @@ export interface IVirtualTourState {
   twilioConnection: any,
   tourControl: any,
   tourSession: any,
-  controller: any
+  controller: any,
+  tourToken: any,
 }
 
 export interface IDispatchVirtualTourAction extends Action {
@@ -19,5 +20,6 @@ export enum Constants {
   SET_TWILIO_CONNECTION = 'set_twilio_connection',
   SET_TOUR_CONTROL = 'set_tour_control',
   SET_TOUR_SESSION = 'set_tour_session',
-  SET_TOUR_CONTROLLER = 'set_tour_controller'
+  SET_TOUR_CONTROLLER = 'set_tour_controller',
+  SET_TOUR_TOKEN = 'set_tour_token',
 }

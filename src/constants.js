@@ -46,9 +46,9 @@ export const HOME_TOURS = [
     name: "SECRET",
     type: "For Sale and charter",
     info: {
-      length: "82.5m (270.6ft)",
-      year: 2013,
-      content: "Abeking & Rasmussen, 12 guests",
+      length: "78.3m (250.2ft)",
+      year: 2015,
+      content: "Abeking & Rasmussen, 15 guests",
     },
     token: "NY-6B28",
     imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",

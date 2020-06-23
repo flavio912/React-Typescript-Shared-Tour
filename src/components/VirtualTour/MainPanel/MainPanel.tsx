@@ -18,7 +18,7 @@ declare var TourSDK;
 const MainPanel = () => {
   const [eventType, setEventType] = useState(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT);
   const [showTransferModal, setShowTransferModal] = useState(false);
-  const [curTour, setTour] = useState(CONSTANTS.HOME_TOURS[0]);
+  const [curTour, setTour] = useState(null);
   const [embedUrl, setEmbedUrl] = useState('');
   const [tourToken, setTourToken] = useState('');
   const iframeRef = useRef(null);
@@ -30,19 +30,49 @@ const MainPanel = () => {
   })); 
 
   useEffect(() => {
-    if(!virtualTourState.tourSession || !virtualTourState.socket || !localStorage.controller) return;
+    if(!virtualTourState.tourSession || !virtualTourState.socket || !virtualTourState.tourToken || !localStorage.controller) return;
 
     const socket = virtualTourState.socket;
     const selectedTour = CONSTANTS.HOME_TOURS.filter(tour => tour.name === virtualTourState.tourSession.tourName)[0];
-    setTour({...selectedTour, ...virtualTourState.tourSession});
+    setTour(selectedTour);
+    setTourToken(virtualTourState.tourToken);
+    setEmbedUrl(`${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${virtualTourState.tourToken}?sdk_enable=1`);
 
-    const token = virtualTourState.tourSession.tourUrl.split("/").pop();
-    setEmbedUrl(`${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1`);
-    setTourToken(token);
+    socket.on("SWITCH_TOUR", data => {
+      const token = data.url.split("/").pop();
+      const tour = CONSTANTS.HOME_TOURS.filter(tour => tour.token === token)[0];
 
+      setTourToken(token);
+      setEmbedUrl(`${data.url}?sdk_enable=1`);
+      setTour(tour);
+      setEventType(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT);
+    })
+  }, [virtualTourState.tourSession, virtualTourState.tourToken, virtualTourState.socket]) // eslint-disable-line
+
+  useEffect(() => {
+    initTourSession(virtualTourState.socket, tourToken);
+  }, [tourToken, virtualTourState.socket, curTour]) // eslint-disable-line
+
+  const handleEvent = (eventType: string) => {
+    if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT){
+      virtualTourState.socket.emit("TOUR_CONTROL", {
+        event: "THUMBNAIL_PLAY_CLICK",
+        data: null
+      })
+    }else {
+      if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.GOTO) {
+        const win = window.open(`${CONFIG['BASE_URL']}/tour/view/${tourToken}` , '_blank');
+        win.focus();
+      }
+
+      setEventType(eventType);
+    }
+  };
+
+  const initTourSession = (socket, token) => {
     if(!token || iframeRef.current.id !== `tour-${token}`) return;
-    const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
 
+    const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
     tourControl.on('PLAYER_START_AUTO_SPIN', (data) => {
       // callback when the tour auto plays
       console.log('tour auto plays');
@@ -87,19 +117,25 @@ const MainPanel = () => {
 
     tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
       // callback when the middle play icon is clicked
-      console.log('THUMBNAIL_PLAY_CLICK', data);
       setEventType(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START);
       
       if(userState.user.role !== localStorage.controller) {
         tourControl.lockControl();
       }
+
+      if(userState.user.role === localStorage.controller){
+        socket.emit("TOUR_CONTROL", {
+          event: 'THUMBNAIL_PLAY_CLICK',
+          data: null,
+        });
+      }
     });
 
-    tourControl.on('ACTIVE_HOTSPOT_CHANGE', (data) => {
-      console.log('ACTIVE_HOTSPOT_CHANGE', data);
+    tourControl.on('SET_ACTIVE_HOTSPOT', (data) => {
+      console.log('SET_ACTIVE_HOTSPOT', data);
       // if(userState.user.role === localStorage.controller){
       //   socket.emit("TOUR_CONTROL", {
-      //     event: 'PLAYER_TRANSITION_TO_IMMEDIATELY',
+      //     event: 'SET_ACTIVE_HOTSPOT',
       //     data,
       //   });
       // }
@@ -122,6 +158,9 @@ const MainPanel = () => {
           break;
         case "PLAYER_STOP_AUTO_SPIN":
           tourControl.stopAutoSpin();
+          break;
+        case "SET_ACTIVE_HOTSPOT":
+          tourControl.setActiveHotspot(data.data);
           break;
         default:
           break;
@@ -147,29 +186,14 @@ const MainPanel = () => {
       else
         tourControl.lockControl();
     });
-  }, [virtualTourState.tourSession, tourToken, virtualTourState.socket]) // eslint-disable-line
-
-  const handleEvent = (eventType: string) => {
-    if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT){
-      virtualTourState.socket.emit("TOUR_CONTROL", {
-        event: "THUMBNAIL_PLAY_CLICK",
-        data: null
-      })
-    }else {
-      if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.GOTO) {
-        const win = window.open(`${CONFIG['BASE_URL']}/tour/view/${tourToken}` , '_blank');
-        win.focus();
-      }
-
-      setEventType(eventType);
-    }
-  };
+  }
 
   const switchTour = (tour) => {
-console.log(tour);
-console.log(virtualTourState.tourSession);
-    setTour(tour);
-    // setTourSessionAction(tour);
+    setTourToken(tour.token);
+    const embedUrl = `${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${tour.token}`;
+    virtualTourState.socket.emit("SWITCH_TOUR", {
+      url: embedUrl
+    })
   }
 
   const handleTransferControl = (isOk: boolean) => {    
@@ -186,7 +210,7 @@ console.log(virtualTourState.tourSession);
     <div className="right-panel d-flex flex-column">
       <div className="main-header d-flex flex-column">
         <div className="d-flex justify-content-between">
-          <h1 className="title">{virtualTourState.tourSession? virtualTourState.tourSession.tourName: ''}</h1>
+          <h1 className="title">{curTour? curTour.name: ''}</h1>
           <div className="d-flex flex-column">
             <TourDropDown 
               curTour={curTour}
@@ -204,9 +228,9 @@ console.log(virtualTourState.tourSession);
           </div>
         </div>
         <div className="d-flex flex-column">
-          <h3 className="description">{curTour.info.length}</h3>
+          <h3 className="description">{curTour?.info.length}</h3>
           <h3 className="description">
-            {curTour.info.year} {curTour.info.content}
+            {curTour?.info.year} {curTour?.info.content}
           </h3>
         </div>
       </div>

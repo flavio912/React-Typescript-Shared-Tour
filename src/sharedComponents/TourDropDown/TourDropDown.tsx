@@ -27,7 +27,7 @@ const TourDropDown = ({curTour, isDisable, changeTour}: Props) => {
             tourList && tourList.length > 0 && (
               tourList.map((item, nIndex) => {
                 return (
-                  <DropdownItem className={curTour.name === item.name? 'active': ''} onClick={() => changeTour(item)} key={nIndex}>{item.name}</DropdownItem>
+                  <DropdownItem className={curTour?.name === item.name? 'active': ''} onClick={() => changeTour(item)} key={nIndex}>{item.name}</DropdownItem>
                 )
               })
             )

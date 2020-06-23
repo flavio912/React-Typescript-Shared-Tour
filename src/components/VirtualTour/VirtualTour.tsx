@@ -10,7 +10,8 @@ import {
   setSocketCodeAction, 
   setSocketAction, 
   setTwilioConnectionAction,
-  setTourControllerAction
+  setTourControllerAction,
+  setTourTokenAction
 } from '../../store/virtualTour/actions';
 import { voiceChattingDialogAction } from '../../store/dialog/actions';
 
@@ -47,6 +48,7 @@ const VirtualTour = () => {
         console.log(tour_session_res.data.error);
       }else {
         dispatch(setTourSessionAction(tour_session_res.data.data));
+        dispatch(setTourTokenAction(tour_session_res.data.data.tourUrl.split("/").pop()));
       }
 
       const tour_session_start_res = await RequestHelper.post(`/tour-session/${id}/start`, {});
