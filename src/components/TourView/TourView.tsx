@@ -7,7 +7,7 @@ import NavMenu from './../../sharedComponents/NavMenu';
 
 const TourView = () => {
   const { token } = useParams();
-  const embedUrl = `${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1`;
+  const embedUrl = `${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1&&redirect_domain=burgess-shared-tour.devserver.london&redirect_ssl=1`;
 
   return (
     <>
