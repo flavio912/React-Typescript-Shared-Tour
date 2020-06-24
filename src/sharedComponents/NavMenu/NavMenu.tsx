@@ -27,6 +27,13 @@ const NavMenu = ({ location }: RouteComponentProps) => {
         dispatch(loginUserDialogAction(true));
       } else {
         if(userInfo.token === "") {
+          // RequestHelper
+          //   .post('/tour-session/clear-all/t3339yw4kn3vjmmz', {})
+          //   .then((res) => {
+          //     console.log(res.data);
+          //   })
+          //   .catch(error => console.log(error));
+            
           RequestHelper
             .get('/users/me', {})
             .then((res) => {

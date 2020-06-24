@@ -43,15 +43,16 @@ export const HOME_TOURS = [
       "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
   },
   {
-    name: "SECRET",
+    name: "HASNA",
     type: "For Sale and charter",
     info: {
-      length: "78.3m (250.2ft)",
-      year: 2015,
-      content: "Abeking & Rasmussen, 15 guests",
+      length: "73m (239.5ft)",
+      year: 2017,
+      content: "Feadship, Royal Van Lent, The Netherlands",
     },
-    token: "NY-6B28",
-    imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
+    token: "TL-KOPF",
+    imgUrl:
+      "https://movein.theatro360.com/uploads/event_images/5e9d8946bdd5a890167925.jpg",
   },
   // {
   //   name: "ODYSSEY II",
