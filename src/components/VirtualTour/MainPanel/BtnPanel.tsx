@@ -5,19 +5,19 @@ import { Button } from "react-bootstrap";
 import * as CONSTANTS from "../../../constants";
 
 type Props = {
-  status: string,
   controller: string,
   handleEvent: Function
 };
 
-const BtnPanel = ({ status, controller, handleEvent }: Props) => {
-  const { userState } = useSelector((state: any) => ({
-    userState: state.user
+const BtnPanel = ({ controller, handleEvent }: Props) => {
+  const { userState, virtualTourState } = useSelector((state: any) => ({
+    userState: state.user,
+    virtualTourState: state.virtualTour
   }));
 
   return (
     <div className="btn-container d-flex justify-content-end mt-2">
-      {status === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
+      {virtualTourState.eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
         <Button
           variant="outline-primary"
           className={`btn-start btn-bugress-outline ${userState.user.role === controller? '': 'btn-disable'}`}
@@ -27,7 +27,7 @@ const BtnPanel = ({ status, controller, handleEvent }: Props) => {
         </Button>
       )}
 
-      {status !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
+      {virtualTourState.eventType !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
         <>
           <Button
             variant="outline-primary"

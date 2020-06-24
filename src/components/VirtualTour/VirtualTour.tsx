@@ -11,7 +11,8 @@ import {
   setSocketAction, 
   setTwilioConnectionAction,
   setTourControllerAction,
-  setTourTokenAction
+  setTourTokenAction,
+  setEventTypeAction
 } from '../../store/virtualTour/actions';
 import { voiceChattingDialogAction } from '../../store/dialog/actions';
 
@@ -25,6 +26,7 @@ import VoiceChattingModal from '../../sharedComponents/VoiceChattingModal';
 import RequestHelper from '../../utils/Request.Utils';
 import { generateVoiceName } from '../../utils/Common.Utils';
 import * as CONSTANTS from '../../constants';
+import { Constants } from "../../store/user/types";
 
 declare var io;
 declare var Twilio;
@@ -49,6 +51,7 @@ const VirtualTour = () => {
       }else {
         dispatch(setTourSessionAction(tour_session_res.data.data));
         dispatch(setTourTokenAction(tour_session_res.data.data.tourUrl.split("/").pop()));
+        dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT));
       }
 
       const tour_session_start_res = await RequestHelper.post(`/tour-session/${id}/start`, {});

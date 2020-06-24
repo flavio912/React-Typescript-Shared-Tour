@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
-import { setTourControllerAction } from '../../../store/virtualTour/actions';
+import { 
+  setTourControllerAction,
+  setEventTypeAction
+} from '../../../store/virtualTour/actions';
 import * as CONSTANTS from "../../../constants";
 import CONFIG from '../../../config';
 import ActionPanel from "./ActionPanel";
@@ -16,7 +19,7 @@ import ArrowSVG from '../../../assets/images/arrow.svg';
 declare var TourSDK;
 
 const MainPanel = () => {
-  const [eventType, setEventType] = useState(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT);
+  // const [eventType, setEventType] = useState(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [curTour, setTour] = useState(null);
   const [embedUrl, setEmbedUrl] = useState('');
@@ -39,13 +42,14 @@ const MainPanel = () => {
     setEmbedUrl(`${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${virtualTourState.tourToken}?sdk_enable=1`);
 
     socket.on("SWITCH_TOUR", data => {
+      console.log("SWITCH_TOUR");
       const token = data.url.split("/").pop();
       const tour = CONSTANTS.HOME_TOURS.filter(tour => tour.token === token)[0];
 
       setTourToken(token);
       setEmbedUrl(`${data.url}?sdk_enable=1`);
       setTour(tour);
-      setEventType(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT);
+      dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT));
     })
   }, [virtualTourState.tourSession, virtualTourState.tourToken, virtualTourState.socket]) // eslint-disable-line
 
@@ -53,7 +57,7 @@ const MainPanel = () => {
     initTourSession(virtualTourState.socket, tourToken);
   }, [tourToken, virtualTourState.socket, curTour]) // eslint-disable-line
 
-  const handleEvent = (eventType: string) => {
+  const handleEvent = (eventType) => {
     if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT){
       virtualTourState.socket.emit("TOUR_CONTROL", {
         event: "THUMBNAIL_PLAY_CLICK",
@@ -64,9 +68,9 @@ const MainPanel = () => {
         const win = window.open(`${CONFIG['BASE_URL']}/tour/view/${tourToken}` , '_blank');
         win.focus();
       }
-
-      setEventType(eventType);
     }
+
+    dispatch(setEventTypeAction(eventType));
   };
 
   const initTourSession = (socket, token) => {
@@ -96,6 +100,7 @@ const MainPanel = () => {
     });
   
     tourControl.on('PLAYER_TRANSITION_TO', (data) => {
+      console.log('tour player transition to');
       // callback when the tour navigate to somewhere
       if(userState.user.role === localStorage.controller){
         socket.emit("TOUR_CONTROL", {
@@ -106,6 +111,7 @@ const MainPanel = () => {
     });
  
     tourControl.on('PLAYER_TRANSITION_TO_IMMEDIATELY', (data) => {
+      console.log('tour player transition to immediately');
       // callback when the tour navigate immediately to somewhere
       if(userState.user.role === localStorage.controller){
         socket.emit("TOUR_CONTROL", {
@@ -116,22 +122,24 @@ const MainPanel = () => {
     });
 
     tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
+      console.log('thumbnail play click');
       // callback when the middle play icon is clicked
-      setEventType(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START);
-      
+      dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
+
       if(userState.user.role !== localStorage.controller) {
         tourControl.lockControl();
       }
 
-      if(userState.user.role === localStorage.controller){
-        socket.emit("TOUR_CONTROL", {
-          event: 'THUMBNAIL_PLAY_CLICK',
-          data: null,
-        });
-      }
+      // if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT){
+      //   socket.emit("TOUR_CONTROL", {
+      //     event: 'THUMBNAIL_PLAY_CLICK',
+      //     data: null,
+      //   });
+      // }else return;
     });
 
     tourControl.on('SET_ACTIVE_HOTSPOT', (data) => {
+      console.log('set active hotspot');
       console.log('SET_ACTIVE_HOTSPOT', data);
       // if(userState.user.role === localStorage.controller){
       //   socket.emit("TOUR_CONTROL", {
@@ -143,6 +151,7 @@ const MainPanel = () => {
     
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
+      console.log(data.event);      
       switch (data.event) {
         case "THUMBNAIL_PLAY_CLICK":{
           tourControl.thumbnailPlayClick();
@@ -168,6 +177,7 @@ const MainPanel = () => {
     });
 
     socket.on("SWITCH_CONTROL_TO_CLIENT", data => {
+      console.log("SWITCH_CONTROL_TO_CLIENT");
       dispatch(setTourControllerAction(CONSTANTS.UserRoles.client));
       localStorage.setItem("controller", CONSTANTS.UserRoles.client);
 
@@ -178,6 +188,7 @@ const MainPanel = () => {
     });
 
     socket.on("SWITCH_CONTROL_TO_BROKER", data => {
+      console.log("SWITCH_CONTROL_TO_BROKER");
       dispatch(setTourControllerAction(CONSTANTS.UserRoles.broker));
       localStorage.setItem("controller", CONSTANTS.UserRoles.broker);
 
@@ -217,7 +228,7 @@ const MainPanel = () => {
               isDisable={userState.user.role === virtualTourState.controller? false: true}
               changeTour={(tour: any) => {switchTour(tour)}} 
             />
-            {eventType !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
+            {virtualTourState.eventType !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
               <ArrowBtn 
                 className={`${userState.user.role === virtualTourState.controller ? '': 'btn-disable'}`}
                 onClick={() => {setShowTransferModal(true)}}
@@ -236,7 +247,7 @@ const MainPanel = () => {
       </div>
       <iframe id={`tour-${tourToken}`} ref={iframeRef} src={embedUrl} width="100%" height="100%" style={{border: 'none'}} />
       {/* <ActionPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} /> */}
-      <BtnPanel controller={virtualTourState.controller} status={eventType} handleEvent={(eventType: string) => {handleEvent(eventType)}}/>
+      <BtnPanel controller={virtualTourState.controller} handleEvent={(eventType: string) => {handleEvent(eventType)}}/>
       {/* <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
       <TransferModal isShow={showTransferModal} hideModal={(isOk: boolean) => handleTransferControl(isOk)} />
     </div>

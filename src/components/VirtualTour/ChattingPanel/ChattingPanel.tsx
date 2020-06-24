@@ -47,6 +47,7 @@ const ChattingPanel = () => {
 
     const socket = virtualTourState.socket;
     socket.on("CHAT", (res) => {
+      console.log("CHAT", "RECEIVED MESSAGES");
       setChatHistories([...chatHistories, {payload: {Name: res.Name, Message: res.Message}}]);
       chattingEndRef.current.scrollIntoView(true);
     });

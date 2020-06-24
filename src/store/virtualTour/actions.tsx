@@ -28,3 +28,7 @@ export const setTourControllerAction = (controller: any) => {
 export const setTourTokenAction = (tourToken: any) => {
   return action(Constants.SET_TOUR_TOKEN, { tourToken });
 }
+
+export const setEventTypeAction = (eventType: any) => {
+  return action(Constants.SET_EVENT_TYPE, { eventType });
+}

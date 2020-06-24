@@ -8,7 +8,8 @@ export const initVirtualTour: IVirtualTourState = {
   tourControl: null,
   tourSession: null,
   controller: null,
-  tourToken: null
+  tourToken: null,
+  eventType: null,
 };
 
 export const virtualTourReducer: Reducer<IVirtualTourState, IDispatchVirtualTourAction> = (state = initVirtualTour, action) => {
@@ -26,7 +27,10 @@ export const virtualTourReducer: Reducer<IVirtualTourState, IDispatchVirtualTour
     case Constants.SET_TOUR_CONTROLLER:
       return {...state, ...action.payload};
     case Constants.SET_TOUR_TOKEN:
-      return {...state, ...action.payload};  
+      return {...state, ...action.payload};
+    case Constants.SET_EVENT_TYPE:
+console.log(action.payload);      
+      return {...state, ...action.payload};
     default:
       return state;
   }
