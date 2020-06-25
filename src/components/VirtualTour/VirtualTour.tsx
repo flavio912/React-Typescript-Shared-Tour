@@ -13,7 +13,7 @@ import {
   setTwilioConnectionAction,
   setTourControllerAction,
   setTourTokenAction,
-  setEventTypeAction
+  setEventTypeAction,
 } from '../../store/virtualTour/actions';
 import { voiceChattingDialogAction } from '../../store/dialog/actions';
 
@@ -81,16 +81,18 @@ const VirtualTour = () => {
 
     // receiving message
     socket.on("ONLINE", (msg) => {
-      console.log("ONLINE", msg);
+      console.log("ONLINE", msg);      
     });
 
     socket.on("OFFLINE", (msg) => {
       console.log("OFFLINE", msg);
-      
-      // if(userState.user.role === CONSTANTS.UserRoles.broker)
-      //   history.push("/dashboard");
-      // else
-      //   history.push("/");
+
+      if(userState.user.role !== localStorage.controller) {
+        if(userState.user.role === CONSTANTS.UserRoles.broker)
+          history.push("/dashboard");
+        else
+          history.push("/");
+      }
     });
 
     socket.on("VOICE_READY", (msg) => {

@@ -58,7 +58,7 @@ const TourItem = ({tourInfo}: Props) => {
         .post('/tour-session/confirm-request', {id: id})
         .then((res) => {
           if(!res.data.success) {
-            setAlert({isShow: true, status: 'danger', msg: res.data.error});
+            setAlert({isShow: true, status: 'danger', msg: `Broker is currently reviewing ${tourInfo.tourName} - please try another tour`});
             window.setTimeout(() => {
               setAlert({...alert, isShow: false});
             }, 3000);

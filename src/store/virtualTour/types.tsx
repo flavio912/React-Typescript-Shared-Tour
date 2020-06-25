@@ -23,5 +23,5 @@ export enum Constants {
   SET_TOUR_SESSION = 'set_tour_session',
   SET_TOUR_CONTROLLER = 'set_tour_controller',
   SET_TOUR_TOKEN = 'set_tour_token',
-  SET_EVENT_TYPE = 'set_event_type'
+  SET_EVENT_TYPE = 'set_event_type',
 }

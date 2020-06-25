@@ -29,7 +29,6 @@ export const virtualTourReducer: Reducer<IVirtualTourState, IDispatchVirtualTour
     case Constants.SET_TOUR_TOKEN:
       return {...state, ...action.payload};
     case Constants.SET_EVENT_TYPE:
-console.log(action.payload);      
       return {...state, ...action.payload};
     default:
       return state;

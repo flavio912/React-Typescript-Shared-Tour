@@ -61,7 +61,8 @@ const MainPanel = () => {
 
   const handleEvent = (eventType) => {
     switch (eventType) {
-      case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT: {   
+      case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT: {
+        virtualTourState.socket.connect();
         virtualTourState.socket.emit("TOUR_CONTROL", {
           event: "THUMBNAIL_PLAY_CLICK",
           data: null
@@ -77,10 +78,10 @@ const MainPanel = () => {
       case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.STOP: {
         virtualTourState.socket.disconnect();
 
-        // if(userState.user.role === CONSTANTS.UserRoles.broker)
-        //   history.push("/dashboard");
-        // else
-        //   history.push("/");
+        if(userState.user.role === CONSTANTS.UserRoles.broker)
+          history.push("/dashboard");
+        else
+          history.push("/");
         break;
       }
       default:
