@@ -77,7 +77,8 @@ const MainPanel = () => {
       }
       case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.STOP: {
         virtualTourState.socket.disconnect();
-
+        dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT));
+        
         if(userState.user.role === CONSTANTS.UserRoles.broker)
           history.push("/dashboard");
         else

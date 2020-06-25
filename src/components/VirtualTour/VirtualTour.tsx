@@ -86,6 +86,7 @@ const VirtualTour = () => {
 
     socket.on("OFFLINE", (msg) => {
       console.log("OFFLINE", msg);
+      dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT));
 
       if(userState.user.role !== localStorage.controller) {
         if(userState.user.role === CONSTANTS.UserRoles.broker)
