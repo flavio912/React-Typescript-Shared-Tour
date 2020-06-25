@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 import NavMenu from './../../sharedComponents/NavMenu';
 import ChattingPanel from './ChattingPanel';
@@ -26,7 +27,6 @@ import VoiceChattingModal from '../../sharedComponents/VoiceChattingModal';
 import RequestHelper from '../../utils/Request.Utils';
 import { generateVoiceName } from '../../utils/Common.Utils';
 import * as CONSTANTS from '../../constants';
-import { Constants } from "../../store/user/types";
 
 declare var io;
 declare var Twilio;
@@ -38,7 +38,7 @@ const VirtualTour = () => {
     userState: state.user,
     virtualTourState: state.virtualTour
   }));
-
+  const history = useHistory();
   const [twilioToken, setTwilioToken] = useState(null);
 
   useEffect(() => {
@@ -82,6 +82,15 @@ const VirtualTour = () => {
     // receiving message
     socket.on("ONLINE", (msg) => {
       console.log("ONLINE", msg);
+    });
+
+    socket.on("OFFLINE", (msg) => {
+      console.log("OFFLINE", msg);
+      
+      // if(userState.user.role === CONSTANTS.UserRoles.broker)
+      //   history.push("/dashboard");
+      // else
+      //   history.push("/");
     });
 
     socket.on("VOICE_READY", (msg) => {

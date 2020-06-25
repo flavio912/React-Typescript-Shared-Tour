@@ -98,7 +98,14 @@ const ChattingPanel = () => {
 
     Twilio.Device.connect({ name: connectName });
     dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'call'}));
-  } 
+  }
+
+  const sendMessageByEnter = (event) => {   
+    if(event.key === "Enter"){
+      event.preventDefault();
+      sendMessage();
+    }
+  }
 
   return (
     <div className="left-panel d-flex flex-column mr-4">
@@ -159,6 +166,7 @@ const ChattingPanel = () => {
             className="mt-1" 
             placeholder="Type a message"
             value={newMessage}
+            onKeyPress={(e) => sendMessageByEnter(e)}
             onChange={(e) => {
               setNewMessage(e.target.value);
             }}
@@ -177,6 +185,11 @@ const ChatImg = styled.img`
   width: 20px;
   height: 20px;
   margin-right: 10px;
+
+  @media (max-width: 1199px) {
+    width: 18px;
+    height: 18px;
+  }
 `
 
 export default ChattingPanel;

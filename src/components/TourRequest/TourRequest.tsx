@@ -20,11 +20,13 @@ const TourRequest = ({ location }: RouteComponentProps) => {
   const dispatch = useDispatch();
   const [curTourUrl, setTourUrl] = useState('');
   const [alert, setAlert] = useState({isShow: false, status: '', msg: ''});
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     const params = qs.parse(location.search);
     const tourUrl = params['?url'];
-    setTourUrl(tourUrl);
+    setToken(tourUrl.split('/').pop());    
+    setTourUrl(`${tourUrl}?sdk_enable=1&redirect_domain=burgess-shared-tour.devserver.london&redirect_ssl=1`);
     
     if(!localStorage.token){
       dispatch(loginUserDialogAction(true));
@@ -59,7 +61,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
     <>
       <NavMenu />
       <CustomContainer>
-        <iframe src={curTourUrl} width="100%" height="100%" style={{border: 'none'}} />
+        <iframe id={`tour-${token}`} src={curTourUrl} width="100%" height="100%" style={{border: 'none'}} />
       </CustomContainer>
       <Alert variant="success" show={alert.isShow && alert.status==='success'}>{alert.msg}</Alert>
       <Alert variant="danger" show={alert.isShow && alert.status==='danger'}>{alert.msg}</Alert>

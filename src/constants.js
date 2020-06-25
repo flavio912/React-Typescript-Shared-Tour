@@ -3,6 +3,7 @@ export const VIRTUAL_TOUR_CONTROL_EVENT = {
   START: "start",
   GOTO: "goto",
   STOP: "stop",
+  PAUSE: "pause",
 };
 
 export const TOUR_STATUS = {

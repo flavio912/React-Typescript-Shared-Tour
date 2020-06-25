@@ -21,7 +21,7 @@ function App() {
         <Route exact path="/" component={Homepage} />
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/virtual-tour/:id" component={VirtualTour} />
-        <Route exact path="/tour/request" component={TourRequest} />
+        <Route exact path="/request-tour" component={TourRequest} />
         <Route exact path="/reset-password" component={Homepage} />
         <Route exact path="/tour/view/:token" component={TourView} />
         {/* <Route exact path="/tour" component={TourPlay} />

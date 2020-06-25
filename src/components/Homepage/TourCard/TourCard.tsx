@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 type Props = {
@@ -17,15 +16,14 @@ type Props = {
 }
 
 const TourCard = ({data}: Props) => {
-  const history = useHistory();
   return (
     <div className="tour-card">
-      <img src={data.imgUrl} style={{width: '100%'}} onClick={() => {history.push(`/tour/request?url=https://burgess.theatro360.com/tour/${data.token}`)}} />
+      <img src={data.imgUrl} style={{width: '100%'}} />
       <h1>{data.name}</h1>
       <p>{data.type}</p>
       <p>{data.info.length}, {data.info.year}, {data.info.content}</p>
       <a>
-        <Link to={`/tour/request?url=https://burgess.theatro360.com/tour/${data.token}`}>
+        <Link to={`/tour/view/${data.token}`}>
           Take the tour >
         </Link>
       </a>

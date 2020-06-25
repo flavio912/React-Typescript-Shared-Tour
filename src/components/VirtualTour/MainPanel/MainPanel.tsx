@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
+
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -19,13 +21,13 @@ import ArrowSVG from '../../../assets/images/arrow.svg';
 declare var TourSDK;
 
 const MainPanel = () => {
-  // const [eventType, setEventType] = useState(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [curTour, setTour] = useState(null);
   const [embedUrl, setEmbedUrl] = useState('');
   const [tourToken, setTourToken] = useState('');
   const iframeRef = useRef(null);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { virtualTourState, userState } = useSelector((state: any) => ({
     userState: state.user,
@@ -58,19 +60,33 @@ const MainPanel = () => {
   }, [tourToken, virtualTourState.socket, curTour]) // eslint-disable-line
 
   const handleEvent = (eventType) => {
-    if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT){
-      virtualTourState.socket.emit("TOUR_CONTROL", {
-        event: "THUMBNAIL_PLAY_CLICK",
-        data: null
-      })
-    }else {
-      if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.GOTO) {
+    switch (eventType) {
+      case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT: {   
+        virtualTourState.socket.emit("TOUR_CONTROL", {
+          event: "THUMBNAIL_PLAY_CLICK",
+          data: null
+        })
+        break;
+      }
+      case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.GOTO: {
         const win = window.open(`${CONFIG['BASE_URL']}/tour/view/${tourToken}` , '_blank');
         win.focus();
+        dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.GOTO));
+        break;
       }
-    }
+      case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.STOP: {
+        virtualTourState.socket.disconnect();
 
-    dispatch(setEventTypeAction(eventType));
+        // if(userState.user.role === CONSTANTS.UserRoles.broker)
+        //   history.push("/dashboard");
+        // else
+        //   history.push("/");
+        break;
+      }
+      default:
+        dispatch(setEventTypeAction(eventType));
+        break;
+    }
   };
 
   const initTourSession = (socket, token) => {
@@ -124,18 +140,14 @@ const MainPanel = () => {
     tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
       console.log('thumbnail play click');
       // callback when the middle play icon is clicked
-      dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
-
       if(userState.user.role !== localStorage.controller) {
         tourControl.lockControl();
       }
 
-      // if(eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT){
-      //   socket.emit("TOUR_CONTROL", {
-      //     event: 'THUMBNAIL_PLAY_CLICK',
-      //     data: null,
-      //   });
-      // }else return;
+      socket.emit("TOUR_CONTROL", {
+        event: 'THUMBNAIL_PLAY_CLICK',
+        data: null,
+      });
     });
 
     tourControl.on('SET_ACTIVE_HOTSPOT', (data) => {
@@ -154,6 +166,7 @@ const MainPanel = () => {
       console.log(data.event);      
       switch (data.event) {
         case "THUMBNAIL_PLAY_CLICK":{
+          dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
           tourControl.thumbnailPlayClick();
           break;
         }
@@ -245,7 +258,25 @@ const MainPanel = () => {
           </h3>
         </div>
       </div>
-      <iframe id={`tour-${tourToken}`} ref={iframeRef} src={embedUrl} width="100%" height="100%" style={{border: 'none'}} />
+      <div style={{position: 'relative', flex: '1'}}>
+        <iframe 
+          title="virtual-tour"
+          id={`tour-${tourToken}`} 
+          ref={iframeRef} 
+          src={embedUrl} 
+          width="100%" 
+          height="100%" 
+          style={{border: 'none'}}
+        />
+        {virtualTourState.eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.PAUSE && (
+          <PauseScreen>
+            <h2>Are you sure you want to stop?</h2>
+            <div className="pause-btn"></div>
+            <p>This will disconnect your guided tour session with your <br /> BURGESS sales broker.</p>
+            <p>You will be sent a link to the virtual tour and your <br />recorded session.</p>
+          </PauseScreen>
+        )}
+      </div>
       {/* <ActionPanel curPage={curPage} setPage={(selectedOne: string) => {onClickStart(selectedOne)}} /> */}
       <BtnPanel controller={virtualTourState.controller} handleEvent={(eventType: string) => {handleEvent(eventType)}}/>
       {/* <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
@@ -270,5 +301,40 @@ const ArrowBtn = styled(Button)`
     margin-top: 0.5rem;
   }
 `
+const PauseScreen = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  flex-direction: column;
+  background-color: rgba(0,0,0, 0.8);
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
 
+  .pause-btn {
+    box-sizing: border-box;
+    height: 34px;
+    border-color: transparent transparent transparent #FFF;
+    transition: 100ms all ease;
+    cursor: pointer;
+    border-style: double;
+    border-width: 0px 0 0px 30px;
+  }
+
+  h2 {
+    font-weight: 700;
+    margin-bottom: 3rem;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0;
+    margin-top: 1.5rem;
+  }
+`
 export default MainPanel;

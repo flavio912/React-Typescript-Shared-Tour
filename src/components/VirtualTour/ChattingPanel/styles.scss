@@ -84,24 +84,44 @@
     }
   }
 
-  @media (max-width: 991px) {
+  @media (max-width: 1199px) {
     flex: 1 0 240px;
 
     .user-img {
-      height: 130px;
+      height: 80px;
     }
 
     .control-div {
       h5 {
-        font-size: 1.2rem;
+        font-size: 1rem;
       }
 
       p {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
       }
 
       img {
         width: 24px;
+      }
+    }
+
+    .chatting-info {
+      .chatting-history {
+        .chating-text-box {
+          h5 {
+            font-size: 0.8rem;
+          }
+        }
+      }
+
+      .last-chat {
+        textarea{
+          font-size: 12px;
+    
+          &::placeholder {
+            font-size: 12px;
+          }  
+        }
       }
     }
   }

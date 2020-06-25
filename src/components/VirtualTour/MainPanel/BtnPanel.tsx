@@ -17,7 +17,7 @@ const BtnPanel = ({ controller, handleEvent }: Props) => {
 
   return (
     <div className="btn-container d-flex justify-content-end mt-2">
-      {virtualTourState.eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
+      {(!virtualTourState.eventType || virtualTourState.eventType === CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT) && (
         <Button
           variant="outline-primary"
           className={`btn-start btn-bugress-outline ${userState.user.role === controller? '': 'btn-disable'}`}
@@ -27,7 +27,7 @@ const BtnPanel = ({ controller, handleEvent }: Props) => {
         </Button>
       )}
 
-      {virtualTourState.eventType !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT && (
+      {(virtualTourState.eventType && virtualTourState.eventType !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT) && (
         <>
           <Button
             variant="outline-primary"
@@ -36,20 +36,44 @@ const BtnPanel = ({ controller, handleEvent }: Props) => {
           >
             Go to tour
           </Button>
-          <Button
-            variant="outline-primary"
-            className={`btn-bugress-outline btn-secondary mr-2 ${userState.user.role === controller? '': 'btn-disable'}`}
-            onClick={() => handleEvent(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.STOP)}
-          >
-            Stop session
-          </Button>
-          <Button
-            variant="outline-primary"
-            className={`btn-bugress-outline btn-secondary ${userState.user.role === controller? '': 'btn-disable'}`}
-            onClick={() => handleEvent(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START)}
-          >
-            Start
-          </Button>
+          {virtualTourState.eventType !== CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.PAUSE ? 
+            (
+              <>
+                <Button
+                  variant="outline-primary"
+                  className={`btn-bugress-outline btn-secondary mr-2 ${userState.user.role === controller? '': 'btn-disable'}`}
+                  onClick={() => handleEvent(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.PAUSE)}
+                >
+                  Stop session
+                </Button>
+                <Button
+                  variant="outline-primary"
+                  className={`btn-bugress-outline btn-secondary ${userState.user.role === controller? '': 'btn-disable'}`}
+                  onClick={() => handleEvent(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START)}
+                >
+                  Start
+                </Button>
+              </>
+            ):
+            (
+              <>
+                <Button
+                  variant="outline-primary"
+                  className={`btn-bugress-outline btn-secondary mr-2 stop ${userState.user.role === controller? '': 'btn-disable'}`}
+                  onClick={() => handleEvent(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.STOP)}
+                >
+                  Stop session
+                </Button>
+                <Button
+                  variant="outline-primary"
+                  className={`btn-bugress-outline btn-secondary active ${userState.user.role === controller? '': 'btn-disable'}`}
+                  onClick={() => handleEvent(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START)}
+                >
+                  Resume
+                </Button>
+              </>
+            )
+          }          
         </>
       )}
     </div>
