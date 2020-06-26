@@ -2,7 +2,7 @@ import React, { useState, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
-import UserAvatarSvg from '../../assets/images/man-1.svg';
+import UserAvatarSvg from '../../assets/images/default-avatar.svg';
 import validator from 'validator';
 import RequestHelper from '../../utils/Request.Utils';
 import { loginUserAction } from '../../store/user/actions';
@@ -154,8 +154,8 @@ const SigninModal = ({ role }: Props) => {
           :
           (<h1>Sign In</h1>)
         }
-        <Form onSubmit={onSubmit} className="d-flex flex-column justify-content-center">
-          <img src={UserAvatarSvg} />
+        <Form onSubmit={onSubmit} className="d-flex flex-column justify-content-center align-items-center">
+          <img src={UserAvatarSvg} width="80" height="80" />
           <Form.Group controlId="signinForm.email">
             <Form.Control 
               type="email" 
