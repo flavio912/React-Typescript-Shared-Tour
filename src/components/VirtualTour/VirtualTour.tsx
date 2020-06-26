@@ -27,6 +27,7 @@ import VoiceChattingModal from '../../sharedComponents/VoiceChattingModal';
 import RequestHelper from '../../utils/Request.Utils';
 import { generateVoiceName } from '../../utils/Common.Utils';
 import * as CONSTANTS from '../../constants';
+import { Socket } from "net";
 
 declare var io;
 declare var Twilio;
@@ -98,6 +99,8 @@ const VirtualTour = () => {
 
     socket.on("VOICE_READY", (msg) => {
       console.log("VOICE_READY", msg);
+      dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'start'}));
+      dispatch(voiceChattingDialogAction({isOpened: true, role: 'slave', action: 'start'}));
     })
   }, [virtualTourState.socket]) // eslint-disable-line
 
@@ -106,24 +109,28 @@ const VirtualTour = () => {
 
     /* Callback to let us know Twilio Client is ready */
     Twilio.Device.ready((device) => {
-      console.log("DEVICE READY");
+      console.log("TWILIO DEVICE READY");
     });
   
     /* Report any errors to the call status display */
     Twilio.Device.error((error) => {
-      console.log("ERROR: " + error.message);
+      console.log("TWILIO ERROR: " + error.message);
       const voiceName = generateVoiceName(virtualTourState.socketCode, userState.user.name);
       initiateVoiceSetup(voiceName);
     });
   
     /* Callback for when Twilio Client initiates a new connection */
     Twilio.Device.connect((connection) => {
-      console.log(connection);
+      console.log("TWILIO CONNECT:", connection);
+      dispatch(setTwilioConnectionAction(connection));
     });
   
     /* Callback for when a call ends */
     Twilio.Device.disconnect((connection) => {
-      console.log(connection);
+      console.log("TWILIO DISCONNECT:", connection);
+      dispatch(setTwilioConnectionAction(null));
+      dispatch(voiceChattingDialogAction({isOpened: false, role: 'master', action: 'start'}));
+      dispatch(voiceChattingDialogAction({isOpened: false, role: 'slave', action: 'start'}));
     });
 
     /* Callback for when Twilio Client receives a new incoming call */
@@ -135,8 +142,6 @@ const VirtualTour = () => {
       // Set a callback to be executed when the connection is accepted
       connection.accept(function() {
         console.log("In call with someone");
-        dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'start'}));
-        dispatch(voiceChattingDialogAction({isOpened: true, role: 'slave', action: 'start'}));
       });
     });
   }, [twilioToken, voiceChattingDialogAction]); // eslint-disable-line

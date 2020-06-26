@@ -63,6 +63,10 @@ const ChattingPanel = () => {
       case Constants.VoiceCallActions.accept:{
         if(!virtualTourState.twilioConnection) return;    
         virtualTourState.twilioConnection.accept();
+        
+        virtualTourState.socket.emit("VOICE_READY", {
+          deviceName: virtualTourState.twilioConnection.device._clientName
+        })
         break;
       }
       case Constants.VoiceCallActions.hangup:
@@ -74,7 +78,7 @@ const ChattingPanel = () => {
       default:
         break;
     }
-  }, [dialogState, virtualTourState.twilioConnection]);
+  }, [dialogState, virtualTourState.socket]) // eslint-disable-line
 
   const sendMessage = () => {
     if(!virtualTourState.socket) return;
@@ -89,15 +93,20 @@ const ChattingPanel = () => {
   const startCall = () => {
     if(!virtualTourState.socketCode) return;
 
-    const socketCode = virtualTourState.socketCode;
-    let connectName;
-    if(userInfo.user.role === Constants.UserRoles.broker)
-      connectName = generateVoiceName(socketCode, virtualTourState.tourSession.client.name);
-    else if(userInfo.user.role === Constants.UserRoles.client)
-      connectName = generateVoiceName(socketCode, virtualTourState.tourSession.broker.name);
-
-    Twilio.Device.connect({ name: connectName });
-    dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'call'}));
+    if(virtualTourState.twilioConnection) {
+      dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'start'}));
+      dispatch(voiceChattingDialogAction({isOpened: true, role: 'slave', action: 'start'}));
+    }else {
+      const socketCode = virtualTourState.socketCode;
+      let connectName;
+      if(userInfo.user.role === Constants.UserRoles.broker)
+        connectName = generateVoiceName(socketCode, virtualTourState.tourSession.client.name);
+      else if(userInfo.user.role === Constants.UserRoles.client)
+        connectName = generateVoiceName(socketCode, virtualTourState.tourSession.broker.name);
+  
+      Twilio.Device.connect({ name: connectName });
+      dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'call'}));
+    }   
   }
 
   const sendMessageByEnter = (event) => {   

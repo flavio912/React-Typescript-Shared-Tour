@@ -2,7 +2,9 @@ import { Action } from 'redux';
 
 export interface IDialogState {
   name: string,
-  isOpened: boolean
+  isOpened: boolean,
+  role?: string,
+  action?: string
 }
 
 export interface IDispatchDialogAction extends Action {

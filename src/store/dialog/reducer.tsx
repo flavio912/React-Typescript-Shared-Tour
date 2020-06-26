@@ -4,6 +4,8 @@ import { DialogNames, IDialogState, IDispatchDialogAction } from './types';
 const initDialog: IDialogState = {
   name: '',
   isOpened: false,
+  role: '',
+  action: '',
 };
 
 export const dialogReducer: Reducer<IDialogState, IDispatchDialogAction> = (state = initDialog, action) => {  
