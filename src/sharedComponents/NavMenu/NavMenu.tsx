@@ -57,7 +57,7 @@ const NavMenu = ({ location }: RouteComponentProps) => {
         {(curPath === '/dashboard' || curPath.slice(0, curPath.lastIndexOf('/')) === '/virtual-tour') ? (
           <Nav>
             <img src={UserSvg} />
-            <span className="ml-2"></span>
+            <span className="ml-2">{userInfo.user.name}</span>
           </Nav>
         ): (
           <Nav>

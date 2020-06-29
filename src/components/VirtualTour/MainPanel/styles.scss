@@ -5,7 +5,7 @@
   overflow: hidden;
 
   .main-header {
-    height: 180px;
+    height: auto;
 
     .title {
       font-size: 4rem;    
@@ -79,8 +79,6 @@
 
   @media screen and (max-width: 1199px) {
     .main-header {
-      height: 130px;
-
       .title {
         font-size: 2.5rem;
       }
