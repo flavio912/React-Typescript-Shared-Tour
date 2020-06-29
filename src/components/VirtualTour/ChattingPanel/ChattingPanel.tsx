@@ -34,7 +34,7 @@ const ChattingPanel = () => {
       if(!response.data.success){
         console.log(response.data.error);
       }else {
-        let chat_histories = response.data.data.filter(item => item.action === 'CHAT').map(item => {return {...item, ...{payload: JSON.parse(item.payload)}}});
+        let chat_histories = response.data.data.filter(item => item.action === 'CHAT').map(item => {return {...item, ...{payload: JSON.parse(item.payload)}}}).reverse();
         setChatHistories(chat_histories);
         chattingEndRef.current.scrollIntoView(true);
       }
@@ -61,7 +61,7 @@ const ChattingPanel = () => {
         // Twilio.Device.connect({name: })
         break;
       case Constants.VoiceCallActions.accept:{
-        if(!virtualTourState.twilioConnection) return;    
+        if(!virtualTourState.twilioConnection) return;
         virtualTourState.twilioConnection.accept();
         
         virtualTourState.socket.emit("VOICE_READY", {
@@ -87,7 +87,7 @@ const ChattingPanel = () => {
     socket.emit("CHAT", {
       message: newMessage
     });
-    setNewMessage('');    
+    setNewMessage('');
   }
 
   const startCall = () => {
@@ -109,7 +109,7 @@ const ChattingPanel = () => {
     }   
   }
 
-  const sendMessageByEnter = (event) => {   
+  const sendMessageByEnter = (event) => {
     if(event.key === "Enter"){
       event.preventDefault();
       sendMessage();
@@ -151,28 +151,30 @@ const ChattingPanel = () => {
         </div>                  
         <div className="d-flex flex-column justify-content-between">
           <img className="ml-auto" src={VolumnOn} onClick={() => startCall()}/>
-          <img className="ml-auto" src={MicSvg} onClick={() => {console.log("Click Mic")}}/>
-          <img className="ml-auto" src={PhotoSvg} onClick={() => {console.log("Click Camera")}}/>
+          {/* <img className="ml-auto" src={MicSvg} onClick={() => {console.log("Click Mic")}}/>
+          <img className="ml-auto" src={PhotoSvg} onClick={() => {console.log("Click Camera")}}/> */}
         </div>
       </div>
       <div className="chatting-info d-flex flex-column pl-4 pr-2 py-2">
         <div className="chatting-history">
-          {chatHistories.map((historyItem, nIndex) => (
-            <div key={nIndex} className="chating-text-box py-2 pr-3">
-              {userInfo.user.name === historyItem.payload.Name ?
-                <h5><ChatImg src={ChatSvg} />Me</h5> : 
-                <h5><ChatImg src={ChatDisableSvg} />{historyItem?.payload.Name}</h5>
-              }
-              <p className="m-0">
-                {historyItem?.payload.Message}
-              </p>
-            </div>
-          ))}
-          <div ref={chattingEndRef} />
+          <div className="message-wrapper">
+            {chatHistories.map((historyItem, nIndex) => (
+              <div key={nIndex} className="chating-text-box py-2 pr-3">
+                {userInfo.user.name === historyItem.payload.Name ?
+                  <h5><ChatImg src={ChatSvg} />Me</h5> : 
+                  <h5><ChatImg src={ChatDisableSvg} />{historyItem?.payload.Name}</h5>
+                }
+                <p className="m-0">
+                  {historyItem?.payload.Message}
+                </p>
+              </div>
+            ))}
+            <div ref={chattingEndRef} />
+          </div>
         </div>
         <div className="last-chat">
           <textarea 
-            className="mt-1" 
+            className="my-1 float-left"
             placeholder="Type a message"
             value={newMessage}
             onKeyPress={(e) => sendMessageByEnter(e)}
@@ -181,7 +183,7 @@ const ChattingPanel = () => {
             }}
           >
           </textarea>
-          <div className="btn-container d-flex justify-content-end">
+          <div className="btn-container d-flex justify-content-end mt-1 w-100 float-left">
             <Button className="btn-send btn-bugress-primary" onClick={() => sendMessage()}>Send</Button>
           </div>
         </div>

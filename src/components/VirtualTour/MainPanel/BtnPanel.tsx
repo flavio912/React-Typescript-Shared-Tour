@@ -73,7 +73,7 @@ const BtnPanel = ({ controller, handleEvent }: Props) => {
                 </Button>
               </>
             )
-          }          
+          }
         </>
       )}
     </div>

@@ -36,22 +36,29 @@
     .chatting-history {
       flex: 1 1 auto;
       overflow-y: auto;
-      padding: 0 0 120px 0;  
+      padding: 0;
       position: relative;
+      display: block;
+      scrollbar-width: thin;
+      scrollbar-color: $primary-color #eee;
 
-      .chating-text-box {
-        font-size: 0.7em;
-        border-bottom: 2px solid #F5F5F5;
-        
-        &:last-child {
-          border-bottom: 0;
-        }
+      .message-wrapper {
+        padding: 0 0 120px 0;
 
-        h5 {
-          font-weight: 700;
-          font-size: 1rem;
+        .chating-text-box {
+          font-size: 0.7em;
+          border-bottom: 2px solid #F5F5F5;
+          
+          &:last-child {
+            border-bottom: 0;
+          }
+  
+          h5 {
+            font-weight: 700;
+            font-size: 1rem;
+          }
         }
-      }
+      }     
     }
     
     .last-chat {
