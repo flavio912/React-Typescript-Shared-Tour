@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 
 import NavMenu from './../../sharedComponents/NavMenu';
 import ChattingPanel from './ChattingPanel';
@@ -41,6 +41,7 @@ const VirtualTour = () => {
   }));
   const history = useHistory();
   const [twilioToken, setTwilioToken] = useState(null);
+  const [alert, setAlert] = useState({isShow: false, status: 'success', msg: ''});
 
   useEffect(() => {
     if(!userState.token) return;
@@ -49,6 +50,10 @@ const VirtualTour = () => {
       const tour_session_res = await RequestHelper.get(`/tour-session/${id}`, {});
       if(!tour_session_res.data.success){
         console.log(tour_session_res.data.error);
+        setAlert({isShow: true, status: 'danger', msg: tour_session_res.data.error});
+        window.setTimeout(() => {
+          setAlert({...alert, isShow: false});
+        }, 3000);
       }else {
         dispatch(setTourSessionAction(tour_session_res.data.data));
         dispatch(setTourTokenAction(tour_session_res.data.data.tourUrl.split("/").pop()));
@@ -161,6 +166,9 @@ const VirtualTour = () => {
           <MainPanel />
         </div>        
       </div>
+
+      <Alert variant="success" show={alert.isShow && alert.status==='success'}>{alert.msg}</Alert>
+      <Alert variant="danger" show={alert.isShow && alert.status==='danger'}>{alert.msg}</Alert>
 
       <RegisterModal role="client" />
       <SigninModal role="all" />

@@ -29,6 +29,8 @@ const Dashboard = () => {
   }))
 
   useEffect(() => {
+    if(!userToken) return;
+
     setIsLoading(true);
     RequestHelper
       .get('/tour-session/list?status='+curTab, null)
