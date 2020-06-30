@@ -19,7 +19,7 @@ const ThankyouModal = () => {
     >
       <Modal.Body>
         <h1>Thank you!</h1>
-        <p>your registration has been sent and you will receive an email when it's been approved</p>
+        <p>Thank you for registering - please check your email to view your Welcome email</p>
       </Modal.Body>
     </Modal>
   )
