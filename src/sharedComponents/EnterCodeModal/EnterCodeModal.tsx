@@ -1,8 +1,20 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
+import ReactCodeInput from 'react-code-input';
+
 import { enterCodeDialogAction } from '../../store/dialog/actions';
 import { DialogNames } from '../../store/dialog/types';
+
+const props = {
+  inputStyle: {
+    // fontFamily: 'monospace',
+    MozAppearance: 'textfield',
+    width: '20%',
+    borderRadius: '0',
+    fontSize: '1.5rem',
+  },
+}
 
 const EnterCodeModal = () => {
   const dispatch = useDispatch();
@@ -25,18 +37,15 @@ const EnterCodeModal = () => {
         <h1>Enter Code</h1>
         <Form className="d-flex flex-column justify-content-center">
           <Form.Group controlId="enterCodeForm.code" className="mt-3">
-            <Form.Control type="text" className="code-number" />
-            <Form.Control type="text" className="code-number" />
-            <Form.Control type="text" className="code-number" />
-            <Form.Control type="text" className="code-number" />
+            <ReactCodeInput {...props} />            
           </Form.Group>
-          <p>A code has been sent to your registered devices. <br/> Please enter it above.</p>
+          <p>A code has been sent to your mailbox when you request this tour session. Please enter it above.</p>
           <Button onClick={() => {dispatch(enterCodeDialogAction(false))}}>
             Enter
           </Button>
-          <a>Resend code</a>
+          {/* <a>Resend code</a> */}
           <div className="cancel-btn d-flex justify-content-center align-items-center mt-3">
-            <a>Cancel</a>
+            <a onClick={() => {dispatch(enterCodeDialogAction(false))}}>Cancel</a>
           </div>
         </Form>
       </Modal.Body>

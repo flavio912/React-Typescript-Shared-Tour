@@ -13,6 +13,11 @@
           justify-content: space-between;
           flex-flow: row;
 
+          .react-code-input {
+            display: flex !important;
+            justify-content: space-between;
+          }
+
           .code-number {
             width: 20%;
           }

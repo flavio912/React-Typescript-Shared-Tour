@@ -4,7 +4,11 @@ import { Modal } from 'react-bootstrap';
 import { thankyouDialogAction } from '../../store/dialog/actions';
 import { DialogNames } from '../../store/dialog/types';
 
-const ThankyouModal = () => {
+type Props = {
+  type: string
+}
+
+const ThankyouModal = ({ type }: Props) => {
   const dispatch = useDispatch();
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
@@ -19,7 +23,12 @@ const ThankyouModal = () => {
     >
       <Modal.Body>
         <h1>Thank you!</h1>
-        <p>Thank you for registering - please check your email to view your Welcome email</p>
+        {type === 'register' &&
+          <p>Thank you for registering - please check your email to view your Welcome email</p>
+        }
+        {type === 'tour-session' &&
+          <p>a verification code has been sent to your email. Please check and follow the instructions provided!</p>
+        }
       </Modal.Body>
     </Modal>
   )

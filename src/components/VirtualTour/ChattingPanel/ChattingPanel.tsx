@@ -14,6 +14,7 @@ import MicSvg from '../../../assets/images/mic.svg';
 import VolumnOn from '../../../assets/images/volumn-on.svg';
 import ChatSvg from '../../../assets/images/chat.svg';
 import ChatDisableSvg from '../../../assets/images/chat-disable.svg';
+import DefaultAvatarSvg from '../../../assets/images/default-avatar-filled.svg';
 
 declare var Twilio;
 const ChattingPanel = () => {
@@ -27,6 +28,7 @@ const ChattingPanel = () => {
   const [chatHistories, setChatHistories] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const chattingEndRef = useRef(null);
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
     async function fetchData() {
@@ -40,7 +42,23 @@ const ChattingPanel = () => {
       }
     }
     fetchData();
-  }, [id, userInfo.token]);
+  }, [id, userInfo.token]); // eslint-disable-line
+
+  useEffect(() => {
+    if(!userInfo.user.role || !virtualTourState.tourSession) return;
+
+    if(userInfo.user.role === Constants.UserRoles.broker) {
+      if(virtualTourState.tourSession.broker.avatar)
+        setAvatar(virtualTourState.tourSession.broker.avatar);
+      else
+        setAvatar(DefaultAvatarSvg);
+    }else if (userInfo.user.role === Constants.UserRoles.client) {
+      if(virtualTourState.tourSession.client.avatar)
+        setAvatar(virtualTourState.tourSession.client.avatar);
+      else
+        setAvatar(DefaultAvatarSvg);
+    }
+  }, [userInfo.user.role, virtualTourState.tourSession])
 
   useEffect(() => {
     if(!virtualTourState.socket) return;
@@ -119,12 +137,7 @@ const ChattingPanel = () => {
   return (
     <div className="left-panel d-flex flex-column mr-4">
       <div className="user-img h-20">
-        {virtualTourState.tourSession && (userInfo.user.role === Constants.UserRoles.broker)?
-          <img src={virtualTourState.tourSession.broker.avatar} />: null
-        }
-        {virtualTourState.tourSession && (userInfo.user.role === Constants.UserRoles.client)?
-          <img src={virtualTourState.tourSession.client.avatar} />: null
-        }        
+        <img src={avatar} />
       </div>
       <div className="control-div px-4 py-2 d-flex justify-content-between">
         <div className="d-flex flex-column pt-2">

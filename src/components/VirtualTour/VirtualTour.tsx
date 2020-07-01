@@ -15,7 +15,10 @@ import {
   setTourTokenAction,
   setEventTypeAction,
 } from '../../store/virtualTour/actions';
-import { voiceChattingDialogAction } from '../../store/dialog/actions';
+import { 
+  voiceChattingDialogAction,
+  enterCodeDialogAction
+} from '../../store/dialog/actions';
 
 import RegisterModal from '../../sharedComponents/RegisterModal';
 import SigninModal from '../../sharedComponents/SigninModal';
@@ -27,7 +30,6 @@ import VoiceChattingModal from '../../sharedComponents/VoiceChattingModal';
 import RequestHelper from '../../utils/Request.Utils';
 import { generateVoiceName } from '../../utils/Common.Utils';
 import * as CONSTANTS from '../../constants';
-import { Socket } from "net";
 
 declare var io;
 declare var Twilio;
@@ -45,6 +47,12 @@ const VirtualTour = () => {
 
   useEffect(() => {
     if(!userState.token) return;
+
+    if(userState.user.role === CONSTANTS.UserRoles.client) {
+      if(!localStorage.sessionConfirmCode) {
+        // dispatch(enterCodeDialogAction(true));
+      }
+    }
 
     async function fetchData() {
       const tour_session_res = await RequestHelper.get(`/tour-session/${id}`, {});
@@ -173,10 +181,10 @@ const VirtualTour = () => {
       <RegisterModal role="client" />
       <SigninModal role="all" />
       <EnterCodeModal />
-      <ThankyouModal />
+      <ThankyouModal type="register" />
       <ForgotPasswordModal />
       <ResetPasswordModal />
-      <VoiceChattingModal />
+      <VoiceChattingModal />      
     </>
   )
 }

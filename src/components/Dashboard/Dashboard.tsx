@@ -90,7 +90,7 @@ const Dashboard = () => {
       <RegisterModal role="broker" />
       <SigninModal role="broker" />
       <EnterCodeModal />
-      <ThankyouModal />
+      <ThankyouModal type="register" />
       <ForgotPasswordModal />
       <ResetPasswordModal />
       

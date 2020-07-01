@@ -156,7 +156,7 @@ const Homepage = () => {
       <RegisterModal role="client" />
       <SigninModal role="client" />
       <EnterCodeModal />
-      <ThankyouModal />
+      <ThankyouModal type="register" />
       <ForgotPasswordModal />
       <ResetPasswordModal />
     </>

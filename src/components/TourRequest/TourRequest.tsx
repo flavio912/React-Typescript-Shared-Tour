@@ -69,7 +69,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       <RegisterModal role="client" />
       <SigninModal role="client" />
       <EnterCodeModal />
-      <ThankyouModal />
+      <ThankyouModal type="tour-session" />
       <ForgotPasswordModal />
       <ResetPasswordModal />
     </>
