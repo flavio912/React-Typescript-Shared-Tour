@@ -6,7 +6,10 @@ import styled from 'styled-components';
 
 import NavMenu from '../../sharedComponents/NavMenu';
 import RequestHelper from '../../utils/Request.Utils';
-import { loginUserDialogAction } from '../../store/dialog/actions';
+import { 
+  loginUserDialogAction,
+  thankyouDialogAction
+} from '../../store/dialog/actions';
 import RegisterModal from '../../sharedComponents/RegisterModal';
 import SigninModal from '../../sharedComponents/SigninModal';
 import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
@@ -39,10 +42,11 @@ const TourRequest = ({ location }: RouteComponentProps) => {
         })
         .then((res) => {
           if(res.data.success){
-            setAlert({isShow: true, status: 'success', msg: 'Tour Request Success!'});
-            window.setTimeout(() => {
-              setAlert({...alert, isShow: false});
-            }, 3000);
+            dispatch(thankyouDialogAction(true));
+            // setAlert({isShow: true, status: 'success', msg: 'Tour Request Success!'});
+            // window.setTimeout(() => {
+            //   setAlert({...alert, isShow: false});
+            // }, 3000);
           }else {
             setAlert({isShow: true, status: 'danger', msg: res.data.error});
             window.setTimeout(() => {
