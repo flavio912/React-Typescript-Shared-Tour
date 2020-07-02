@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
@@ -30,6 +30,13 @@ const SigninModal = ({ role }: Props) => {
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
   }))
+
+  useEffect(() => {
+    setFormData({
+      email: {value: '', validate: true, errorMsg: ''},
+      password: {value: '', validate: true, errorMsg: ''}
+    })
+  }, [dialog.isOpened]);
 
   const checkEmailValidate = () => {
     if (formData.email.value.length === 0) {

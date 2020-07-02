@@ -41,6 +41,17 @@ const RegisterModal = ({ role }: Props) => {
     bsCustomFileInput.init();
   }, []);
 
+  useEffect(() => {
+    setFormData({
+      userName: {value: '', validate: true, errorMsg: ''},
+      country: {value: '', validate: true, errorMsg: ''},
+      email: {value: '', validate: true, errorMsg: ''},
+      phone: {value: '', validate: true, errorMsg: ''},
+      password: {value: '', validate: true, errorMsg: ''},
+      imgUrl: {value: '', validate: true, errorMsg: ''}
+    })
+  }, [dialog.isOpened]);
+
   const checkUserNameValidate = () => {
     setFormData({
       ...formData,
