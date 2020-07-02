@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import NavMenu from './../../sharedComponents/NavMenu';
 import RegisterModal from '../../sharedComponents/RegisterModal';
 import SigninModal from '../../sharedComponents/SigninModal';
-import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
 import ThankyouModal from '../../sharedComponents/ThankyouModal';
 import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
 import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
@@ -89,7 +88,6 @@ const Dashboard = () => {
       
       <RegisterModal role="broker" />
       <SigninModal role="broker" />
-      <EnterCodeModal />
       <ThankyouModal type="register" />
       <ForgotPasswordModal />
       <ResetPasswordModal />

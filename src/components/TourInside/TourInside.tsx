@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import NavMenu from '../../sharedComponents/NavMenu';
 import TourMenuDropDown from '../../sharedComponents/TourMenuDropDown';
-import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
+// import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
 import ChooseTourModal from '../../sharedComponents/ChooseTourModal';
 import ImgBack from './../../assets/images/hasna.jpg';
 import ArrowSvg from '../../assets/images/arrow-white.svg';
@@ -39,7 +39,7 @@ const TourInside = () => {
           </div>
         </ControllBar>
       </Container>
-      <EnterCodeModal />
+      {/* <EnterCodeModal /> */}
       <ChooseTourModal isShow={showChooseTourModal} hideModal={() => setShowChooseTourModal(false)} />
     </>
   )

@@ -44,14 +44,14 @@ const VirtualTour = () => {
   const history = useHistory();
   const [twilioToken, setTwilioToken] = useState(null);
   const [alert, setAlert] = useState({isShow: false, status: 'success', msg: ''});
+  const [clientConfirmCode, setClientConfirmCode] = useState('');
 
   useEffect(() => {
     if(!userState.token) return;
 
-    if(userState.user.role === CONSTANTS.UserRoles.client) {
-      if(!localStorage.sessionConfirmCode) {
-        // dispatch(enterCodeDialogAction(true));
-      }
+    if(userState.user.role === CONSTANTS.UserRoles.client && clientConfirmCode === '') {
+      dispatch(enterCodeDialogAction(true));
+      return;
     }
 
     async function fetchData() {
@@ -68,9 +68,18 @@ const VirtualTour = () => {
         dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT));
       }
 
-      const tour_session_start_res = await RequestHelper.post(`/tour-session/${id}/start`, {});
+      let data = {};
+      if(userState.user.role === CONSTANTS.UserRoles.client) {
+        data["confirmCode"] = clientConfirmCode;
+      }
+      const tour_session_start_res = await RequestHelper.post(`/tour-session/${id}/start`, data);
       if(!tour_session_start_res.data.success){
         console.log(tour_session_start_res.data.error);
+        setAlert({isShow: true, status: 'danger', msg: tour_session_start_res.data.error});
+        window.setTimeout(() => {
+          setAlert({...alert, isShow: false});
+        }, 3000);
+        dispatch(enterCodeDialogAction(true));
       }else {
         dispatch(setSocketCodeAction(tour_session_start_res.data.data.socketCode));
         dispatch(setSocketAction(io(`api.burgess-shared-tour.devserver.london/${tour_session_start_res.data.data.socketCode}`)));
@@ -81,7 +90,7 @@ const VirtualTour = () => {
       }
     }
     fetchData();
-  }, [id, userState.token]) // eslint-disable-line
+  }, [id, userState.token, clientConfirmCode]) // eslint-disable-line
 
   useEffect(() => {
     if(!virtualTourState.socket) return;
@@ -165,6 +174,15 @@ const VirtualTour = () => {
     setTwilioToken(response.data.token);
   }
 
+  const handleEnterCode = (code: string) => {
+    if(code.length === 4){
+      dispatch(enterCodeDialogAction(false));
+      setClientConfirmCode(code);
+    } else {
+      dispatch(enterCodeDialogAction(true));
+    }
+  }
+
   return (
     <>
       <NavMenu />
@@ -180,7 +198,7 @@ const VirtualTour = () => {
 
       <RegisterModal role="client" />
       <SigninModal role="all" />
-      <EnterCodeModal />
+      <EnterCodeModal returnCode={(code: string) => handleEnterCode(code)} />
       <ThankyouModal type="register" />
       <ForgotPasswordModal />
       <ResetPasswordModal />

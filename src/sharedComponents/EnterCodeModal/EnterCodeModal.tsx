@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import ReactCodeInput from 'react-code-input';
@@ -16,11 +16,16 @@ const props = {
   },
 }
 
-const EnterCodeModal = () => {
+type Props = {
+  returnCode: Function
+}
+
+const EnterCodeModal = ({returnCode}: Props) => {
   const dispatch = useDispatch();
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
   }))
+  const [code, setCode]= useState("");
 
   return (
     <Modal
@@ -37,10 +42,10 @@ const EnterCodeModal = () => {
         <h1>Enter Code</h1>
         <Form className="d-flex flex-column justify-content-center">
           <Form.Group controlId="enterCodeForm.code" className="mt-3">
-            <ReactCodeInput {...props} />            
+            <ReactCodeInput {...props} value={code} onChange={(e) => setCode(e)} />            
           </Form.Group>
           <p>A code has been sent to your mailbox when you request this tour session. Please enter it above.</p>
-          <Button onClick={() => {dispatch(enterCodeDialogAction(false))}}>
+          <Button onClick={() => returnCode(code)}>
             Enter
           </Button>
           {/* <a>Resend code</a> */}

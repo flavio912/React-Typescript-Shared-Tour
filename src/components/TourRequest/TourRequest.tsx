@@ -12,7 +12,6 @@ import {
 } from '../../store/dialog/actions';
 import RegisterModal from '../../sharedComponents/RegisterModal';
 import SigninModal from '../../sharedComponents/SigninModal';
-import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
 import ThankyouModal from '../../sharedComponents/ThankyouModal';
 import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
 import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
@@ -72,7 +71,6 @@ const TourRequest = ({ location }: RouteComponentProps) => {
 
       <RegisterModal role="client" />
       <SigninModal role="client" />
-      <EnterCodeModal />
       <ThankyouModal type="tour-session" />
       <ForgotPasswordModal />
       <ResetPasswordModal />
