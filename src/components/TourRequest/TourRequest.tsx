@@ -8,13 +8,15 @@ import NavMenu from '../../sharedComponents/NavMenu';
 import RequestHelper from '../../utils/Request.Utils';
 import { 
   loginUserDialogAction,
-  thankyouDialogAction
+  thankyouDialogAction,
+  enterCodeDialogAction
 } from '../../store/dialog/actions';
 import RegisterModal from '../../sharedComponents/RegisterModal';
 import SigninModal from '../../sharedComponents/SigninModal';
 import ThankyouModal from '../../sharedComponents/ThankyouModal';
 import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
 import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
+import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
 
 const qs = require('qs');
 
@@ -23,6 +25,8 @@ const TourRequest = ({ location }: RouteComponentProps) => {
   const [curTourUrl, setTourUrl] = useState('');
   const [alert, setAlert] = useState({isShow: false, status: '', msg: ''});
   const [token, setToken] = useState('');
+  const [requestId, setRequestId] = useState('');
+  const [thankyouModalType, setThankyouModalType] = useState('');
 
   useEffect(() => {
     const params = qs.parse(location.search);
@@ -41,11 +45,9 @@ const TourRequest = ({ location }: RouteComponentProps) => {
         })
         .then((res) => {
           if(res.data.success){
+            setRequestId(res.data.data.requestId);
+            setThankyouModalType('tour-session');
             dispatch(thankyouDialogAction(true));
-            // setAlert({isShow: true, status: 'success', msg: 'Tour Request Success!'});
-            // window.setTimeout(() => {
-            //   setAlert({...alert, isShow: false});
-            // }, 3000);
           }else {
             setAlert({isShow: true, status: 'danger', msg: res.data.error});
             window.setTimeout(() => {
@@ -60,6 +62,34 @@ const TourRequest = ({ location }: RouteComponentProps) => {
     }
   }, [location.search]) // eslint-disable-line
 
+  const showEnterCodeModal = (isShow: boolean) => {
+    if(!isShow) return;
+
+    dispatch(enterCodeDialogAction(true));
+  }
+
+  const handleEnterCode = async(code: string) => {
+    if(code.length === 4){
+      const data = {
+        id: requestId,
+        confirmCode: code,
+      }
+      const tour_session_verify_res = await RequestHelper.post(`/tour-session/request/verify`, data);
+      if(!tour_session_verify_res.data.success){
+        console.log(tour_session_verify_res.data.error);
+        setAlert({isShow: true, status: 'danger', msg: tour_session_verify_res.data.error});
+        window.setTimeout(() => {
+          setAlert({...alert, isShow: false});
+        }, 3000);
+      }else {
+        setThankyouModalType('verify-code');
+        dispatch(thankyouDialogAction(true));
+      }
+    } else {
+      dispatch(enterCodeDialogAction(true));
+    }
+  }
+
   return (
     <>
       <NavMenu />
@@ -71,9 +101,10 @@ const TourRequest = ({ location }: RouteComponentProps) => {
 
       <RegisterModal role="client" />
       <SigninModal role="client" />
-      <ThankyouModal type="tour-session" />
+      <ThankyouModal type={thankyouModalType} showEnterCodeModal={(isShow: boolean) => showEnterCodeModal(isShow)} />
       <ForgotPasswordModal />
       <ResetPasswordModal />
+      <EnterCodeModal returnCode={(code: string) => handleEnterCode(code)} />
     </>
   )
 }
