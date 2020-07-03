@@ -1,15 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { thankyouDialogAction } from '../../store/dialog/actions';
 import { DialogNames } from '../../store/dialog/types';
 
 type Props = {
-  type: string,
-  showEnterCodeModal?: Function
+  type: string
 }
 
-const ThankyouModal = ({ type, showEnterCodeModal }: Props) => {
+const ThankyouModal = ({ type }: Props) => {
   const dispatch = useDispatch();
   const { dialog } = useSelector((state: any) => ({
     dialog: state.dialog
@@ -28,13 +27,7 @@ const ThankyouModal = ({ type, showEnterCodeModal }: Props) => {
           <p>Thank you for registering - please check your email to view your Welcome email</p>
         }
         {type === 'tour-session' &&
-          <>
-            <p>a verification code has been sent to your email. Please check and follow the instructions provided!</p>
-            <Button type="button" onClick={() => showEnterCodeModal(true)}>Next</Button>
-          </>
-        }
-        {type === 'verify-code' &&
-          <p>Waiting for a broker to join and accept your tour and they will be notified when it happens.</p>
+          <p>Please wait for a broker to join and accept your tour. You will be notified via email when this happens.</p>
         }
       </Modal.Body>
     </Modal>

@@ -26,7 +26,6 @@ const TourRequest = ({ location }: RouteComponentProps) => {
   const [alert, setAlert] = useState({isShow: false, status: '', msg: ''});
   const [token, setToken] = useState('');
   const [requestId, setRequestId] = useState('');
-  const [thankyouModalType, setThankyouModalType] = useState('');
 
   useEffect(() => {
     const params = qs.parse(location.search);
@@ -46,8 +45,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
         .then((res) => {
           if(res.data.success){
             setRequestId(res.data.data.requestId);
-            setThankyouModalType('tour-session');
-            dispatch(thankyouDialogAction(true));
+            dispatch(enterCodeDialogAction(true));
           }else {
             setAlert({isShow: true, status: 'danger', msg: res.data.error});
             window.setTimeout(() => {
@@ -61,12 +59,6 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       }
     }
   }, [location.search]) // eslint-disable-line
-
-  const showEnterCodeModal = (isShow: boolean) => {
-    if(!isShow) return;
-
-    dispatch(enterCodeDialogAction(true));
-  }
 
   const handleEnterCode = async(code: string) => {
     if(code.length === 4){
@@ -82,7 +74,6 @@ const TourRequest = ({ location }: RouteComponentProps) => {
           setAlert({...alert, isShow: false});
         }, 3000);
       }else {
-        setThankyouModalType('verify-code');
         dispatch(thankyouDialogAction(true));
       }
     } else {
@@ -101,7 +92,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
 
       <RegisterModal role="client" />
       <SigninModal role="client" />
-      <ThankyouModal type={thankyouModalType} showEnterCodeModal={(isShow: boolean) => showEnterCodeModal(isShow)} />
+      <ThankyouModal type="tour-session" />
       <ForgotPasswordModal />
       <ResetPasswordModal />
       <EnterCodeModal returnCode={(code: string) => handleEnterCode(code)} />
