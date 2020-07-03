@@ -39,7 +39,11 @@ const Dashboard = () => {
           setTourList([]);
           window.setTimeout(() => {setShowFailAlert(false)}, 2000);
         }else {
-          setTourList(res.data.data);
+          let tourArray = res.data.data;
+          tourArray.sort((a: any, b: any)=> {
+            return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+          })
+          setTourList(tourArray);
         }
         setIsLoading(false);
       })
