@@ -69,7 +69,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       const tour_session_verify_res = await RequestHelper.post(`/tour-session/request/verify`, data);
       if(!tour_session_verify_res.data.success){
         console.log(tour_session_verify_res.data.error);
-        setAlert({isShow: true, status: 'danger', msg: tour_session_verify_res.data.error});
+        setAlert({isShow: true, status: 'danger', msg: 'Invalid Code'});
         window.setTimeout(() => {
           setAlert({...alert, isShow: false});
         }, 3000);
