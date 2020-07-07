@@ -111,14 +111,15 @@ body {
   flex-flow: column-reverse;
   margin-bottom: 1em;
 
-  label, input[type=text], input[type=password], input[type=email] {
+  label, input[type=text], input[type=password], input[type=email], input[type=tel] {
     transition: all 0.2s;
     touch-action: manipulation;
   }
 
   input[type=text] + label,
   input[type=email] + label,
-  input[type=password] + label {
+  input[type=password] + label,
+  input[type=tel] + label {
     cursor: text;
     max-width: 66.66%;
     white-space: nowrap;
@@ -132,7 +133,8 @@ body {
   input:not(:placeholder-shown) + label,
   input[type=text]:focus + label,
   input[type=email]:focus + label,
-  input[type=password]:focus + label {
+  input[type=password]:focus + label,
+  input[type=tel]:focus + label {
     transform: translate(0, 0) scale(1);
     cursor: pointer;
   }

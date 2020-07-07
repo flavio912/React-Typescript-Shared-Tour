@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
 import validator from 'validator';
+import PhoneInput from 'react-phone-number-input/input';
 import RequestHelper from '../../utils/Request.Utils';
 import { registerUserAction } from '../../store/user/actions';
 import { registerUserDialogAction, loginUserDialogAction, thankyouDialogAction } from '../../store/dialog/actions';
@@ -311,22 +312,22 @@ const RegisterModal = ({ role }: Props) => {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="registerForm.phone">
-            <Form.Control 
-              type="text" 
-              value={formData.phone.value}
+            <PhoneInput
+              id="registerForm.phone"
+              className="form-control"
               placeholder="phone"
-              onChange={(e) => {
+              value={formData.phone.value}
+              onChange={(value) => {
                 setFormData({
                   ...formData,
                   phone: {
-                    value: e.target.value,
+                    value: value,
                     validate: true,
                     errorMsg: '',
                   }
                 })
               }}
-              isInvalid={!formData.phone.validate}
-            />
+            />            
             <Form.Label>Mobile Phone</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.phone.errorMsg}
