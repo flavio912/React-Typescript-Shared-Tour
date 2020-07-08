@@ -243,7 +243,11 @@ const RegisterModal = ({ role }: Props) => {
         <h2>A shared virtual experience</h2>
       </Modal.Header>
       <Modal.Body>
-        <h1>Register as a <span className="user-type">{role}</span></h1>
+        {role === 'client' ?
+          <h1>Register as a <span className="user-type">{role}</span></h1>
+          :
+          <h1>Register</h1>
+        }
         <Form onSubmit={onSubmit}>
           <Form.Group controlId="registerForm.userName">           
             <Form.Control 

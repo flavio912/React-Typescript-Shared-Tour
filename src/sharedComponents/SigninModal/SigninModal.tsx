@@ -156,7 +156,7 @@ const SigninModal = ({ role }: Props) => {
         <h2>A shared virtual experience</h2>
       </Modal.Header>
       <Modal.Body>
-        {role !== 'all'? 
+        {role === 'client'? 
           (<h1>Sign In as a <span className="user-type">{role}</span></h1>)
           :
           (<h1>Sign In</h1>)
