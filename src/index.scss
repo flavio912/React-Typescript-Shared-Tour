@@ -9,6 +9,23 @@ body {
   overflow-x: hidden;
 }
 
+.btn-primary:hover,
+.btn-primary:not(:disabled):not(.disabled).active, 
+.btn-primary:not(:disabled):not(.disabled):active, 
+.show>.btn-primary.dropdown-toggle {
+  color: #fff !important;
+  background-color: $grey-color !important;
+  border-color: $grey-color !important;
+}
+
+.btn-primary.focus, 
+.btn-primary:focus {
+  color: #fff !important;
+  background-color: $grey-color !important;
+  border-color: $grey-color !important;
+  box-shadow: 0 0 0 0.2rem rgba(68,68,68,.5);
+}
+
 .btn-bugress-primary {
   border-radius: 0;
   background-color: $primary-color;
