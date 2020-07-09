@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
 import validator from 'validator';
-import PhoneInput from 'react-phone-number-input/input';
 import RequestHelper from '../../utils/Request.Utils';
 import { registerUserAction } from '../../store/user/actions';
 import { registerUserDialogAction, loginUserDialogAction, thankyouDialogAction } from '../../store/dialog/actions';
@@ -18,12 +17,12 @@ const RegisterModal = ({ role }: Props) => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    userName: {value: '', validate: true, errorMsg: ''},
-    country: {value: '', validate: true, errorMsg: ''},
-    email: {value: '', validate: true, errorMsg: ''},
-    phone: {value: '', validate: true, errorMsg: ''},
-    password: {value: '', validate: true, errorMsg: ''},
-    imgUrl: {value: '', validate: true, errorMsg: ''}
+    userName: {value: '', validate: false, errorMsg: ''},
+    country: {value: '', validate: false, errorMsg: ''},
+    email: {value: '', validate: false, errorMsg: ''},
+    phone: {value: '', validate: false, errorMsg: ''},
+    password: {value: '', validate: false, errorMsg: ''},
+    imgUrl: {value: '', validate: false, errorMsg: ''}
   });
   const [alert, setAlert] = useState({
     isShow: false,
@@ -113,17 +112,36 @@ const RegisterModal = ({ role }: Props) => {
     return false;
   };
 
-  const checkPhoneValidate = () => {
-    setFormData({
-      ...formData,
-      phone: {
-        value: formData.phone.value,
-        validate: formData.phone.value.length !== 0,
-        errorMsg:
-          formData.phone.value.length === 0 ? 'Mobile Phone required!' : '',
-      },
-    });
-    return formData.phone.value.length !== 0;
+  const isNumeric = (n) => {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
+  const checkPhoneValidate = (value) => {
+    let phoneNum = value.replace(/\s/g, '');
+    if(phoneNum[0] === '+')
+      phoneNum = phoneNum.substr(1);
+    
+    if(value.length > 0 && isNumeric(phoneNum)) {
+      setFormData({
+        ...formData,
+        phone: {
+          value: value,
+          validate: true,
+          errorMsg: '',
+        }
+      });
+      return true;
+    }else {
+      setFormData({
+        ...formData,
+        phone: {
+          value: value,
+          validate: false,
+          errorMsg: value.length === 0 ? 'Mobile Phone required!' : 'Invalid format!',
+        },
+      });
+      return false;
+    }        
   }
 
   const checkPasswordValidate = () => {
@@ -147,7 +165,7 @@ const RegisterModal = ({ role }: Props) => {
       checkUserNameValidate() && 
       checkCountryValidate() && 
       checkEmailValidate() && 
-      checkPhoneValidate() &&
+      checkPhoneValidate(formData.phone.value) &&
       checkPasswordValidate()
     ) {
       setLoading(true);
@@ -316,22 +334,15 @@ const RegisterModal = ({ role }: Props) => {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="registerForm.phone">
-            <PhoneInput
-              id="registerForm.phone"
-              className="form-control"
-              placeholder="phone"
+            <Form.Control 
+              type="text" 
               value={formData.phone.value}
-              onChange={(value) => {
-                setFormData({
-                  ...formData,
-                  phone: {
-                    value: value,
-                    validate: true,
-                    errorMsg: '',
-                  }
-                })
+              placeholder="phone"
+              onChange={(e) => {
+                checkPhoneValidate(e.target.value);
               }}
-            />            
+              isInvalid={!formData.phone.validate}
+            />
             <Form.Label>Mobile Phone</Form.Label>
             <Form.Control.Feedback type="invalid">
               {formData.phone.errorMsg}
