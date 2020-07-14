@@ -21,6 +21,12 @@
     float: left;
     width: 100%;
   }
+
+  .no-result {
+    font-style: italic;
+    text-align: center;
+    font-weight: bold;
+  }
 }
 
 @import "./SidePanel/styles.scss";

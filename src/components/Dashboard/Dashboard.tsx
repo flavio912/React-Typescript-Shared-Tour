@@ -71,15 +71,15 @@ const Dashboard = () => {
                 {isLoading ? (
                   <CustomLoading />
                 ) :(
-                  <>
-                    {tourList.map((item, nIndex) => {
-                      return(
+                  tourList && tourList.length > 0 ?
+                    (tourList.map((item, nIndex) => {
+                      return (
                         <div className="col-md-6 mb-3 p-0 float-left" key={nIndex}>
                           <TourItem tourInfo={item} />
                         </div>
                       );
-                    })}
-                  </>
+                    }))
+                    : (<div className="no-result">You have no current guided tour requests.</div>)
                 )}
               </div>
             </div>
