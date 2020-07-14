@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navbar, Nav } from 'react-bootstrap';
-import { RouteComponentProps, Link, withRouter } from "react-router-dom";
+import { RouteComponentProps, Link, withRouter, useHistory } from "react-router-dom";
 
 import { loginUserDialogAction, resetPasswordDialogAction } from '../../store/dialog/actions';
 import { updateUserAction, logoutUserAction } from '../../store/user/actions';
+import * as CONSTANT from '../../constants';
 import RequestHelper from '../../utils/Request.Utils';
 import UserSvg from '../../assets/images/users.svg';
 import LogoutSvg from '../../assets/images/signs.svg';
@@ -13,6 +14,7 @@ const qs = require('qs');
 
 const NavMenu = ({ location }: RouteComponentProps) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [curPath, setCurPath] = useState(location.pathname);
   const { userInfo } = useSelector((state: any) => ({
     userInfo: state.user
@@ -47,7 +49,15 @@ const NavMenu = ({ location }: RouteComponentProps) => {
 
   const handleLogout = () => {
     dispatch(logoutUserAction());
-    dispatch(loginUserDialogAction(true));
+
+    if(userInfo.user.role === CONSTANT.UserRoles.broker){
+      if(location.pathname === '/dashboard')
+        window.location.reload()
+      else
+        history.push('/dashboard', null);
+    } else{
+      history.push('/', null);
+    }
   }
 
   return (
