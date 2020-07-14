@@ -113,8 +113,8 @@ const MainPanel = () => {
         socket.emit("TOUR_CONTROL", {
           event: "PLAYER_STOP_AUTO_SPIN",
           data,
-        });
-      }
+        });        
+      }      
     });
   
     tourControl.on('PLAYER_TRANSITION_TO', (data) => {
@@ -162,6 +162,26 @@ const MainPanel = () => {
       //   });
       // }
     });
+
+    tourControl.on('VIEW_ANGLE_ROTATE_LEFT', (data) => {
+      console.log("view angle rotate left");
+      if(userState.user.role === localStorage.controller) {
+        socket.emit("TOUR_CONTROL", {
+          event: "VIEW_ANGLE_ROTATE_LEFT",
+          data,
+        });
+      }
+    });
+
+    tourControl.on('VIEW_ANGLE_ROTATE_UP', (data) => {
+      console.log("view angle rotate up");
+      if(userState.user.role === localStorage.controller) {
+        socket.emit("TOUR_CONTROL", {
+          event: "VIEW_ANGLE_ROTATE_UP",
+          data,
+        });
+      }
+    })
     
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
@@ -186,9 +206,16 @@ const MainPanel = () => {
         case "SET_ACTIVE_HOTSPOT":
           tourControl.setActiveHotspot(data.data);
           break;
+        case "VIEW_ANGLE_ROTATE_LEFT":
+          if(userState.user.role !== localStorage.controller)
+            tourControl.viewAngleRotateLeft(data.data);          
+          break;
+        case "VIEW_ANGLE_ROTATE_UP":
+          tourControl.viewAngleRotateUp(data.data);
+          break;
         default:
           break;
-      }        
+      }
     });
 
     socket.on("SWITCH_CONTROL_TO_CLIENT", data => {
