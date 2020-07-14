@@ -17,13 +17,14 @@ import ThankyouModal from '../../sharedComponents/ThankyouModal';
 import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
 import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
 import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
+import CONFIG from '../../config';
 
 const qs = require('qs');
 
 const TourRequest = ({ location }: RouteComponentProps) => {
   const dispatch = useDispatch();
   const [curTourUrl, setTourUrl] = useState('');
-  const [alert, setAlert] = useState({isShow: false, status: '', msg: ''});
+  const [alert, setAlert] = useState({isShow: false, status: '', msg: '', isRequestError: false});
   const [token, setToken] = useState('');
   const [requestId, setRequestId] = useState('');
 
@@ -47,10 +48,15 @@ const TourRequest = ({ location }: RouteComponentProps) => {
             setRequestId(res.data.data.requestId);
             dispatch(enterCodeDialogAction(true));
           }else {
-            setAlert({isShow: true, status: 'danger', msg: res.data.error});
+            setAlert({
+              ...alert,
+              isShow: true, 
+              status: 'danger', 
+              isRequestError: true
+            });
             window.setTimeout(() => {
               setAlert({...alert, isShow: false});
-            }, 3000);
+            }, 5000);
           }
         })
         .catch((error) => {
@@ -69,7 +75,12 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       const tour_session_verify_res = await RequestHelper.post(`/tour-session/request/verify`, data);
       if(!tour_session_verify_res.data.success){
         console.log(tour_session_verify_res.data.error);
-        setAlert({isShow: true, status: 'danger', msg: 'Invalid Code'});
+        setAlert({
+          ...alert,
+          isShow: true, 
+          status: 'danger', 
+          msg: 'Invalid Code'
+        });
         window.setTimeout(() => {
           setAlert({...alert, isShow: false});
         }, 3000);
@@ -88,7 +99,11 @@ const TourRequest = ({ location }: RouteComponentProps) => {
         <iframe id={`tour-${token}`} src={curTourUrl} width="100%" height="100%" style={{border: 'none'}} />
       </CustomContainer>
       <Alert variant="success" show={alert.isShow && alert.status==='success'}>{alert.msg}</Alert>
-      <Alert variant="danger" show={alert.isShow && alert.status==='danger'}>{alert.msg}</Alert>
+      <Alert variant="danger" show={alert.isShow && alert.status==='danger' && !alert.isRequestError}>{alert.msg}</Alert>
+      <Alert variant="danger" show={alert.isShow && alert.status==='danger' && alert.isRequestError}>
+        Please log in to your console to view this content - 
+        <Alert.Link href={`${CONFIG['BASE_URL']}/dashboard`}>{CONFIG['BASE_URL']}/dashboard</Alert.Link>
+      </Alert>
 
       <RegisterModal role="client" />
       <SigninModal role="client" />
