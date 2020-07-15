@@ -181,7 +181,18 @@ const MainPanel = () => {
           data,
         });
       }
-    })
+    });
+
+    tourControl.on('UPDATE_POSITION_ANGLE', (data) => {
+      console.log("update position angle");
+      if(userState.user.role === localStorage.controller) {
+        socket.emit("TOUR_CONTROL", {
+          event: "UPDATE_POSITION_ANGLE",
+          data,
+        });
+      }
+    });
+
     
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
@@ -212,6 +223,9 @@ const MainPanel = () => {
           break;
         case "VIEW_ANGLE_ROTATE_UP":
           tourControl.viewAngleRotateUp(data.data);
+          break;
+        case "UPDATE_POSITION_ANGLE":
+          tourControl.viewAngleUpdatePosition(data.data);
           break;
         default:
           break;
