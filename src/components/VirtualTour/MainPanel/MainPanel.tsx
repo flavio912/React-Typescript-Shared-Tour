@@ -141,6 +141,8 @@ const MainPanel = () => {
 
     tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
       console.log('thumbnail play click');
+      dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
+
       // callback when the middle play icon is clicked
       if(userState.user.role !== localStorage.controller) {
         tourControl.lockControl();
@@ -154,13 +156,12 @@ const MainPanel = () => {
 
     tourControl.on('SET_ACTIVE_HOTSPOT', (data) => {
       console.log('set active hotspot');
-      console.log('SET_ACTIVE_HOTSPOT', data);
-      // if(userState.user.role === localStorage.controller){
-      //   socket.emit("TOUR_CONTROL", {
-      //     event: 'SET_ACTIVE_HOTSPOT',
-      //     data,
-      //   });
-      // }
+      if(userState.user.role === localStorage.controller){
+        socket.emit("TOUR_CONTROL", {
+          event: 'SET_ACTIVE_HOTSPOT',
+          data,
+        });
+      }
     });
 
     tourControl.on('VIEW_ANGLE_ROTATE_LEFT', (data) => {
@@ -197,12 +198,13 @@ const MainPanel = () => {
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
       if(userState.user.role === localStorage.controller) return;
-      
+
       console.log(data.event);      
       switch (data.event) {
         case "THUMBNAIL_PLAY_CLICK":{
           dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
           tourControl.thumbnailPlayClick();
+          tourControl.lockControl();
           break;
         }
         case "PLAYER_TRANSITION_TO":
