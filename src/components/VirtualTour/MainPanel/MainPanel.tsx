@@ -35,7 +35,7 @@ const MainPanel = () => {
   })); 
 
   useEffect(() => {
-    if(!virtualTourState.tourSession || !virtualTourState.socket || !virtualTourState.tourToken || !localStorage.controller) return;
+    if(!virtualTourState.tourSession || !virtualTourState.socket || !virtualTourState.tourToken) return;
 
     const socket = virtualTourState.socket;
     const selectedTour = CONSTANTS.HOME_TOURS.filter(tour => tour.name === virtualTourState.tourSession.tourName)[0];
@@ -63,7 +63,6 @@ const MainPanel = () => {
     switch (eventType) {
       case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT: {
         virtualTourState.socket.connect();
-        dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
         virtualTourState.socket.emit("TOUR_CONTROL", {
           event: "THUMBNAIL_PLAY_CLICK",
           data: null
@@ -96,11 +95,9 @@ const MainPanel = () => {
     if(!token || iframeRef.current.id !== `tour-${token}`) return;
 
     const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
-
     tourControl.on('PLAYER_START_AUTO_SPIN', (data) => {
-      // callback when the tour auto plays
-      console.log('tour auto plays');
       if(userState.user.role === localStorage.controller){
+        console.log('tour auto plays');
         socket.emit("TOUR_CONTROL", {
           event: "PLAYER_START_AUTO_SPIN",
           data,
@@ -109,9 +106,8 @@ const MainPanel = () => {
     });
   
     tourControl.on('PLAYER_STOP_AUTO_SPIN', (data) => {
-      // callback when the tour stops auto play
-      console.log('tour stops auto play');
       if(userState.user.role === localStorage.controller){
+        console.log('tour stops auto play');
         socket.emit("TOUR_CONTROL", {
           event: "PLAYER_STOP_AUTO_SPIN",
           data,
@@ -120,9 +116,8 @@ const MainPanel = () => {
     });
   
     tourControl.on('PLAYER_TRANSITION_TO', (data) => {
-      console.log('tour player transition to');
-      // callback when the tour navigate to somewhere
       if(userState.user.role === localStorage.controller){
+        console.log('tour player transition to');
         socket.emit("TOUR_CONTROL", {
           event: "PLAYER_TRANSITION_TO",
           data,
@@ -131,9 +126,8 @@ const MainPanel = () => {
     });
  
     tourControl.on('PLAYER_TRANSITION_TO_IMMEDIATELY', (data) => {
-      console.log('tour player transition to immediately');
-      // callback when the tour navigate immediately to somewhere
       if(userState.user.role === localStorage.controller){
+        console.log('tour player transition to immediately');
         socket.emit("TOUR_CONTROL", {
           event: 'PLAYER_TRANSITION_TO_IMMEDIATELY',
           data,
@@ -143,13 +137,6 @@ const MainPanel = () => {
 
     tourControl.on('THUMBNAIL_PLAY_CLICK', (data) => {
       console.log('thumbnail play click');
-      dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
-
-      // callback when the middle play icon is clicked
-      if(userState.user.role !== localStorage.controller) {
-        tourControl.lockControl();
-      }
-
       socket.emit("TOUR_CONTROL", {
         event: 'THUMBNAIL_PLAY_CLICK',
         data: null,
@@ -157,8 +144,8 @@ const MainPanel = () => {
     });
 
     tourControl.on('SET_ACTIVE_HOTSPOT', (data) => {
-      console.log('set active hotspot');
       if(userState.user.role === localStorage.controller){
+        console.log('set active hotspot');
         socket.emit("TOUR_CONTROL", {
           event: 'SET_ACTIVE_HOTSPOT',
           data,
@@ -167,8 +154,8 @@ const MainPanel = () => {
     });
 
     tourControl.on('VIEW_ANGLE_ROTATE_LEFT', (data) => {
-      console.log("view angle rotate left");
       if(userState.user.role === localStorage.controller) {
+        console.log("view angle rotate left");
         socket.emit("TOUR_CONTROL", {
           event: "VIEW_ANGLE_ROTATE_LEFT",
           data,
@@ -177,8 +164,8 @@ const MainPanel = () => {
     });
 
     tourControl.on('VIEW_ANGLE_ROTATE_UP', (data) => {
-      console.log("view angle rotate up");
       if(userState.user.role === localStorage.controller) {
+        console.log("view angle rotate up");
         socket.emit("TOUR_CONTROL", {
           event: "VIEW_ANGLE_ROTATE_UP",
           data,
@@ -187,8 +174,8 @@ const MainPanel = () => {
     });
 
     tourControl.on('UPDATE_POSITION_ANGLE', (data) => {
-      console.log("update position angle");
       if(userState.user.role === localStorage.controller) {
+        console.log("update position angle");
         socket.emit("TOUR_CONTROL", {
           event: "UPDATE_POSITION_ANGLE",
           data,
@@ -199,42 +186,48 @@ const MainPanel = () => {
     
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
-      if(userState.user.role === localStorage.controller) return;
-
       console.log(data.event);      
       switch (data.event) {
         case "THUMBNAIL_PLAY_CLICK":{
           dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
           tourControl.thumbnailPlayClick();
-          // tourControl.lockControl();
+
+          if(userState.user.role !== localStorage.controller)
+            tourControl.lockControl();
+          else
+            tourControl.unlockControl();
+
           break;
         }
         case "PLAYER_TRANSITION_TO":
         case "PLAYER_TRANSITION_TO_IMMEDIATELY": {
-          tourControl.transitionTo(data.data);
+          if(userState.user.role !== localStorage.controller)
+            tourControl.transitionTo(data.data);
           break;
         }
         case "PLAYER_START_AUTO_SPIN":
-          tourControl.startAutoSpin();
+          if(userState.user.role !== localStorage.controller)
+            tourControl.startAutoSpin();
           break;
         case "PLAYER_STOP_AUTO_SPIN":
-          tourControl.stopAutoSpin();
+          if(userState.user.role !== localStorage.controller)
+            tourControl.stopAutoSpin();
           break;
         case "SET_ACTIVE_HOTSPOT":
-          console.log(tourControl);
-          tourControl.setActiveHotspot(data.data);
-          tourControl.setActiveHotspot(1);
-          tourControl.setActiveHotspot(2);          
+          if(userState.user.role !== localStorage.controller)
+            tourControl.setActiveHotspot(data.data);
           break;
         case "VIEW_ANGLE_ROTATE_LEFT":
           if(userState.user.role !== localStorage.controller)
             tourControl.viewAngleRotateLeft(data.data);          
           break;
         case "VIEW_ANGLE_ROTATE_UP":
-          tourControl.viewAngleRotateUp(data.data);
+          if(userState.user.role !== localStorage.controller)
+            tourControl.viewAngleRotateUp(data.data);
           break;
         case "UPDATE_POSITION_ANGLE":
-          tourControl.viewAngleUpdatePosition(data.data);
+          if(userState.user.role !== localStorage.controller)
+            tourControl.viewAngleUpdatePosition(data.data);
           break;
         default:
           break;
@@ -347,6 +340,12 @@ const ArrowBtn = styled(Button)`
   cursor: pointer;
   &:after {
     display: none;
+  }
+  
+  &:hover,
+  &:not(:disabled):not(.disabled):active,
+  &:focus {
+    background-color: transparent !important;
   }
 
   @media screen and (max-width: 991px) {
