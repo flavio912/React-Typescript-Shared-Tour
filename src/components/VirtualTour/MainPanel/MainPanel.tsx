@@ -196,6 +196,8 @@ const MainPanel = () => {
     
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
+      if(userState.user.role === localStorage.controller) return;
+      
       console.log(data.event);      
       switch (data.event) {
         case "THUMBNAIL_PLAY_CLICK":{
