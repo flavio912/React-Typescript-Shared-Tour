@@ -55,98 +55,54 @@ export const HOME_TOURS = [
     imgUrl:
       "https://movein.theatro360.com/uploads/event_images/5e9d8946bdd5a890167925.jpg",
   },
-  // {
-  //   name: "ODYSSEY II",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "54-02LL",
-  //   imgUrl:
-  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
-  // },
-  // {
-  //   name: "SECRET",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "NY-6B28",
-  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
-  // },
-  // {
-  //   name: "ODYSSEY II",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "54-02LL",
-  //   imgUrl:
-  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
-  // },
-  // {
-  //   name: "SECRET",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "NY-6B28",
-  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
-  // },
-  // {
-  //   name: "ODYSSEY II",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "54-02LL",
-  //   imgUrl:
-  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
-  // },
-  // {
-  //   name: "SECRET",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "NY-6B28",
-  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
-  // },
-  // {
-  //   name: "ODYSSEY II",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "54-02LL",
-  //   imgUrl:
-  //     "https://movein.theatro360.com/uploads/event_images/5e173ca06a7dd028615158.jpg",
-  // },
-  // {
-  //   name: "SECRET",
-  //   type: "For Sale and charter",
-  //   info: {
-  //     length: "82.5m (270.6ft)",
-  //     year: 2013,
-  //     content: "Abeking & Rasmussen, 12 guests",
-  //   },
-  //   token: "NY-6B28",
-  //   imgUrl: "https://burgess.theatro360.com/tour/assets/background-secret.jpg",
-  // },
+  {
+    name: "MISS MONEYPENNY V",
+    type: "For Sale and charter",
+    info: {
+      length: "73m (239.5ft)",
+      year: 2017,
+      content: "Feadship, Royal Van Lent, The Netherlands",
+    },
+    token: "BH-7YAP",
+    imgUrl:
+      "https://movein.theatro360.com/uploads/event_images/5ecb9ab2380b7890130350.jpg",
+  },
+  {
+    name: "AKIKO",
+    type: "For Sale and charter",
+    info: {
+      length: "73m (239.5ft)",
+      year: 2017,
+      content: "Feadship, Royal Van Lent, The Netherlands",
+    },
+    token: "WN-GOJM",
+    imgUrl:
+      "https://movein.theatro360.com/uploads/event_images/5ecd7edaae821687161889.jpg",
+  },
+  {
+    name: "HER DESTINY",
+    type: "For Sale and charter",
+    info: {
+      length: "73m (239.5ft)",
+      year: 2017,
+      content: "Feadship, Royal Van Lent, The Netherlands",
+    },
+    token: "SW-D82O",
+    imgUrl:
+      "https://theatro360-uploads.s3.eu-west-2.amazonaws.com/5oN0IafAbhO0XUHpvBrfTQNe.jpg?u=2b7d0470db77bc9273c8fda83b4ce080",
+  },
+  {
+    name: "YALLA",
+    type: "For Sale and charter",
+    info: {
+      length: "73m (239.5ft)",
+      year: 2017,
+      content: "Feadship, Royal Van Lent, The Netherlands",
+    },
+    token: "FL-Q8FY",
+    imgUrl:
+      "https://theatro360-uploads.s3.eu-west-2.amazonaws.com/7HSZNuIBlckBhQxRt6wgK3TX.jpg?u=6a76b49ead9071b3fa80a239d82ad8eb",
+  },
 ];
 
 export const TOUR_HOME_PAGE = "Tour Home Page";
