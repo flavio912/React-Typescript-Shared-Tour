@@ -63,6 +63,7 @@ const MainPanel = () => {
     switch (eventType) {
       case CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.INIT: {
         virtualTourState.socket.connect();
+        dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
         virtualTourState.socket.emit("TOUR_CONTROL", {
           event: "THUMBNAIL_PLAY_CLICK",
           data: null
@@ -95,6 +96,7 @@ const MainPanel = () => {
     if(!token || iframeRef.current.id !== `tour-${token}`) return;
 
     const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
+
     tourControl.on('PLAYER_START_AUTO_SPIN', (data) => {
       // callback when the tour auto plays
       console.log('tour auto plays');
@@ -204,7 +206,7 @@ const MainPanel = () => {
         case "THUMBNAIL_PLAY_CLICK":{
           dispatch(setEventTypeAction(CONSTANTS.VIRTUAL_TOUR_CONTROL_EVENT.START));
           tourControl.thumbnailPlayClick();
-          tourControl.lockControl();
+          // tourControl.lockControl();
           break;
         }
         case "PLAYER_TRANSITION_TO":
@@ -219,7 +221,10 @@ const MainPanel = () => {
           tourControl.stopAutoSpin();
           break;
         case "SET_ACTIVE_HOTSPOT":
+          console.log(tourControl);
           tourControl.setActiveHotspot(data.data);
+          tourControl.setActiveHotspot(1);
+          tourControl.setActiveHotspot(2);          
           break;
         case "VIEW_ANGLE_ROTATE_LEFT":
           if(userState.user.role !== localStorage.controller)
