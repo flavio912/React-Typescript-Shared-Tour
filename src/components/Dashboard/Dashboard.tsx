@@ -79,7 +79,7 @@ const Dashboard = () => {
                         </div>
                       );
                     }))
-                    : (<div className="no-result">You have no current guided tour requests.</div>)
+                    : (<div className="no-result">You have no connected Guided Tours</div>)
                 )}
               </div>
             </div>
