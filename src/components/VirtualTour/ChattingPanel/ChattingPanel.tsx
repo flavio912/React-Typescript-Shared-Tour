@@ -124,7 +124,7 @@ const ChattingPanel = () => {
   
       Twilio.Device.connect({ name: connectName });
       dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'call'}));
-    }   
+    }
   }
 
   const sendMessageByEnter = (event) => {

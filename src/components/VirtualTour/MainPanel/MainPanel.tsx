@@ -154,23 +154,23 @@ const MainPanel = () => {
     });
 
     tourControl.on('VIEW_ANGLE_ROTATE_LEFT', (data) => {
-      if(userState.user.role === localStorage.controller) {
-        console.log("view angle rotate left");
-        socket.emit("TOUR_CONTROL", {
-          event: "VIEW_ANGLE_ROTATE_LEFT",
-          data,
-        });
-      }
+      // if(userState.user.role === localStorage.controller) {
+      //   console.log("view angle rotate left");
+      //   socket.emit("TOUR_CONTROL", {
+      //     event: "VIEW_ANGLE_ROTATE_LEFT",
+      //     data,
+      //   });
+      // }
     });
 
     tourControl.on('VIEW_ANGLE_ROTATE_UP', (data) => {
-      if(userState.user.role === localStorage.controller) {
-        console.log("view angle rotate up");
-        socket.emit("TOUR_CONTROL", {
-          event: "VIEW_ANGLE_ROTATE_UP",
-          data,
-        });
-      }
+      // if(userState.user.role === localStorage.controller) {
+      //   console.log("view angle rotate up");
+      //   socket.emit("TOUR_CONTROL", {
+      //     event: "VIEW_ANGLE_ROTATE_UP",
+      //     data,
+      //   });
+      // }
     });
 
     tourControl.on('UPDATE_POSITION_ANGLE', (data) => {
@@ -219,7 +219,7 @@ const MainPanel = () => {
           break;
         case "VIEW_ANGLE_ROTATE_LEFT":
           if(userState.user.role !== localStorage.controller)
-            tourControl.viewAngleRotateLeft(data.data);          
+            tourControl.viewAngleRotateLeft(data.data);
           break;
         case "VIEW_ANGLE_ROTATE_UP":
           if(userState.user.role !== localStorage.controller)

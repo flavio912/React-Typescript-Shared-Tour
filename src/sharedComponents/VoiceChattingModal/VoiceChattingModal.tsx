@@ -15,6 +15,7 @@ const VoiceChattingModal = () => {
     <Modal
       show={dialog.isOpened && dialog.name === DialogNames.VOICE_CHATTING_DIALOG}
       onHide={() => {dispatch(voiceChattingDialogAction({isOpened: false}))}}
+      animation
       centered
       className="voice-chatting-modal"
     >

@@ -110,6 +110,10 @@ const VirtualTour = () => {
       console.log("VOICE_READY", msg);
       dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'start'}));
       dispatch(voiceChattingDialogAction({isOpened: true, role: 'slave', action: 'start'}));
+      
+      setTimeout(() => {
+        dispatch(voiceChattingDialogAction({isOpened: false}));
+      }, 2000);
     })
   }, [virtualTourState.socket]) // eslint-disable-line
 
@@ -150,7 +154,7 @@ const VirtualTour = () => {
 
       // Set a callback to be executed when the connection is accepted
       connection.accept(function() {
-        console.log("In call with someone");
+        console.log("In call with someone");       
       });
     });
   }, [twilioToken, voiceChattingDialogAction]); // eslint-disable-line

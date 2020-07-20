@@ -98,7 +98,11 @@
     }
   }
 
-  @media (max-width: 991px){
+  @media (max-width: 991px) {
+    .modal-dialog .modal-content .modal-body {
+      padding: 10px 50px;
+    }
+    
     .form-group {
       margin-bottom: 0.5rem;
     }
