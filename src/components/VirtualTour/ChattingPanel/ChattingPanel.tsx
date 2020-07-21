@@ -11,13 +11,19 @@ import * as Constants from '../../../constants';
 import { DialogNames } from '../../../store/dialog/types';
 import PhotoSvg from '../../../assets/images/photo.svg';
 import MicSvg from '../../../assets/images/mic.svg';
-import VolumnOn from '../../../assets/images/volumn-on.svg';
+import VoiceCallSvg from '../../../assets/images/voice-call.svg';
+import VoiceCallActiveSvg from '../../../assets/images/voice-call-active.svg';
 import ChatSvg from '../../../assets/images/chat.svg';
 import ChatDisableSvg from '../../../assets/images/chat-disable.svg';
 import DefaultAvatarSvg from '../../../assets/images/default-avatar-filled.svg';
 
 declare var Twilio;
-const ChattingPanel = () => {
+
+type Props = {
+  isCalling: boolean
+}
+
+const ChattingPanel = ({isCalling}: Props) => {
   let { id } = useParams();
   const dispatch = useDispatch();
   const { userInfo, dialogState, virtualTourState } = useSelector((state: any) => ({
@@ -163,7 +169,12 @@ const ChattingPanel = () => {
           }
         </div>                  
         <div className="d-flex flex-column justify-content-between">
-          <img className="ml-auto" src={VolumnOn} onClick={() => startCall()}/>
+          {!isCalling ?
+            <div className="call-btn"><img className="ml-auto" src={VoiceCallSvg} onClick={() => startCall()}/></div>
+            :
+            <div className="call-btn calling"><img className="ml-auto" src={VoiceCallActiveSvg} onClick={() => startCall()}/></div>
+          }
+
           {/* <img className="ml-auto" src={MicSvg} onClick={() => {console.log("Click Mic")}}/>
           <img className="ml-auto" src={PhotoSvg} onClick={() => {console.log("Click Camera")}}/> */}
         </div>

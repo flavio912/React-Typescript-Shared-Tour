@@ -42,6 +42,7 @@ const VirtualTour = () => {
   const history = useHistory();
   const [twilioToken, setTwilioToken] = useState(null);
   const [alert, setAlert] = useState({isShow: false, status: 'success', msg: ''});
+  const [isCalling, setIsCalling] = useState(false);
 
   useEffect(() => {
     if(!userState.token) return;
@@ -110,7 +111,8 @@ const VirtualTour = () => {
       console.log("VOICE_READY", msg);
       dispatch(voiceChattingDialogAction({isOpened: true, role: 'master', action: 'start'}));
       dispatch(voiceChattingDialogAction({isOpened: true, role: 'slave', action: 'start'}));
-      
+      setIsCalling(true);
+
       setTimeout(() => {
         dispatch(voiceChattingDialogAction({isOpened: false}));
       }, 2000);
@@ -130,6 +132,7 @@ const VirtualTour = () => {
       console.log("TWILIO ERROR: " + error.message);
       const voiceName = generateVoiceName(virtualTourState.socketCode, userState.user.name);
       initiateVoiceSetup(voiceName);
+      setIsCalling(false);
     });
   
     /* Callback for when Twilio Client initiates a new connection */
@@ -144,6 +147,7 @@ const VirtualTour = () => {
       dispatch(setTwilioConnectionAction(null));
       dispatch(voiceChattingDialogAction({isOpened: false, role: 'master', action: 'start'}));
       dispatch(voiceChattingDialogAction({isOpened: false, role: 'slave', action: 'start'}));
+      setIsCalling(false);
     });
 
     /* Callback for when Twilio Client receives a new incoming call */
@@ -170,7 +174,7 @@ const VirtualTour = () => {
       <NavMenu />
       <div className="main-container container">
         <div className="main-page-section">
-          <ChattingPanel />
+          <ChattingPanel isCalling={isCalling} />
           <MainPanel />
         </div>        
       </div>
