@@ -89,7 +89,7 @@ const ChattingPanel = ({isCalling}: Props) => {
         virtualTourState.twilioConnection.accept();
         
         virtualTourState.socket.emit("VOICE_READY", {
-          deviceName: virtualTourState.twilioConnection.device._clientName
+          deviceName: virtualTourState.twilioConnection.message.name
         })
         break;
       }
@@ -102,7 +102,7 @@ const ChattingPanel = ({isCalling}: Props) => {
       default:
         break;
     }
-  }, [dialogState, virtualTourState.socket]) // eslint-disable-line
+  }, [dialogState, virtualTourState.socket, virtualTourState.twilioConnection]) // eslint-disable-line
 
   const sendMessage = () => {
     if(!virtualTourState.socket) return;
