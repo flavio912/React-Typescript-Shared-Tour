@@ -133,10 +133,14 @@ const ChattingPanel = ({isCalling}: Props) => {
     }
   }
 
-  const handleKeypress = (event) => {
+  const handleKeyUp = (event) => {
     if(event.key === "Enter"){
       event.preventDefault();
-      sendMessage();
+      if(event.shiftKey){
+        event.stopPropagation();
+      }else {
+        sendMessage();
+      }
     }
   }
 
@@ -189,7 +193,11 @@ const ChattingPanel = ({isCalling}: Props) => {
                   <h5><ChatImg src={ChatDisableSvg} />{historyItem?.payload.Name}</h5>
                 }
                 <p className="m-0">
-                  {historyItem?.payload.Message}
+                  {historyItem?.payload.Message !== '' && 
+                    historyItem.payload.Message.split('\n').map(i => {
+                      return <span>{i}</span>
+                    })
+                  }
                 </p>
               </div>
             ))}
@@ -201,7 +209,7 @@ const ChattingPanel = ({isCalling}: Props) => {
             className="my-1 float-left"
             placeholder="Type a message"
             value={newMessage}
-            onKeyPress={(e) => handleKeypress(e)}
+            onKeyUp={(e) => handleKeyUp(e)}
             onChange={(e) => {
               setNewMessage(e.target.value);
             }}
