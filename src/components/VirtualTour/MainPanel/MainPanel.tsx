@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
-import { Button } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import { 
@@ -28,6 +28,10 @@ const MainPanel = () => {
   const iframeRef = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [alert, setAlert] = useState({
+    isShow: false,
+    msg: ''
+  })
 
   const { virtualTourState, userState } = useSelector((state: any) => ({
     userState: state.user,
@@ -238,6 +242,13 @@ const MainPanel = () => {
       console.log("SWITCH_CONTROL_TO_CLIENT");
       dispatch(setTourControllerAction(CONSTANTS.UserRoles.client));
       localStorage.setItem("controller", CONSTANTS.UserRoles.client);
+      setAlert({isShow: true, msg: 'The control was transferred to the client'});
+      window.setTimeout(() => {
+        setAlert({
+          ...alert,
+          isShow: false
+        })
+      }, 3000);
 
       if(userState.user.role === CONSTANTS.UserRoles.client)
         tourControl.unlockControl();
@@ -249,6 +260,13 @@ const MainPanel = () => {
       console.log("SWITCH_CONTROL_TO_BROKER");
       dispatch(setTourControllerAction(CONSTANTS.UserRoles.broker));
       localStorage.setItem("controller", CONSTANTS.UserRoles.broker);
+      setAlert({isShow: true, msg: 'The control was transferred to the broker'});
+      window.setTimeout(() => {
+        setAlert({
+          ...alert,
+          isShow: false
+        })
+      }, 3000);
 
       if(userState.user.role === CONSTANTS.UserRoles.broker)
         tourControl.unlockControl();
@@ -327,6 +345,7 @@ const MainPanel = () => {
       <BtnPanel controller={virtualTourState.controller} handleEvent={(eventType: string) => {handleEvent(eventType)}}/>
       {/* <OptionModal isShow={showOptionModal} hideModal={() => setShowOptionModal(false)} /> */}
       <TransferModal isShow={showTransferModal} hideModal={(isOk: boolean) => handleTransferControl(isOk)} />
+      <Alert variant="success" show={alert.isShow}>{alert.msg}</Alert>
     </div>
   );
 };

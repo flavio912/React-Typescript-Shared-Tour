@@ -133,7 +133,7 @@ const ChattingPanel = ({isCalling}: Props) => {
     }
   }
 
-  const sendMessageByEnter = (event) => {
+  const handleKeypress = (event) => {
     if(event.key === "Enter"){
       event.preventDefault();
       sendMessage();
@@ -201,7 +201,7 @@ const ChattingPanel = ({isCalling}: Props) => {
             className="my-1 float-left"
             placeholder="Type a message"
             value={newMessage}
-            onKeyPress={(e) => sendMessageByEnter(e)}
+            onKeyPress={(e) => handleKeypress(e)}
             onChange={(e) => {
               setNewMessage(e.target.value);
             }}
