@@ -54,13 +54,13 @@ const ChattingPanel = ({isCalling}: Props) => {
     if(!userInfo.user.role || !virtualTourState.tourSession) return;
 
     if(userInfo.user.role === Constants.UserRoles.broker) {
-      if(virtualTourState.tourSession.broker.avatar)
-        setAvatar(virtualTourState.tourSession.broker.avatar);
+      if(virtualTourState.tourSession.client.avatar)
+        setAvatar(virtualTourState.tourSession.client.avatar);
       else
         setAvatar(DefaultAvatarSvg);
     }else if (userInfo.user.role === Constants.UserRoles.client) {
-      if(virtualTourState.tourSession.client.avatar)
-        setAvatar(virtualTourState.tourSession.client.avatar);
+      if(virtualTourState.tourSession.broker.avatar)
+        setAvatar(virtualTourState.tourSession.broker.avatar);
       else
         setAvatar(DefaultAvatarSvg);
     }
