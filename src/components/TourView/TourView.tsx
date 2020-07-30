@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
 import CONFIG from '../../config';
 import NavMenu from './../../sharedComponents/NavMenu';
 
+declare var TourSDK;
+
 const TourView = () => {
   const { token } = useParams();
-  const embedUrl = `${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1&redirect_domain=burgess-shared-tour.devserver.london&redirect_ssl=1`;
+  const history = useHistory();
+  const embedUrl = `${CONFIG["TOUR_DEVSERVER_URL"]}/tour/${token}?sdk_enable=1&request_shared_tour_event=1`;
 
+  useEffect(() => {
+    if(!token) return;
+
+    const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
+    tourControl.on('REQUEST_SHARED_TOUR', () => {
+      console.log('User has requested shared tour session');
+      history.push(`/request-tour?url=https://tour.burgess-shared-tour.devserver.london/tour/${token}`);
+    });
+  }, [token]) // eslint-disable-line
+
+  
   return (
     <>
       <NavMenu />

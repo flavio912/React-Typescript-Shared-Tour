@@ -187,7 +187,6 @@ const MainPanel = () => {
       }
     });
 
-    
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
       console.log(data.event);      
