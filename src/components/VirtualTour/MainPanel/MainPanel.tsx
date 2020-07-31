@@ -187,6 +187,16 @@ const MainPanel = () => {
       }
     });
 
+    tourControl.on('BASE_HOTSPOT_HOVER', (data) => {
+      if(userState.user.role === localStorage.controller) {
+        console.log("ase hotspot hover");
+        socket.emit("TOUR_CONTROL", {
+          event: "BASE_HOTSPOT_HOVER",
+          data,
+        });
+      }
+    });
+
     // in client code, replicate the tour action when receiving socket event
     socket.on("TOUR_CONTROL", (data) => {
       console.log(data.event);      
@@ -231,6 +241,10 @@ const MainPanel = () => {
         case "UPDATE_POSITION_ANGLE":
           if(userState.user.role !== localStorage.controller)
             tourControl.viewAngleUpdatePosition(data.data);
+          break;
+        case "BASE_HOTSPOT_HOVER":
+          if(userState.user.role !== localStorage.controller)
+            tourControl.baseHotspotHover(data.data);
           break;
         default:
           break;
