@@ -189,9 +189,49 @@ const MainPanel = () => {
 
     tourControl.on('BASE_HOTSPOT_HOVER', (data) => {
       if(userState.user.role === localStorage.controller) {
-        console.log("ase hotspot hover");
+        console.log("base hotspot hover");
         socket.emit("TOUR_CONTROL", {
           event: "BASE_HOTSPOT_HOVER",
+          data,
+        });
+      }
+    });
+
+    tourControl.on('DECK_DROPDOWN_UPDATE', (data) => {
+      if(userState.user.role === localStorage.controller) {
+        console.log("deck dropdown update");
+        socket.emit("TOUR_CONTROL", {
+          event: "DECK_DROPDOWN_UPDATE",
+          data,
+        });
+      }
+    });
+
+    tourControl.on('IMAGE_NAVIGATION_UPDATE_IMAGE_OPEN', (data) => {
+      if(userState.user.role === localStorage.controller) {
+        console.log("image navigation update image open");
+        socket.emit("TOUR_CONTROL", {
+          event: "IMAGE_NAVIGATION_UPDATE_IMAGE_OPEN",
+          data,
+        });
+      }
+    });
+
+    tourControl.on('UPDATE_IMAGE_NAVIGATION_SCROLL_POSITION', (data) => {
+      if(userState.user.role === localStorage.controller) {
+        console.log("update image navigation scroll position");
+        socket.emit("TOUR_CONTROL", {
+          event: "UPDATE_IMAGE_NAVIGATION_SCROLL_POSITION",
+          data,
+        });
+      }
+    });
+
+    tourControl.on('IMAGE_NAVIGATION_UPDATE_SELECTED_IMAGE', (data) => {
+      if(userState.user.role === localStorage.controller) {
+        console.log("image navigation update selected image");
+        socket.emit("TOUR_CONTROL", {
+          event: "IMAGE_NAVIGATION_UPDATE_SELECTED_IMAGE",
           data,
         });
       }
@@ -245,6 +285,22 @@ const MainPanel = () => {
         case "BASE_HOTSPOT_HOVER":
           if(userState.user.role !== localStorage.controller)
             tourControl.baseHotspotHover(data.data);
+          break;
+        case "DECK_DROPDOWN_UPDATE":
+          if(userState.user.role !== localStorage.controller)
+            tourControl.deckDropdownUpdate(data.data);
+          break;
+        case "IMAGE_NAVIGATION_UPDATE_IMAGE_OPEN":
+          if(userState.user.role !== localStorage.controller)
+            tourControl.toggleImageNavigation(data.data);
+          break;
+        case "UPDATE_IMAGE_NAVIGATION_SCROLL_POSITION":
+          if(userState.user.role !== localStorage.controller)
+            tourControl.updateImageNavigationScroll(data.data);
+          break;
+        case "IMAGE_NAVIGATION_UPDATE_SELECTED_IMAGE":
+          if(userState.user.role !== localStorage.controller)
+            tourControl.updateSelectedImageNavigation(data.data);
           break;
         default:
           break;
