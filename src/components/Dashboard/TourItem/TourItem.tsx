@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import { Alert, Spinner } from 'react-bootstrap';
 import Moment from 'react-moment';
 import styled from 'styled-components';
@@ -50,12 +51,19 @@ const TourItem = ({tourInfo}: Props) => {
   const [alert, setAlert] = useState({isShow: false, status: '', msg: ''});
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
+  const { userInfo } = useSelector((state: any) => ({
+    userInfo: state.user.user
+  }))
 
-  const confirmRequest = (id: number) => {
+  const confirmRequest = () => {
     if(tourInfo.status === CONSTANT.TOUR_STATUS.PENDING) {
       setIsLoading(true);
-      RequestHelper
-        .post('/tour-session/confirm-request', {id: id})
+
+      if(userInfo.ID === tourInfo.broker.ID){
+        history.push(`/virtual-tour/${tourInfo.ID}`);
+      }else {
+        RequestHelper
+        .post('/tour-session/confirm-request', {id: tourInfo.ID})
         .then((res) => {
           if(!res.data.success) {
             setAlert({isShow: true, status: 'danger', msg: `Broker is currently reviewing ${tourInfo.tourName} - please try another tour`});
@@ -69,7 +77,8 @@ const TourItem = ({tourInfo}: Props) => {
           setIsLoading(false);
         })
         .catch(error => console.log(error));  
-    }else {
+      }      
+    } else {
       history.push(`/virtual-tour/${tourInfo.ID}`);
     }
   }
@@ -84,7 +93,7 @@ const TourItem = ({tourInfo}: Props) => {
       <div className="tour-item d-flex">
         <div className="tour-image">
           <img src={tourInfo.tourThumbnail} />
-          <button onClick={() => confirmRequest(tourInfo.ID)}>
+          <button onClick={() => confirmRequest()}>
             <img src={PlaySvg} />
           </button>
         </div>
