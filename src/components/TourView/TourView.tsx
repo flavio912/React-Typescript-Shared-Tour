@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import CONFIG from '../../config';
@@ -41,7 +40,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  height: calc(100vh - 97px);
+  height: calc(100vh - 70px);
 `
 
 export default TourView

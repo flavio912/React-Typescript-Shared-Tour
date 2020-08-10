@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter, useHistory } from "react-router-dom";
 import { Alert, Spinner } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -17,12 +17,14 @@ import ThankyouModal from '../../sharedComponents/ThankyouModal';
 import ForgotPasswordModal from '../../sharedComponents/ForgotPasswordModal';
 import ResetPasswordModal from '../../sharedComponents/ResetPasswordModal';
 import EnterCodeModal from '../../sharedComponents/EnterCodeModal';
-import CONFIG from '../../config';
 
 const qs = require('qs');
+declare var TourSDK;
 
 const TourRequest = ({ location }: RouteComponentProps) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  
   const [curTourUrl, setTourUrl] = useState('');
   const [alert, setAlert] = useState({isShow: false, status: '', msg: '', isRequestError: false});
   const [token, setToken] = useState('');
@@ -32,8 +34,8 @@ const TourRequest = ({ location }: RouteComponentProps) => {
   useEffect(() => {
     const params = qs.parse(location.search);
     const tourUrl = params['?url'];
-    setToken(tourUrl.split('/').pop());    
-    setTourUrl(`${tourUrl}?sdk_enable=1&redirect_domain=burgess-shared-tour.devserver.london&redirect_ssl=1`);
+    setToken(tourUrl.split('/').pop());
+    setTourUrl(`${tourUrl}?sdk_enable=1&request_shared_tour_event=1`);
     
     if(!localStorage.token){
       dispatch(loginUserDialogAction(true));
@@ -49,15 +51,15 @@ const TourRequest = ({ location }: RouteComponentProps) => {
             setRequestId(res.data.data.requestId);
             dispatch(enterCodeDialogAction(true));
           }else {
-            setAlert({
-              ...alert,
-              isShow: true, 
-              status: 'danger', 
-              isRequestError: true
-            });
-            window.setTimeout(() => {
-              setAlert({...alert, isShow: false});
-            }, 5000);
+            // setAlert({
+            //   ...alert,
+            //   isShow: true, 
+            //   status: 'danger', 
+            //   isRequestError: true
+            // });
+            // window.setTimeout(() => {
+            //   setAlert({...alert, isShow: false});
+            // }, 5000);
           }
         })
         .catch((error) => {
@@ -66,6 +68,19 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       }
     }
   }, [location.search]) // eslint-disable-line
+
+  useEffect(() => {
+    if(!curTourUrl || curTourUrl === '') return;
+
+    const params = qs.parse(location.search);
+    const tourUrl = params['?url'];
+    const token = tourUrl.split('/').pop();
+    const tourControl = new TourSDK(`#tour-${token}`, "https://tour.burgess-shared-tour.devserver.london");
+    tourControl.on('REQUEST_SHARED_TOUR', () => {
+      console.log('User has requested shared tour session');
+      history.push(`/request-tour?url=${tourUrl}`);
+    });
+  }, [curTourUrl, history, location.search])
 
   const handleEnterCode = async(code: string) => {
     if(code.length === 4){
@@ -108,10 +123,10 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       </CustomContainer>
       <Alert variant="success" show={alert.isShow && alert.status==='success'}>{alert.msg}</Alert>
       <Alert variant="danger" show={alert.isShow && alert.status==='danger' && !alert.isRequestError}>{alert.msg}</Alert>
-      <Alert variant="danger" show={alert.isShow && alert.status==='danger' && alert.isRequestError}>
+      {/* <Alert variant="danger" show={alert.isShow && alert.status==='danger' && alert.isRequestError}>
         Please log in to your console to view this content - 
         <Alert.Link href={`${CONFIG['BASE_URL']}/dashboard`}>{CONFIG['BASE_URL']}/dashboard</Alert.Link>
-      </Alert>
+      </Alert> */}
 
       <RegisterModal role="client" />
       <SigninModal role="client" />
