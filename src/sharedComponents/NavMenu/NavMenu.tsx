@@ -61,7 +61,7 @@ const NavMenu = ({ location }: RouteComponentProps) => {
   }
 
   return (
-    <Navbar id="bugress-nav" bg="white" expand="lg">
+    <Navbar id="burgess-nav" bg="white" expand="lg">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="navbar-bugress">
         {(curPath === '/dashboard' || curPath.slice(0, curPath.lastIndexOf('/')) === '/virtual-tour') ? (

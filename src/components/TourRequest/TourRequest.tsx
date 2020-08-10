@@ -124,7 +124,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
 }
 
 const CustomContainer = styled.div`
-  height: calc(100vh - 97px);
+  height: calc(100vh - 70px);
 
   @media screen and (max-width: 991px) {
     height: calc(100vh - 60px);
