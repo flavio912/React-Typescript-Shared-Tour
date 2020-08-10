@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Alert } from 'react-bootstrap';
+import { Alert, Spinner } from 'react-bootstrap';
 import styled from 'styled-components';
 
 import NavMenu from '../../sharedComponents/NavMenu';
@@ -27,6 +27,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
   const [alert, setAlert] = useState({isShow: false, status: '', msg: '', isRequestError: false});
   const [token, setToken] = useState('');
   const [requestId, setRequestId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const params = qs.parse(location.search);
@@ -68,6 +69,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
 
   const handleEnterCode = async(code: string) => {
     if(code.length === 4){
+      setIsLoading(true);
       const data = {
         id: requestId,
         confirmCode: code,
@@ -87,6 +89,7 @@ const TourRequest = ({ location }: RouteComponentProps) => {
       }else {
         dispatch(thankyouDialogAction(true));
       }
+      setIsLoading(false);
     } else {
       dispatch(enterCodeDialogAction(true));
     }
@@ -94,6 +97,11 @@ const TourRequest = ({ location }: RouteComponentProps) => {
 
   return (
     <>
+      {isLoading && (
+        <CustomSpinner>
+          <Spinner animation="border" variant="info" />
+        </CustomSpinner>
+      )}
       <NavMenu />
       <CustomContainer>
         <iframe id={`tour-${token}`} src={curTourUrl} width="100%" height="100%" style={{border: 'none'}} />
@@ -121,6 +129,20 @@ const CustomContainer = styled.div`
   @media screen and (max-width: 991px) {
     height: calc(100vh - 60px);
   }
+`
+
+const CustomSpinner = styled.div`
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 10px #ddd;
 `
 
 export default withRouter(TourRequest);
